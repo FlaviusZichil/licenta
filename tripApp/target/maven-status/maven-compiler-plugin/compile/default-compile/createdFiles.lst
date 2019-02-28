@@ -1,0 +1,5 @@
+entities\Medal.class
+entities\Role.class
+entities\Trip.class
+entities\User.class
+app\App.class

@@ -1,7 +1,5 @@
 package app.controllers;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.constants.Cities;
-import app.entities.User;
+import app.entities.UserEntity;
 import app.repositories.UserRepository;
 import app.validators.RegisterValidator;
 
@@ -27,14 +25,11 @@ public class RegisterController {
 	@GetMapping("/register")
 	public String register(Model model) {
 		model.addAttribute("allCities", this.getAllCities());
-		
-		
-		
 		return "views/register";
 	}
 	
 	@PostMapping("/register")
-	public String registerUser(User user, Model model,
+	public String registerUser(Model model,
 							   @RequestParam(value = "firstName", required = false) String firstName,
 							   @RequestParam(value = "lastName", required = false) String lastName,
 							   @RequestParam(value = "email", required = false) String email,
@@ -45,7 +40,7 @@ public class RegisterController {
 		model.addAttribute("allCities", this.getAllCities());
 		
 		if(this.isFormValid(firstName, lastName, email, password, birthDate, city, model)) {
-			userRepository.save(new User(firstName, lastName, birthDate, city, email, password));
+			userRepository.save(new UserEntity(firstName, lastName, birthDate, city, email, password));
 			return "views/login";
 		}		
 		return "views/register";

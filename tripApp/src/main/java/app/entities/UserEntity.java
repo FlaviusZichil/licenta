@@ -1,15 +1,20 @@
 package app.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class UserEntity {
 	
 	@Id
 	@Column(name = "user_id")
@@ -36,10 +41,13 @@ public class User {
 	
 	@Column(name = "password")
 	private String password;
-
-	public User() {}
 	
-	public User(String firstName, String lastName, String birthDate, String city, String email, String password) {
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
+	private List<Role> roles = new ArrayList<Role>();
+
+	public UserEntity() {}
+	
+	public UserEntity(String firstName, String lastName, String birthDate, String city, String email, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -47,6 +55,14 @@ public class User {
 		this.city = city;
 		this.email = email;
 		this.password = password;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	public Integer getId() {

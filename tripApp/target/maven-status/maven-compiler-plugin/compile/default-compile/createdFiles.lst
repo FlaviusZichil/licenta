@@ -1,5 +1,7 @@
-entities\Medal.class
-entities\Role.class
-entities\Trip.class
-entities\User.class
+app\validators\RegisterValidator.class
 app\App.class
+app\constants\Cities.class
+app\repositories\UserRepository.class
+app\entities\Trip.class
+app\controllers\RegisterController.class
+app\entities\User.class

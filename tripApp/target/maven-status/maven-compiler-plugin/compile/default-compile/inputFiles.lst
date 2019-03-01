@@ -1,5 +1,7 @@
-E:\Licenta\src\main\java\entities\Trip.java
-E:\Licenta\src\main\java\entities\Medal.java
-E:\Licenta\src\main\java\app\App.java
-E:\Licenta\src\main\java\entities\Role.java
-E:\Licenta\src\main\java\entities\User.java
+C:\Users\FlaviusZichil\git\tripApp\tripApp\src\main\java\app\App.java
+C:\Users\FlaviusZichil\git\tripApp\tripApp\src\main\java\app\controllers\RegisterController.java
+C:\Users\FlaviusZichil\git\tripApp\tripApp\src\main\java\app\repositories\UserRepository.java
+C:\Users\FlaviusZichil\git\tripApp\tripApp\src\main\java\app\validators\RegisterValidator.java
+C:\Users\FlaviusZichil\git\tripApp\tripApp\src\main\java\app\entities\Trip.java
+C:\Users\FlaviusZichil\git\tripApp\tripApp\src\main\java\app\entities\User.java
+C:\Users\FlaviusZichil\git\tripApp\tripApp\src\main\java\app\constants\Cities.java

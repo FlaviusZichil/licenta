@@ -37,10 +37,11 @@ public class RegisterController {
 							   @RequestParam(value = "city", required = false) String city,
 							   @RequestParam(value = "birthDate", required = false) String birthDate) {	
 		
+		RegisterValidator validator = new RegisterValidator();
 		model.addAttribute("allCities", this.getAllCities());
-		
+				
 		if(this.isFormValid(firstName, lastName, email, password, birthDate, city, model)) {
-			userRepository.save(new UserEntity(firstName, lastName, birthDate, city, email, password));
+			userRepository.save(new UserEntity(validator.formatNameProperly(firstName), validator.formatNameProperly(lastName), birthDate, city, email, password));
 			return "views/login";
 		}		
 		return "views/register";
@@ -80,7 +81,7 @@ public class RegisterController {
 			model.addAttribute("isPasswordValid", isPasswordValid);		
 		}
 		
-		if(!validator.isEmailValid(email)) {
+		if(!validator.isEmailValid(email) || this.isEmailTaken(email)) {
 			isEmailValid = false;
 			model.addAttribute("isEmailValid", isEmailValid);		
 		}
@@ -92,6 +93,16 @@ public class RegisterController {
 				
 		if(isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isDateValid) {		
 			return true;
+		}
+		return false;
+	}
+	
+	private boolean isEmailTaken(String email) {
+		Iterable<UserEntity> allUsers = userRepository.findAll();
+		for(UserEntity user : allUsers) {
+			if(user.getEmail().equals(email)) {
+				return true;
+			}
 		}
 		return false;
 	}

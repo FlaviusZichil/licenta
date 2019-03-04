@@ -4,25 +4,46 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class RegisterValidator {
-	
+		
 	public boolean isNameValid(String name) {
-		if(name.length() < 2 || !this.containsJustLetters(name)) {
+		if(name.length() < 2 || !this.isWellFormated(name) || this.calculateNumberOfConsecutiveSpaces(name) > 1) {
 			return false;
 		}
 		return true;
 	}
 	
-	private boolean containsJustLetters(String text) {
+	private Integer calculateNumberOfConsecutiveSpaces(String name) {
+		Integer numberOfSpaces = 0;
+		for(int i = 0; i < name.length() - 1; i++) {
+			if(name.charAt(i) == ' ' && name.charAt(i + 1) == ' ') {
+				numberOfSpaces++;
+			}
+		}
+		return numberOfSpaces + 1;
+	}
+	
+	private boolean isWellFormated(String text) {
 		for(int i = 0; i < text.length(); i++) {
-			if(!Character.isLetter(text.charAt(i))) {
+			if(!Character.isLetter(text.charAt(i)) && text.charAt(i) != '-' && text.charAt(i) != ' ') {
 				return false;
 			}
+		}
+		if(text.charAt(0) == '-' || text.charAt(text.length() - 1) == '-' ) {
+			return false;
 		}
 		return true;
 	}
 	
-	private String formatNameProperly(String name) {
-		return "";
+	public String formatNameProperly(String name) {
+		String allLowerCase = name.toLowerCase();
+		// transform first letter to upper case 
+		allLowerCase = allLowerCase.replace(allLowerCase.charAt(0), Character.toUpperCase(allLowerCase.charAt(0)));
+		for(int i = 0; i < allLowerCase.length() - 1; i++) {
+			if(allLowerCase.charAt(i) == ' ' || allLowerCase.charAt(i) == '-') {
+				allLowerCase = allLowerCase.replace(allLowerCase.charAt(i + 1), Character.toUpperCase(allLowerCase.charAt(i + 1)));
+			}
+		}
+		return allLowerCase.trim();
 	}
 	
 	private boolean containsCapitalLetter(String text) {

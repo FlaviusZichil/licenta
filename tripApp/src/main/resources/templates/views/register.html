@@ -17,13 +17,13 @@
 	                <div class="form-group">                 
 						<input class="form-control" type="text"  name="firstName" placeholder="Nume" required/>
 						<div th:if="${isFirstNameValid == false}">
-							<p style="color: red"> Trebuie sa contina numai litere! </p>
+							<p style="color: red"> Nume invalid! </p>
 						</div>
 	                </div>
 	                <div class="form-group">                
 						<input class="form-control" type="text" name="lastName" placeholder="Prenume" required/>
 						<div th:if="${isLastNameValid == false}">
-							<p style="color: red"> Numele trebuie sa contina numai litere! </p>
+							<p style="color: red"> Prenume invalid! </p>
 						</div>
 	                </div>
 	                <div class="form-group">                  
@@ -35,7 +35,7 @@
 	                 <div class="form-group">				   
 					    <input class="form-control" type="email"  name="email" placeholder="Email" required/>
 					     <div th:if="${isEmailValid == false}">
-							<p style="color: red"> Email invalid! </p>
+							<p style="color: red"> Email invalid sau deja exista! </p>
 						</div>
 					 </div>
 	                <div class="form-group">               
@@ -51,6 +51,7 @@
 	                </div>	                
 	                <input class="btn btn-success btn-block" type="submit" name="registerSubmit" value="Inregistrare">
 	                <a class="btn btn-primary btn-block" th:href="@{/login}" role="button">Autentificare</a>
+	                <a style="color: black" th:href="@{pdf/conditii-inregistrare.pdf}" target="_blank">Probleme la inregistrare?</a>
 	            </form>
 	        </div>
 	    </div>

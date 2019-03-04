@@ -39,10 +39,12 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		
 		if (roleNames != null) {
 			for (Role role : roleNames) {
-				GrantedAuthority authority = new SimpleGrantedAuthority(role.toString());
+				GrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
 				grantList.add(authority);
 			}
 		}
+		
+		System.out.println("GrantList: " + grantList);
 
 		UserDetails userDetails = (UserDetails) new User(user.getEmail(),  EncrytedPasswordUtils.encrytePassword(user.getPassword()), grantList);
 
@@ -55,12 +57,10 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		Iterable<UserEntity> allUsers = userRepository.findAll();
 
 		for (UserEntity user : allUsers) {
-			System.out.println(user.getEmail() + " = " + userName);
 			if (user.getEmail().equals(userName)) {
 				return user;
 			}
 		}
-
 		return null;
 	}
 
@@ -68,7 +68,6 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		if (user != null) {
 			return user.getRoles();
 		}
-
 		return null;
 	}
 }

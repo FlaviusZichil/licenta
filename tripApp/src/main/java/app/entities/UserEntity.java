@@ -47,7 +47,7 @@ public class UserEntity {
 
 	public UserEntity() {}
 	
-	public UserEntity(String firstName, String lastName, String birthDate, String city, String email, String password) {
+	public UserEntity(String firstName, String lastName, String birthDate, String city, String email, String password, List<Role> roles) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -55,6 +55,7 @@ public class UserEntity {
 		this.city = city;
 		this.email = email;
 		this.password = password;
+		this.roles = roles;
 	}
 
 	public List<Role> getRoles() {
@@ -127,5 +128,12 @@ public class UserEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "UserEntity [firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", city="
+				+ city + ", email=" + email + ", experience=" + experience + ", password=" + password + ", roles="
+				+ roles + "]";
 	}
 }

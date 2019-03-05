@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.constants.Cities;
+import app.entities.Role;
 import app.entities.UserEntity;
+import app.repositories.RoleRepository;
 import app.repositories.UserRepository;
 import app.validators.RegisterValidator;
 
@@ -21,6 +23,9 @@ public class RegisterController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@GetMapping("/register")
 	public String register(Model model) {
@@ -41,7 +46,16 @@ public class RegisterController {
 		model.addAttribute("allCities", this.getAllCities());
 				
 		if(this.isFormValid(firstName, lastName, email, password, birthDate, city, model)) {
-			userRepository.save(new UserEntity(validator.formatNameProperly(firstName), validator.formatNameProperly(lastName), birthDate, city, email, password));
+			List<Role> rolesForRegisteredUser = new ArrayList<Role>();
+			Role role = this.getRoleByName("ROLE_USER");
+			rolesForRegisteredUser.add(role);
+			
+			UserEntity user = new UserEntity(validator.formatNameProperly(firstName), 
+					   						 validator.formatNameProperly(lastName), birthDate, city, email, password, rolesForRegisteredUser);
+			
+			System.out.println(user.toString());
+			
+			userRepository.save(user);
 			return "views/login";
 		}		
 		return "views/register";
@@ -105,5 +119,27 @@ public class RegisterController {
 			}
 		}
 		return false;
+	}
+	
+	private UserEntity findUserByEmail(String email) {
+		Iterable<UserEntity> allUsers = userRepository.findAll();
+		
+		for(UserEntity user : allUsers) {
+			if(user.getEmail().equals(email)) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
+	private Role getRoleByName(String roleName) {
+		Iterable<Role> allRoles = roleRepository.findAll();
+		
+		for(Role role : allRoles) {
+			if(role.getName().equals(roleName)) {
+				return role;
+			}
+		}
+		return null;
 	}
 }

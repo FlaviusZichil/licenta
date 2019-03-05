@@ -56,7 +56,7 @@ public class RegisterValidator {
 	}
 	
 	public boolean isPasswordValid(String password) {
-		if(password.length() <= 6 || !this.containsCapitalLetter(password)) {
+		if(password.length() < 6 || !this.containsCapitalLetter(password)) {
 			return false;
 		}
 		return true;

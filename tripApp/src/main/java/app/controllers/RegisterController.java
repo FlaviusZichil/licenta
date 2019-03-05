@@ -46,12 +46,12 @@ public class RegisterController {
 		model.addAttribute("allCities", this.getAllCities());
 				
 		if(this.isFormValid(firstName, lastName, email, password, birthDate, city, model)) {
-			List<Role> rolesForRegisteredUser = new ArrayList<Role>();
-			Role role = this.getRoleByName("ROLE_USER");
-			rolesForRegisteredUser.add(role);
+			List<Role> rolesForRegisteredUser = this.addRolesForRegisteredUser();
 			
 			UserEntity user = new UserEntity(validator.formatNameProperly(firstName), 
-					   						 validator.formatNameProperly(lastName), birthDate, city, email, password, rolesForRegisteredUser);
+					   						 validator.formatNameProperly(lastName), birthDate, city, email, password);
+			
+			user.setRoles(rolesForRegisteredUser);
 			
 			System.out.println(user.toString());
 			
@@ -141,5 +141,13 @@ public class RegisterController {
 			}
 		}
 		return null;
+	}
+	
+	private List<Role> addRolesForRegisteredUser(){
+		List<Role> rolesForRegisteredUser = new ArrayList<Role>();
+		Role role = this.getRoleByName("ROLE_USER");
+		rolesForRegisteredUser.add(role);
+		
+		return rolesForRegisteredUser;
 	}
 }

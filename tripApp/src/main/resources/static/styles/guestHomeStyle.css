@@ -1,0 +1,28 @@
+.fla {
+/*     border: 2px solid red; */
+}
+
+.header-image {
+	width: 100%;
+}
+
+.header {
+	margin-top: 1%;
+	background-color: #ECF1ED;
+}
+
+.body{
+	background-color: #ECF1ED;
+}
+
+.header-buttons {
+	margin-top: 2%;
+}
+
+.color {
+	color: white;
+}
+
+.menu-button {
+	margin-left: 10%;
+}

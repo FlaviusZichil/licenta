@@ -47,7 +47,7 @@ public class UserEntity {
 
 	public UserEntity() {}
 	
-	public UserEntity(String firstName, String lastName, String birthDate, String city, String email, String password, List<Role> roles) {
+	public UserEntity(String firstName, String lastName, String birthDate, String city, String email, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -55,7 +55,6 @@ public class UserEntity {
 		this.city = city;
 		this.email = email;
 		this.password = password;
-		this.roles = roles;
 	}
 
 	public List<Role> getRoles() {

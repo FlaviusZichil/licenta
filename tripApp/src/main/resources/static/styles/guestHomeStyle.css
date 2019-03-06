@@ -17,6 +17,7 @@
 
 .header-buttons {
 	margin-top: 2%;
+	margin-left: -3%;
 }
 
 .color {
@@ -25,4 +26,12 @@
 
 .menu-button {
 	margin-left: 10%;
+}
+
+.left-card {
+	margin-bottom: 4%;
+}
+
+.trip-card {
+	margin-bottom: 1.7%;
 }

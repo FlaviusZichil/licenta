@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form action="#" th:action="@{/trip-details}" th:object="${tripDetailsViewModel}" method="get">
+		 <div class="row" id="article">
+		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
+		 		<!-- Article -->
+		 		<div class="card trip-details-card">
+				  <div class="card-header bg-info">
+				    <h5 th:text="*{tripDTO.trip.peak.peakName} + ' - ' + *{tripDTO.trip.peak.altitude} + 'm'"></h5>
+				  </div>
+				  <div class="card-body">
+				  <div class="row" id="article">
+		 			<div class="col-md-5 col-sm-5 col-xs-2 fla">
+		 				<h5 class="card-title" th:text="'Data plecare: ' + *{tripDTO.trip.startDate}"></h5>
+							     <h5 class="card-title" th:text="'Data intoarcere: ' + *{tripDTO.trip.endDate}"></h5>
+							     <h5 class="card-title" th:text="'Locuri disponibile: ' + *{tripDTO.trip.capacity}"></h5>
+							     <h5 class="card-title" th:text="'Dificultate: ' + *{tripDTO.trip.difficulty}"></h5>
+							     <h5 class="card-title" th:text="'Puncte: ' + *{tripDTO.trip.points}"></h5>
+							     <h5 class="card-title" th:text="'Traseu: ' + *{tripDTO.trip.route.startPoint} + ' - ' 
+							     											+ *{tripDTO.trip.route.intermediatePoint} + ' - ' 
+							     											+ *{tripDTO.trip.route.endPoint}"></h5>
+							     <h5 class="card-title" th:text="'Judet: ' + *{tripDTO.trip.peak.city}"></h5>
+							     <h5 class="card-title" th:text="'Munte: ' + *{tripDTO.trip.peak.mountain.mountainName}"></h5>
+							     <a href="#!" class="btn btn-primary">Inscrie-te la ascensiune</a>
+		 			</div>
+		 			<div class="col-md-7 col-sm-7 col-xs-2 fla">
+		 				<div class="mapouter">
+		 					<div class="gmap_canvas">
+				  				<iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=Varful%20Omu&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+				  				</iframe>
+				  				<a href="https://www.embedgooglemap.net">
+				  				</a>
+				  			</div>
+				  			<style>.mapouter{text-align:right;height:600px;width:500px;}.gmap_canvas {overflow:hidden;background:none!important;height:600px;width:500px;}
+				  			</style>
+				  		</div>
+		 			</div>
+				  	</div>
+				</div>
+				<!-- Article -->
+		 	</div>
+		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
+	</div>
+	</form>
+</body>
+</html>

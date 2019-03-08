@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body class="body">
-	<form action="#" th:action="@{/index}" th:object="${tripViewModel}" method="get">
+	<form action="#" th:action="@{/trip-details}" th:object="${tripViewModel}" method="get">
 		<div class="header">
 		 <div class="row" id="content">
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
@@ -31,14 +31,14 @@
 				    <h4 class="card-title"><strong>Tombola</strong></h4>
 				    <h5 class="blue-text pb-2"><strong>Partiacipa la tombola lunara si poti castiga numeroase premii</strong></h5>
 				    <h5 class="blue-text pb-2"><a href="#">Premii</a></h5>
-				    <a href="#!" class="btn btn-primary">Inscrie-te</a>				 			
+				    <input type="submit" name="submit" class="btn btn-primary" value="Participa">				 			
 				  </div>				
 				</div>
 				<!-- Card Tombola -->
 		 	</div>
 		 	<!-- Right Column-->
 		 	<div class="col-md-5 col-sm-5 col-xs-4 fla">
-		 		<!-- Card -->
+		 		<!-- Cards -->
 				<div class="card trip-card" th:each="tripDTO : *{tripsDTO}">
 				  <div class="card-header bg-info">
 				    <h5 class="card-title" th:text="${tripDTO.trip.peak.peakName} + ' - ' + ${tripDTO.trip.peak.altitude} + 'm'"></h5>
@@ -48,10 +48,10 @@
 				    <h5 class="card-title" th:text="'Data intoarcere: ' + ${tripDTO.trip.endDate}"></h5>
 				    <h5 class="card-title" th:text="'Locuri disponibile: ' + ${tripDTO.trip.capacity}"></h5>
 				    <h5 class="card-title" th:text="'Dificultate: ' + ${tripDTO.trip.difficulty}"></h5>
-				    <a href="#!" class="btn btn-primary">Detalii</a>
+				    <a th:href="@{/trip-details?trip=} + ${tripDTO.trip.id}" class="btn btn-primary">Inscrie-te</a>
 				  </div>
 				</div>
-				<!-- Card -->			
+				<!-- Cards -->			
 		 	</div>
 		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
 		 </div>
@@ -65,10 +65,10 @@
 		 <div class="row" id="article">
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
-		 		<div class="card trip-card" th:each="trip : ${trips}">
+		 		<!-- Article -->
+		 		<div class="card trip-card">
 				  <div class="card-header">
 				    Articol
-				    <h1 th:text="*{test}"></h1>
 				  </div>
 				  <div class="card-body">
 				    <h5 class="card-title">Special title treatment</h5>
@@ -76,6 +76,7 @@
 				    <a href="#!" class="btn btn-primary">Citeste articolul</a>
 				  </div>
 				</div>
+				<!-- Article -->
 		 	</div>
 		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
 		 </div>

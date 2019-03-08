@@ -1,11 +1,14 @@
 package app.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -35,6 +38,9 @@ public class Trip {
 	
 	@Column(name = "difficulty")
 	private String difficulty;
+	
+	@ManyToMany(mappedBy = "trips")
+	private List<UserEntity> users;
 	
 	@ManyToOne
     @JoinColumn
@@ -98,6 +104,14 @@ public class Trip {
 
 	public void setDifficulty(String difficulty) {
 		this.difficulty = difficulty;
+	}
+
+	public List<UserEntity> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserEntity> users) {
+		this.users = users;
 	}
 
 	public Route getRoute() {

@@ -1,6 +1,5 @@
 package app.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "user")
@@ -52,8 +54,14 @@ public class UserEntity {
 			)
 	private List<Trip> trips;
 	
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
-	private List<Role> roles = new ArrayList<Role>();
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany()
+	@JoinTable(
+			name="user_roles",
+			joinColumns={@JoinColumn(name="id_user")},
+			inverseJoinColumns={@JoinColumn(name="id_role")}
+			)
+	private List<Role> roles;
 
 	public UserEntity() {}
 	

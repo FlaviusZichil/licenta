@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class GuideController {
 
-	@GetMapping("/guideHome")
+	@GetMapping("/guide")
 	public String getGuideHome() {
-		return "views/guideHome";
+		return "views/guide/guideMainPage";
 	}
 }

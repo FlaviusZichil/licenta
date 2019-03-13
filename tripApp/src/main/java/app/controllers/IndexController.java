@@ -25,7 +25,7 @@ public class IndexController {
 	
 	@GetMapping("/")
 	public String getIndexPage(Model model, TripViewModel tripViewModel, HttpSession session) {
-		// loads the 4 active trips from guest main page
+		// loads the 4 active trips for guest main page
 		tripViewModel.setTripsDTO(this.getTop4TripsDTO());
 		model.addAttribute("tripViewModel", tripViewModel);	
 		
@@ -33,23 +33,12 @@ public class IndexController {
 		
 		// loads article (to do)
 
-		return "views/index.html";
+		return "views/all/index.html";
 	}
 	
 	@PostMapping("/")
 	public String indexPage(Model model,
 							@RequestParam(value = "submit", required = false) String actionType) {
-		
-		switch(actionType) {
-			case "Inscrie-te": {
-				
-				break;
-			}
-			case "Citeste articolul": {
-				
-				break;
-			}
-		}
 		return "";
 	}
 	

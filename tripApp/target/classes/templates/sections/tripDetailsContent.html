@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body class="body">
-	<form action="#" th:action="@{/trip-details}" th:object="${tripDetailsViewModel}" method="get">
+	<form action="#" th:action="@{/trip-details}" th:object="${tripDetailsViewModel}" method="post">
 		 <div class="row" id="article">
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
@@ -23,7 +23,7 @@
 							     											+ *{tripDTO.trip.route.endPoint}"></h5>
 							     <h5 class="card-title" th:text="'Judet: ' + *{tripDTO.trip.peak.city}"></h5>
 							     <h5 class="card-title" th:text="'Munte: ' + *{tripDTO.trip.peak.mountain.mountainName}"></h5>
-							     <a href="#!" class="btn btn-primary">Inscrie-te la ascensiune</a>
+							     <input type="submit" class="btn btn-primary" value="Inscrie-te la ascensiune">
 		 			</div>
 		 			<div class="col-md-7 col-sm-7 col-xs-2 fla">
 		 				<div class="mapouter">
@@ -42,6 +42,7 @@
 				<!-- Article -->
 		 	</div>
 		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
+		 	</div>
 	</div>
 	</form>
 </body>

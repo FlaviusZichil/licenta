@@ -3,7 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Hai sus</title>
-<link rel="stylesheet" th:href="@{/styles/tripDetailsStyle.css}" href="../../static/styles/guestHomeStyle.css" />
+<link rel="stylesheet" th:href="@{/styles/guestHomeStyle.css}" href="../../static/styles/guestHomeStyle.css" />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.7.4/css/mdb.min.css" rel="stylesheet">
@@ -13,11 +13,20 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      
 </head>
 <body>
-	<div class="header">
-		<th:block th:include="layouts/guestHeaderLayout.html"></th:block>
+<!-- 	<div class="header" th:if="${isAdmin}"> -->
+<!-- 		<th:block th:include="layouts/adminHeaderLayout.html"></th:block> -->
+<!-- 	</div> -->
+	<div class="header" th:if="${isGuide}">
+		<th:block th:include="layouts/guideHeaderLayout.html"></th:block>
+	</div>
+<!-- 	<div class="header" th:if="${isStaff}"> -->
+<!-- 		<th:block th:include="layouts/staffHeaderLayout.html"></th:block> -->
+<!-- 	</div> -->
+	<div class="header" th:if="${isUser}">
+		<th:block th:include="layouts/userHeaderLayout.html"></th:block>
 	</div>
 	<div class="content">
-		<th:block th:include="sections/tripDetailsContent.html"></th:block>
+		<th:block th:include="sections/allTripsContent.html"></th:block>
 	</div>
 	<div class="footer">
 		<th:block th:include="layouts/guestFooterLayout.html"></th:block>

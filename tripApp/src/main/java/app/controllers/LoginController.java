@@ -20,7 +20,7 @@ public class LoginController {
 	
 	@GetMapping("/login")
 	public String login() {
-		return "views/login";
+		return "views/all/login";
 	}
 	
 	@RequestMapping(value = { "/loginDispacher" }, method = RequestMethod.GET)
@@ -32,7 +32,7 @@ public class LoginController {
 		}
 		
 		if(loginedUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_GUIDE"))) {
-			return "redirect:/guideHome";
+			return "redirect:/guide";
 		}
 		
 		if(loginedUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_STAFF"))) {
@@ -40,7 +40,7 @@ public class LoginController {
 		}
 		
 		if(loginedUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
-			return "redirect:/userHome";
+			return "redirect:/user";
 		}
 		return "";
 	}

@@ -8,6 +8,6 @@ public class StaffController {
 
 	@GetMapping("/staffHome")
 	public String getStaffHome() {
-		return "views/staffHome";
+		return "views/staff/staffHome";
 	}
 }

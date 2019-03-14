@@ -1,6 +1,5 @@
 package app.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,8 +8,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "user")
@@ -42,8 +46,22 @@ public class UserEntity {
 	@Column(name = "password")
 	private String password;
 	
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
-	private List<Role> roles = new ArrayList<Role>();
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name="user_trips",
+			joinColumns={@JoinColumn(name="id_user")},
+			inverseJoinColumns={@JoinColumn(name="id_trip")}
+			)
+	private List<Trip> trips;
+	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany()
+	@JoinTable(
+			name="user_roles",
+			joinColumns={@JoinColumn(name="id_user")},
+			inverseJoinColumns={@JoinColumn(name="id_role")}
+			)
+	private List<Role> roles;
 
 	public UserEntity() {}
 	
@@ -55,14 +73,6 @@ public class UserEntity {
 		this.city = city;
 		this.email = email;
 		this.password = password;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
 	}
 
 	public Integer getId() {
@@ -129,10 +139,25 @@ public class UserEntity {
 		this.password = password;
 	}
 
+	public List<Trip> getTrips() {
+		return trips;
+	}
+
+	public void setTrips(List<Trip> trips) {
+		this.trips = trips;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public String toString() {
 		return "UserEntity [firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", city="
-				+ city + ", email=" + email + ", experience=" + experience + ", password=" + password + ", roles="
-				+ roles + "]";
-	}
+				+ city + ", email=" + email + ", experience=" + experience + ", password=" + password + "]";
+	}	
 }

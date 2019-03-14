@@ -30,7 +30,7 @@ public class RegisterController {
 	@GetMapping("/register")
 	public String register(Model model) {
 		model.addAttribute("allCities", this.getAllCities());
-		return "views/register";
+		return "views/all/register";
 	}
 	
 	@PostMapping("/register")
@@ -53,12 +53,10 @@ public class RegisterController {
 			
 			user.setRoles(rolesForRegisteredUser);
 			
-			System.out.println(user.toString());
-			
 			userRepository.save(user);
-			return "views/login";
+			return "views/all/login";
 		}		
-		return "views/register";
+		return "views/all/register";
 	}
 	
 	private List<String> getAllCities() {
@@ -119,17 +117,6 @@ public class RegisterController {
 			}
 		}
 		return false;
-	}
-	
-	private UserEntity findUserByEmail(String email) {
-		Iterable<UserEntity> allUsers = userRepository.findAll();
-		
-		for(UserEntity user : allUsers) {
-			if(user.getEmail().equals(email)) {
-				return user;
-			}
-		}
-		return null;
 	}
 	
 	private Role getRoleByName(String roleName) {

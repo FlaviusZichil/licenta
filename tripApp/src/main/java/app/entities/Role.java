@@ -1,17 +1,12 @@
 package app.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -25,16 +20,15 @@ public class Role {
 	
 	@Column(name = "name")
 	private String name;
+		
+	@ManyToMany(mappedBy = "roles")
+	private List<UserEntity> users;
 	
 	public Role(String name) {
 		super();
 		this.name = name;
 	}
-
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "id_role") }, inverseJoinColumns = { @JoinColumn(name = "id_user") })
-	private List<UserEntity> users = new ArrayList<UserEntity>();
-
+	
 	public Role() {
 		super();
 	}

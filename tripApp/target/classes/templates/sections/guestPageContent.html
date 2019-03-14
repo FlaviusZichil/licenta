@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form action="#" th:action="@{/index}" th:object="${tripViewModel}" method="get">
+		<div class="header">
+		 <div class="row" id="content">
+		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		 	<!-- Left Column-->
+		 	<div class="col-md-3 col-sm-3 col-xs-2 fla">
+		 		<!-- Card Calatorii populare -->
+				<div class="card card-cascade wider left-card">			
+				  <div class="view view-cascade overlay">
+				    <img class="card-img-top" src="../../resources/static/images/popular-trip-image.jpg" th:src="@{images/popular-trip-image.jpg}"/>				  
+				  </div>				
+				  <div class="card-body card-body-cascade text-center">				
+				    <h4 class="card-title"><strong>Calatorii populare</strong></h4>
+				    <h5 class="blue-text pb-2"><strong>Varful Omu - 2505m</strong></h5>
+				    <h5 class="blue-text pb-2"><strong>Varful Modloveanu - 2544m</strong></h5>
+				    <h5 class="blue-text pb-2"><strong>Varful La Om - 2239m</strong></h5>
+				    <h5 class="blue-text pb-2"><strong>Varful Ciucas - 2303m</strong></h5>					 			 			
+				  </div>				
+				</div>
+				<!-- Card Calatorii populare -->
+				
+				<!-- Card Tombola -->
+				<div class="card card-cascade wider left-card">			
+				  <div class="view view-cascade overlay"> 				 
+				    <img class="card-img-top" src="../../resources/static/images/prize.png" th:src="@{images/prize.png}"/>				  
+				  </div>				
+				  <div class="card-body card-body-cascade text-center">				
+				    <h4 class="card-title"><strong>Tombola</strong></h4>
+				    <h5 class="blue-text pb-2"><strong>Partiacipa la tombola lunara si poti castiga numeroase premii</strong></h5>
+				    <h5 class="blue-text pb-2"><a href="#">Premii</a></h5>
+				    <input type="submit" name="submit" class="btn btn-primary" value="Participa">				 			
+				  </div>				
+				</div>
+				<!-- Card Tombola -->
+		 	</div>
+		 	<!-- Right Column-->
+		 	<div class="col-md-5 col-sm-5 col-xs-4 fla">
+		 		<!-- Cards -->
+				<div class="card trip-card" th:each="tripDTO : *{tripsDTO}">
+				  <div class="card-header bg-info">
+				    <h5 class="card-title" th:text="${tripDTO.trip.peak.peakName} + ' - ' + ${tripDTO.trip.peak.altitude} + 'm'"></h5>
+				  </div>
+				  <div class="card-body">
+				    <h5 class="card-title" th:text="'Data plecare: ' + ${tripDTO.trip.startDate}"></h5>
+				    <h5 class="card-title" th:text="'Data intoarcere: ' + ${tripDTO.trip.endDate}"></h5>
+				    <h5 class="card-title" th:text="'Locuri disponibile: ' + ${tripDTO.trip.capacity}"></h5>
+				    <h5 class="card-title" th:text="'Dificultate: ' + ${tripDTO.trip.difficulty}"></h5>
+				    <a th:href="@{/trip-details?trip=} + ${tripDTO.trip.id}" class="btn btn-primary">Detalii</a>
+				  </div>
+				</div>
+				<!-- Cards -->			
+		 	</div>
+		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
+		 </div>
+		  <div class="row" id="horizonta line">
+		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
+		 		<hr>
+		 	</div>
+		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
+		 </div>
+		 <div class="row" id="article">
+		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
+		 		<!-- Article -->
+		 		<div class="card trip-card">
+				  <div class="card-header">
+				    Articol
+				  </div>
+				  <div class="card-body">
+				    <h5 class="card-title">Special title treatment</h5>
+				    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+				    <a href="#!" class="btn btn-primary">Citeste articolul</a>
+				  </div>
+				</div>
+				<!-- Article -->
+		 	</div>
+		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
+		 </div>
+		 <div class="row" id="horizonta line">
+		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
+		 		<hr>
+		 	</div>
+		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
+		 </div>
+	</div>
+	</form>
+</body>
+</html>

@@ -4,9 +4,9 @@
   <artifactId>tripApp</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
-<!--   <properties> -->
-<!--     <start-class>licenta.tripApp.src.main.java.app.App</start-class> -->
-<!--   </properties> -->
+  <properties>
+    <start-class>licenta.tripApp.src.main.java.app.App</start-class>
+  </properties>
   
   <dependencies>
     <dependency>

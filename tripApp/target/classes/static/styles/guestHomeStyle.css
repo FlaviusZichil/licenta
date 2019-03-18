@@ -17,7 +17,7 @@
 
 .header-buttons {
 	margin-top: 2%;
-	margin-left: -3%;
+	float: right;
 }
 
 .color {

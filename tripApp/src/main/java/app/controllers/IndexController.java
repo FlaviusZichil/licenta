@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import app.dto.PeakDTO;
+import app.dto.RouteDTO;
 import app.dto.TripDTO;
+import app.entities.Peak;
 import app.entities.Trip;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
@@ -42,17 +45,6 @@ public class IndexController {
 		return "";
 	}
 	
-	private List<TripDTO> getAllTripsDTO(){
-		Iterable<Trip> allTrips = tripRepository.findAll();
-		List<TripDTO> allTripsDTO = new ArrayList<TripDTO>();
-		
-		for(Trip trip : allTrips) {
-			if(trip.getStatus().equals("Active")) {
-				allTripsDTO.add(new TripDTO(trip));
-			}			
-		}
-		return allTripsDTO;
-	}
 	// gets 4 trips to display on guest main page
 	private List<TripDTO> getTop4TripsDTO(){
 		Iterable<Trip> allTrips = tripRepository.findAll();
@@ -60,14 +52,28 @@ public class IndexController {
 		List<TripDTO> top4TripsDTO = new ArrayList<TripDTO>();
 		
 		for(Trip trip : trips) {
-			if(trip.getStatus().equals("Active")) {
-				top4TripsDTO.add(new TripDTO(trip));
+			if(trip.getStatus().equals("Active")) {			
+				PeakDTO peakDTO = convertPeakToPeakDTO(trip.getPeak());
+				top4TripsDTO.add(this.convertTripToTripDTO(trip, peakDTO));
 			}
 			if(top4TripsDTO.size() == 4) {
 				break;
 			}
 		}
 		return top4TripsDTO;
+	}
+	
+	private PeakDTO convertPeakToPeakDTO(Peak peak) {
+		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), peak.getCity(), peak.getTrips(), peak.getMountain());
+		return peakDTO;
+	}
+	
+	// mai trebuie adaugat ca param si routeDTO
+	private TripDTO convertTripToTripDTO(Trip trip, PeakDTO peakDTO) {
+		TripDTO tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
+				trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO);
+		
+		return tripDTO;
 	}
 	
 	private List<Trip> convertFromIterableToList(Iterable<Trip> allTrips){

@@ -2,6 +2,7 @@ package app.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,10 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "user")
@@ -54,16 +54,13 @@ public class UserEntity {
 			)
 	private List<Trip> trips;
 	
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@ManyToMany()
-	@JoinTable(
-			name="user_roles",
-			joinColumns={@JoinColumn(name="id_user")},
-			inverseJoinColumns={@JoinColumn(name="id_role")}
-			)
-	private List<Role> roles;
-
-	public UserEntity() {}
+	@ManyToOne
+    @JoinColumn
+    private Role role;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "promo_code_id", referencedColumnName = "promo_code_id")
+    private PromoCode promoCode;
 	
 	public UserEntity(String firstName, String lastName, String birthDate, String city, String email, String password) {
 		super();
@@ -74,6 +71,8 @@ public class UserEntity {
 		this.email = email;
 		this.password = password;
 	}
+
+	public UserEntity() {}
 
 	public Integer getId() {
 		return id;
@@ -147,17 +146,25 @@ public class UserEntity {
 		this.trips = trips;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public PromoCode getPromoCode() {
+		return promoCode;
+	}
+
+	public void setPromoCode(PromoCode promoCode) {
+		this.promoCode = promoCode;
 	}
 
 	@Override
 	public String toString() {
 		return "UserEntity [firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", city="
 				+ city + ", email=" + email + ", experience=" + experience + ", password=" + password + "]";
-	}	
+	}
 }

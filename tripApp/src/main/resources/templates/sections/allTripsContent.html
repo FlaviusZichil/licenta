@@ -2,7 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body class="body">
 	<form action="#" th:action="@{/index}" th:object="${tripViewModel}" method="post">
-		aici vor fi toate ascensiunile
+		<div class="row" id="content">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<div class="card trip-card" th:each="tripDTO : *{tripsDTO}">
+				  <div class="card-header bg-info">
+				    <h5 class="card-title" th:text="${tripDTO.peak.peakName} + ' - ' + ${tripDTO.peak.altitude} + 'm'"></h5>
+				  </div>
+				  <div class="card-body">
+				    <h5 class="card-title" th:text="'Data plecare: ' + ${tripDTO.startDate}"></h5>
+				    <h5 class="card-title" th:text="'Data intoarcere: ' + ${tripDTO.endDate}"></h5>
+				    <h5 class="card-title" th:text="'Locuri disponibile: ' + ${tripDTO.capacity}"></h5>
+				    <h5 class="card-title" th:text="'Dificultate: ' + ${tripDTO.difficulty}"></h5>
+				    <a th:href="@{/trip-details?trip=} + ${tripDTO.id}" class="btn btn-primary">Detalii</a>
+				  </div>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
 	</form>
 </body>
 </html>

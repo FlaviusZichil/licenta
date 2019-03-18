@@ -6,14 +6,13 @@
 	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      <link th:href="@{/styles/registerPage.css}" href="../../static/styles/registerPage.css" type="text/css" rel="stylesheet">
       <title>Autentificare</title>
 </head>
-<body th:style="'background-image:url(' + @{images/bg.jpg} + ');'">
+<body th:style="'background-image:url(' + @{images/auth-bg.jpg} + ');background-repeat: no-repeat;'">
 	<div class="container-fluid">
 	    <div class="row">
-	        <div class="col-md-4 col-sm-4 col-xs-12"></div>
-	        <div class="col-md-8 col-sm-8 col-xs-12">
-	            <form class="form-container" th:action="@{/j_spring_security_check}"  method="post">
-	                <h1 class="header"> Autentificare </h1>
-	                <div class="form-group">                 
+	        <div class="col-md-6 col-sm-6 col-xs-12">
+	            <form class="form-container" th:action="@{/j_spring_security_check}"  method="post">                
+	                <div class="form-group">  
+	                	<h3 class="header"> Autentificare </h3>               
 						<input class="form-control" type="email"  name="email" placeholder="Email" required/>
 						<div th:if="${isEmailInDatabase == false}">
 							<p style="color: red"> Nu exista cont cu emailul introdus! </p>
@@ -29,6 +28,7 @@
 	                <a class="btn btn-primary btn-block" th:href="@{/register}" role="button">Creaza cont</a>
 	            </form>
 	        </div>
+	        <div class="col-md-6 col-sm-6 col-xs-12"></div>
 	    </div>
 	</div>
 </body>

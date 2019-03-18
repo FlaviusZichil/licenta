@@ -32,16 +32,15 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		}
 
 		System.out.println("Found User: " + user);
-		List<Role> roleNames = this.getUserRoles(user);
-		System.out.println("User Roles: " + roleNames);
+		Role role = this.getUserRole(user);
+		System.out.println("User Role: " + role);
 
 		List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
 		
-		if (roleNames != null) {
-			for (Role role : roleNames) {
-				GrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
-				grantList.add(authority);
-			}
+		if (role != null) {
+			GrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
+			grantList.add(authority);
+			
 		}
 		
 		System.out.println("GrantList: " + grantList);
@@ -64,9 +63,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		return null;
 	}
 
-	private List<Role> getUserRoles(UserEntity user) {
+	private Role getUserRole(UserEntity user) {
 		if (user != null) {
-			return user.getRoles();
+			return user.getRole();
 		}
 		return null;
 	}

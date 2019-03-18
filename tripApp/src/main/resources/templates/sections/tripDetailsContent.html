@@ -8,21 +8,21 @@
 		 		<!-- Article -->
 		 		<div class="card trip-details-card">
 				  <div class="card-header bg-info">
-				    <h5 th:text="*{tripDTO.trip.peak.peakName} + ' - ' + *{tripDTO.trip.peak.altitude} + 'm'"></h5>
+				    <h5 th:text="*{tripDTO.peak.peakName} + ' - ' + *{tripDTO.peak.altitude} + 'm'"></h5>
 				  </div>
 				  <div class="card-body">
 				  <div class="row" id="article">
 		 			<div class="col-md-5 col-sm-5 col-xs-2 fla">
-		 				<h5 class="card-title" th:text="'Data plecare: ' + *{tripDTO.trip.startDate}"></h5>
-							     <h5 class="card-title" th:text="'Data intoarcere: ' + *{tripDTO.trip.endDate}"></h5>
-							     <h5 class="card-title" th:text="'Locuri disponibile: ' + *{tripDTO.trip.capacity}"></h5>
-							     <h5 class="card-title" th:text="'Dificultate: ' + *{tripDTO.trip.difficulty}"></h5>
-							     <h5 class="card-title" th:text="'Puncte: ' + *{tripDTO.trip.points}"></h5>
-							     <h5 class="card-title" th:text="'Traseu: ' + *{tripDTO.trip.route.startPoint} + ' - ' 
-							     											+ *{tripDTO.trip.route.intermediatePoint} + ' - ' 
-							     											+ *{tripDTO.trip.route.endPoint}"></h5>
-							     <h5 class="card-title" th:text="'Judet: ' + *{tripDTO.trip.peak.city}"></h5>
-							     <h5 class="card-title" th:text="'Munte: ' + *{tripDTO.trip.peak.mountain.mountainName}"></h5>
+		 				<h5 class="card-title" th:text="'Data plecare: ' + *{tripDTO.startDate}"></h5>
+							     <h5 class="card-title" th:text="'Data intoarcere: ' + *{tripDTO.endDate}"></h5>
+							     <h5 class="card-title" th:text="'Locuri disponibile: ' + *{tripDTO.capacity}"></h5>
+							     <h5 class="card-title" th:text="'Dificultate: ' + *{tripDTO.difficulty}"></h5>
+							     <h5 class="card-title" th:text="'Puncte: ' + *{tripDTO.points}"></h5>
+							     <h5 class="card-title" th:text="'Traseu: ' + *{tripDTO.route.startPoint} + ' - ' 
+							     											+ *{tripDTO.route.intermediatePoint} + ' - ' 
+							     											+ *{tripDTO.route.endPoint}"></h5>
+							     <h5 class="card-title" th:text="'Judet: ' + *{tripDTO.peak.city}"></h5>
+							     <h5 class="card-title" th:text="'Munte: ' + *{tripDTO.peak.mountain.mountainName}"></h5>
 							     <input type="submit" class="btn btn-primary" value="Inscrie-te la ascensiune">
 		 			</div>
 		 			<div class="col-md-7 col-sm-7 col-xs-2 fla">

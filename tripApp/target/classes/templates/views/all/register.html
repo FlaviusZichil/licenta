@@ -6,14 +6,13 @@
 	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      <link th:href="@{/styles/registerPage.css}" href="../../static/styles/registerPage.css" type="text/css" rel="stylesheet">
       <title>Inregistrare</title>
 </head>
-<body th:style="'background-image:url(' + @{images/bg.jpg} + ');'">
+<body th:style="'background-image:url(' + @{images/auth-bg.jpg} + ');'">
 	<div class="container-fluid">
 	    <div class="row">
-	        <div class="col-md-4 col-sm-4 col-xs-12"></div>
-	        <div class="col-md-8 col-sm-8 col-xs-12">
+	        <div class="col-md-6 col-sm-6 col-xs-12">
 	            <form class="form-container" th:action="@{/register}"  method="post">
-	                <h1 class="header"> Inregistrare </h1>
-	                <div class="form-group">                 
+	                <div class="form-group">
+	                	<h3 class="header"> Inregistrare </h3>                 
 						<input class="form-control" type="text"  name="firstName" placeholder="Nume" required/>
 						<div th:if="${isFirstNameValid == false}">
 							<p style="color: red"> Nume invalid! </p>
@@ -43,6 +42,12 @@
 							<p style="color: red"> Minim 6 caractere si litera mare! </p>
 						</div>
 	                </div>
+	                <div class="form-group">               
+					    <input class="form-control" type="text" name="promocode" placeholder="Cod (optional)" data-toggle="tooltip" title="Codul se poate optine de la un alt utilizator"/>
+<!-- 					    <div th:if="${isPasswordValid == false}"> -->
+<!-- 							<p style="color: red"> Minim 6 caractere si litera mare! </p> -->
+<!-- 						</div> -->
+	                </div>
 	                <div class="form-group">                   
 					    <select class="btn btn-secondary btn-block"  name="city">
 							<option class="btn btn-light" th:each="city : ${allCities}" th:text="${city}" th:value="${city}"/>
@@ -50,10 +55,11 @@
 	                </div>	                
 	                <input class="btn btn-success btn-block" type="submit" name="registerSubmit" value="Inregistrare">
 	                <a class="btn btn-primary btn-block" th:href="@{/login}" role="button">Autentificare</a>
-	                <a style="color: black" th:href="@{pdf/conditii-inregistrare.pdf}" target="_blank">Probleme la inregistrare?</a>
+	                <a class="btn btn-default btn-block" style="color: white;" th:href="@{pdf/conditii-inregistrare.pdf}" target="_blank">Probleme la inregistrare?</a>
 	            </form>
 	        </div>
 	    </div>
+	 	<div class="col-md-6 col-sm-6 col-xs-12"></div>
 	</div>
 </body>
 </html>

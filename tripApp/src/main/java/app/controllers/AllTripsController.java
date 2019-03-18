@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.context.annotation.SessionScope;
+
+import app.dto.PeakDTO;
 import app.dto.TripDTO;
 import app.entities.Trip;
 import app.models.TripViewModel;
@@ -59,7 +61,10 @@ public class AllTripsController {
 		
 		for(Trip trip : allTrips) {
 			if(trip.getStatus().equals("Active")) {
-				allTripsDTO.add(new TripDTO(trip));
+				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(), trip.getPeak().getAltitude(), trip.getPeak().getCity(), 
+						  trip.getPeak().getTrips(), trip.getPeak().getMountain());
+				allTripsDTO.add(new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
+						trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO));
 			}			
 		}
 		return allTripsDTO;

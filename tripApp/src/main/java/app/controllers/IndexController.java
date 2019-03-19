@@ -64,14 +64,15 @@ public class IndexController {
 	}
 	
 	private PeakDTO convertPeakToPeakDTO(Peak peak) {
-		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), peak.getCity(), peak.getTrips(), peak.getMountain());
+		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), peak.getCity(), 
+									  peak.getTrips(), peak.getMountain());
 		return peakDTO;
 	}
 	
 	// mai trebuie adaugat ca param si routeDTO
 	private TripDTO convertTripToTripDTO(Trip trip, PeakDTO peakDTO) {
 		TripDTO tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
-				trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO);
+									  trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO);
 		
 		return tripDTO;
 	}

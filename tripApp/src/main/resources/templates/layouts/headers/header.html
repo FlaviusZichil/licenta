@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+</head>
+<body>
+	<div th:if="${#request.isUserInRole('ROLE_USER')}">
+    	<th:block th:include="layouts/headers/userHeaderLayout.html"></th:block>        	
+	</div>
+	<div th:if="${#request.isUserInRole('ROLE_STAFF')}">
+    	<th:block th:include="layouts/headers/staffHeaderLayout.html"></th:block>        	
+	</div>
+	<div th:if="${#request.isUserInRole('ROLE_GUIDE')}">
+   		<th:block th:include="layouts/headers/guideHeaderLayout.html"></th:block>        	
+	</div>
+	<div th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+   		<th:block th:include="layouts/headers/adminHeaderLayout.html"></th:block>        	
+	</div>
+	<div th:if="${!#request.isUserInRole('ROLE_USER')  && 
+    		  !#request.isUserInRole('ROLE_STAFF') &&
+    	      !#request.isUserInRole('ROLE_GUIDE') && 
+    		  !#request.isUserInRole('ROLE_ADMIN')}">
+    <th:block th:include="layouts/headers/guestHeaderLayout.html"></th:block>        	
+	</div>
+</body>
+</html>

@@ -62,6 +62,9 @@ public class UserEntity {
     @JoinColumn(name = "promo_code_id", referencedColumnName = "promo_code_id")
     private PromoCode promoCode;
 	
+    @OneToOne(mappedBy = "user")
+    private Guide guide;
+	
 	public UserEntity(String firstName, String lastName, String birthDate, String city, String email, String password) {
 		super();
 		this.firstName = firstName;

@@ -13,17 +13,11 @@
 		 	</div>
 		 	<div class="col-md-4 col-sm-4 col-xs-4 fla"></div>
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla header-buttons">
-		 		 <div class="btn-group" role="group" th:if="${#request.userPrincipal == null}">
-                    <a class="btn btn-info" th:href="@{/login}">Autentificare</a>
-                    <a class="btn btn-info" th:href="@{/register}">Inregistrare</a> 
+		 		 <div class="btn-group" role="group" aria-label="First group">
+                    <a class="btn btn-info" th:href="@{/logout}">Deconectare</a>
                  </div>
-                 <div class="btn-group" role="group" th:if="${#request.userPrincipal != null}">
-                    <div class="btn-group" role="group" aria-label="First group">
-                    	<a class="btn btn-info" th:href="@{/}">Logout</a>
-                 	</div>
-                  	<div class="btn-group" role="group" aria-label="Second group">
-                   		<a class="btn btn-warning" th:href="@{/my-points}">50p</a>
-                 	</div>
+                  <div class="btn-group" role="group" aria-label="Second group">
+                    <a class="btn btn-warning" th:href="@{/my-points}">50p</a>
                  </div>
 		 	</div>
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
@@ -38,34 +32,48 @@
 		  <div class="row">
 		  	<div class="col-md-2 col-sm-2 col-xs-12 fla"></div>
 		  	<div class="col-md-8 col-sm-8 col-xs-12 fla">
-					<ul class="nav md-tabs nav-justified bg-info lighten-2 mx-0 mb-0 mt-1">
+				  <ul class="nav md-tabs nav-justified bg-info lighten-2 mx-0 mb-0 mt-1">
 					  <li class="nav-item">
 					    <a class="nav-link dropdown-toggle color" href="#" id="navbardrop" data-toggle="dropdown">
 					        Ascensiuni
 					      </a>
 					      <div class="dropdown-menu">
 					        <a class="dropdown-item" th:href="@{/all-trips}">Toate ascensiunile</a>
-					        <a class="dropdown-item" href="#">Cele mai populare</a>
+					        <a class="dropdown-item" href="#">Cele mai apropiate</a>
+					        <a class="dropdown-item" href="#">Ascensiunile mele</a>
 					      </div>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link color" href="#!"> Ghizi </a>
+					    <a class="nav-link dropdown-toggle color" href="#" id="navbardrop" data-toggle="dropdown">
+					        Realizari
+					      </a>
+					      <div class="dropdown-menu">
+					        <a class="dropdown-item" href="#"> Medaliile mele</a>
+					      </div>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link color" href="#!">Articole</a>
+					    <a class="nav-link dropdown-toggle color" href="#" id="navbardrop" data-toggle="dropdown">
+					        Articole
+					      </a>
+					      <div class="dropdown-menu">					 
+					        <a class="dropdown-item" href="#">Scrie articol</a>
+					      </div>
 					  </li>
 					  <li class="nav-item">
 					    <a class="nav-link color" href="#!">Tombola</a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link color" href="#!">Comunitate</a>
+					    <a class="nav-link color" href="#!">Ghizi</a>
 					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link color" href="#!">Despre</a>
-					  </li>
-					  <li class="nav-item">
-					    <a class="nav-link color" href="#!">Contact</a>
-					  </li>
+						<li class="nav-item dropdown">
+					      <a class="nav-link dropdown-toggle color" href="#" id="navbardrop" data-toggle="dropdown">
+					        Contul meu
+					      </a>
+					      <div class="dropdown-menu">
+					        <a class="dropdown-item" href="#">Date personale</a>
+					        <a class="dropdown-item" href="#">Punctele mele</a>
+					      </div>
+					 </li>
 					</ul>
 		  	</div>
 		  	<div class="col-md-2 col-sm-2 col-xs-12 fla"></div>

@@ -34,26 +34,26 @@ public class AllTripsController {
 		tripViewModel.setTripsDTO(this.getAllTripsDTO());
 		model.addAttribute("tripViewModel", tripViewModel);	
 		
-		User loginedUser = (User) ((Authentication) principal).getPrincipal();
-		this.verifyUserRole(loginedUser, model);
+//		User loginedUser = (User) ((Authentication) principal).getPrincipal();
+//		this.verifyUserRole(loginedUser, model);
 		
 		return "views/all/allTrips";
 	}
 	
-	private void verifyUserRole(User user, Model model) {
-		if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-			model.addAttribute("isAdmin", true);
-		}		
-		if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_GUIDE"))) {
-			model.addAttribute("isGuide", true);
-		}		
-		if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_STAFF"))) {
-			model.addAttribute("isStaff", true);
-		}		
-		if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
-			model.addAttribute("isUser", true);
-		}
-	}
+//	private void verifyUserRole(User user, Model model) {
+//		if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+//			model.addAttribute("isAdmin", true);
+//		}		
+//		if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_GUIDE"))) {
+//			model.addAttribute("isGuide", true);
+//		}		
+//		if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_STAFF"))) {
+//			model.addAttribute("isStaff", true);
+//		}		
+//		if(user.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
+//			model.addAttribute("isUser", true);
+//		}
+//	}
 	
 	private List<TripDTO> getAllTripsDTO(){
 		Iterable<Trip> allTrips = tripRepository.findAll();

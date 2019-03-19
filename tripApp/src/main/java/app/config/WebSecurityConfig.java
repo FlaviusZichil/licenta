@@ -50,11 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().and().formLogin()
 				.loginProcessingUrl("/j_spring_security_check")
 				.loginPage("/login")
-				.defaultSuccessUrl("/loginDispacher")
+				.defaultSuccessUrl("/")
 				.failureUrl("/login")
 				.usernameParameter("email")
-				.passwordParameter("password");
-//				.and().logout().logoutUrl("/").logoutSuccessUrl("/");
+				.passwordParameter("password")
+				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/");
 	}
 }
 

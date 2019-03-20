@@ -1,6 +1,5 @@
 package app.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,7 +42,7 @@ public class Trip {
 	@Column(name = "difficulty")
 	private String difficulty;
 	
-	@ManyToMany(mappedBy = "trips")
+	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
 	private List<UserEntity> users;
 	
 	@ManyToOne

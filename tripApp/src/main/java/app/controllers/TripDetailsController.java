@@ -3,6 +3,7 @@ package app.controllers;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -49,9 +50,12 @@ public class TripDetailsController {
 	@PostMapping("/trip-details")
 	public String postTripDetails(HttpSession session, Principal principal) {
 		Integer tripId = Integer.parseInt((String) session.getAttribute("tripId"));
-		this.addTripForUser(principal, tripId);
-		return "redirect:/user";
+		UserEntity user = this.getUserByEmail(principal.getName());
+		this.addTripForUser(user, tripId);
+		
+		return "redirect:/my-trips";
 	}
+	
 	
 	private TripDTO getTripDTOById(Integer tripId) {
 		TripDTO tripDTO = null;
@@ -79,12 +83,9 @@ public class TripDetailsController {
 		return trips;
 	}
 	
-	private void addTripForUser(Principal principal, Integer tripId) {
-		User loginedUser = (User) ((Authentication) principal).getPrincipal();
-		UserEntity user = this.getUserByEmail(loginedUser.getUsername());
-		
-		List<Trip> trips = new ArrayList<Trip>();
-		trips.add(this.getTripById(tripId));		
+	private void addTripForUser(UserEntity user, Integer tripId) {		
+		List<Trip> trips = user.getTrips();
+		trips.add(this.getTripById(tripId));	
 		user.setTrips(trips);
 		
 		userRepository.save(user);	

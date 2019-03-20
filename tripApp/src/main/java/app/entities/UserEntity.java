@@ -47,11 +47,9 @@ public class UserEntity {
 	private String password;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-			name="user_trips",
-			joinColumns={@JoinColumn(name="id_user")},
-			inverseJoinColumns={@JoinColumn(name="id_trip")}
-			)
+	@JoinTable(name = "user_trip",
+	     	   joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+	           inverseJoinColumns = @JoinColumn(name = "trip_id", referencedColumnName = "trip_id"))
 	private List<Trip> trips;
 	
 	@ManyToOne

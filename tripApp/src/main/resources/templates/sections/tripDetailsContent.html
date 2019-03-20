@@ -5,8 +5,12 @@
 		 <div class="row" id="article">
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
-		 		<!-- c -->
-		 		<div class="card trip-details-card">
+		 		<div class="text-center invalid-date-message" th:if="${isUserAllowedToRegisterForTrip} == false">
+		 			<h3> Aveti deja o ascensiune aleasa in aceasta perioada! </h3>
+		 			<a th:href="@{/my-trips}" class="btn btn-primary"> Ascensiunile mele </a>
+		 		</div>
+		 		<!-- Extended card -->
+		 		<div th:if="${isUserAllowedToRegisterForTrip} != false" class="card trip-details-card text-center">
 				  <div class="card-header bg-info">
 				    <h5 th:text="*{tripDTO.peak.peakName} + ' - ' + *{tripDTO.peak.altitude} + 'm'"></h5>
 				  </div>

@@ -1,15 +1,15 @@
 package app.controllers;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,92 +30,115 @@ public class TripDetailsController {
 
 	@Autowired
 	private TripRepository tripRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@SessionScope
 	@GetMapping("/trip-details")
-	public String getTripDetails(Model model, Principal principal, TripDetailsViewModel tripDetailsViewModel, HttpSession session, 
-								@RequestParam(value = "trip", required = false) String tripId) {
-		
+	public String getTripDetails(Model model, Principal principal, TripDetailsViewModel tripDetailsViewModel,
+			HttpSession session, @RequestParam(value = "trip", required = false) String tripId) {
+
 		tripDetailsViewModel.setTripDTO(this.getTripDTOById(Integer.parseInt(tripId)));
 		model.addAttribute("tripDetailsViewModel", tripDetailsViewModel);
-		
+
 		UserEntity user = this.getUserByEmail(principal.getName());
-		if(isUserRegisteredForTrip(user, Integer.parseInt(tripId))) {
+		if (isUserRegisteredForTrip(user, Integer.parseInt(tripId))) {
 			model.addAttribute("isAlreadyRegisteredForTrip", true);
-		}
-		else {
+		} else {
 			model.addAttribute("isAlreadyRegisteredForTrip", false);
 		}
-		
+
 		session.setAttribute("tripId", tripId);
-	
+
 		return "views/all/tripDetails";
 	}
-	
+
 	@PostMapping("/trip-details")
-	public String postTripDetails(HttpSession session, Principal principal) {
+	public String postTripDetails(HttpSession session, Principal principal, Model model) throws ParseException {
 		Integer tripId = Integer.parseInt((String) session.getAttribute("tripId"));
 		UserEntity user = this.getUserByEmail(principal.getName());
-		this.addTripForUser(user, tripId);
 		
-		return "redirect:/my-trips";
+		if (this.isTripAvailableForUser(user, tripId)) {
+			this.addTripForUser(user, tripId);
+			return "redirect:/my-trips";
+		}
+		else {
+			model.addAttribute("isUserAllowedToRegisterForTrip", false);
+			return "views/all/tripDetails";
+		}	
 	}
-	
-	
+
 	private TripDTO getTripDTOById(Integer tripId) {
 		TripDTO tripDTO = null;
-		
+
 		Iterable<Trip> allTrips = tripRepository.findAll();
 		List<Trip> trips = this.convertFromIterableToList(allTrips);
-		
-		for(Trip trip : trips) {
-			if(trip.getId() == tripId) {
-				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(), trip.getPeak().getAltitude(), trip.getPeak().getCity(), 
-						  trip.getPeak().getTrips(), trip.getPeak().getMountain());
-				tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
-						trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO);
+
+		for (Trip trip : trips) {
+			if (trip.getId() == tripId) {
+				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(),
+						trip.getPeak().getAltitude(), trip.getPeak().getCity(), trip.getPeak().getTrips(),
+						trip.getPeak().getMountain());
+				tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(),
+						trip.getStatus(), trip.getPoints(), trip.getDifficulty(), trip.getUsers(), trip.getRoute(),
+						peakDTO);
 			}
 		}
 		return tripDTO;
 	}
-	
-	private List<Trip> convertFromIterableToList(Iterable<Trip> allTrips){
+
+	private List<Trip> convertFromIterableToList(Iterable<Trip> allTrips) {
 		List<Trip> trips = new ArrayList<Trip>();
-		
-		for(Trip trip : allTrips) {
+
+		for (Trip trip : allTrips) {
 			trips.add(trip);
 		}
 		return trips;
 	}
-	
-	private void addTripForUser(UserEntity user, Integer tripId) {		
+
+	private void addTripForUser(UserEntity user, Integer tripId){
 		List<Trip> trips = user.getTrips();
-		trips.add(tripRepository.findById(tripId).get());	
+		trips.add(tripRepository.findById(tripId).get());
 		user.setTrips(trips);
-		
-		userRepository.save(user);	
+
+		userRepository.save(user);
 	}
-	
+
 	private UserEntity getUserByEmail(String email) {
 		Iterable<UserEntity> users = userRepository.findAll();
-		
-		for(UserEntity user : users) {
-			if(user.getEmail().equals(email)) {
+
+		for (UserEntity user : users) {
+			if (user.getEmail().equals(email)) {
 				return user;
 			}
 		}
 		return null;
 	}
-	
-	private boolean isUserRegisteredForTrip(UserEntity user, Integer tripId) {		
-		for(Trip trip : user.getTrips()) {
-			if(trip.getId() == tripId) {
+
+	private boolean isUserRegisteredForTrip(UserEntity user, Integer tripId) {
+		for (Trip trip : user.getTrips()) {
+			if (trip.getId() == tripId) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private boolean isTripAvailableForUser(UserEntity user, Integer tripId) throws ParseException {
+		Trip selectedTrip = tripRepository.findById(tripId).get();
+		Date selectedTripStartDate = new SimpleDateFormat("yyyy-MM-dd").parse(selectedTrip.getStartDate());
+		Date selectedTripEndDate = new SimpleDateFormat("yyyy-MM-dd").parse(selectedTrip.getEndDate());
+
+		for (Trip trip : user.getTrips()) {
+			Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(trip.getStartDate());
+			Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(trip.getEndDate());
+
+			if (selectedTripStartDate.after(startDate) && selectedTripStartDate.before(endDate)
+					|| selectedTripEndDate.after(startDate) && selectedTripEndDate.before(endDate)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

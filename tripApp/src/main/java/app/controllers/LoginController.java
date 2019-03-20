@@ -22,26 +22,4 @@ public class LoginController {
 	public String login() {
 		return "views/all/login";
 	}
-	
-//	@RequestMapping(value = { "/loginDispacher" }, method = RequestMethod.GET)
-//	public String loginDIspacher(Model model, Principal principal, HttpSession session) {
-////		User loginedUser = (User) ((Authentication) principal).getPrincipal();
-////		
-////		if(loginedUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-////			return "redirect:/adminHome";
-////		}
-////		
-////		if(loginedUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_GUIDE"))) {
-////			return "redirect:/guide";
-////		}
-////		
-////		if(loginedUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_STAFF"))) {
-////			return "redirect:/staffHome";
-////		}
-////		
-////		if(loginedUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
-////			return "redirect:/user";
-////		}
-//		return "redirect:/";
-//	}
 }

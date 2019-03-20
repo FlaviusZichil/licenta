@@ -93,7 +93,7 @@ public class TripDetailsController {
 	
 	private void addTripForUser(UserEntity user, Integer tripId) {		
 		List<Trip> trips = user.getTrips();
-		trips.add(this.getTripById(tripId));	
+		trips.add(tripRepository.findById(tripId).get());	
 		user.setTrips(trips);
 		
 		userRepository.save(user);	
@@ -105,17 +105,6 @@ public class TripDetailsController {
 		for(UserEntity user : users) {
 			if(user.getEmail().equals(email)) {
 				return user;
-			}
-		}
-		return null;
-	}
-	
-	private Trip getTripById(Integer tripId) {
-		Iterable<Trip> trips = tripRepository.findAll();
-		
-		for(Trip trip : trips) {
-			if(trip.getId() == tripId) {
-				return trip;
 			}
 		}
 		return null;

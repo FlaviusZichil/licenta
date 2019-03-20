@@ -33,6 +33,10 @@ public class TripController {
 	@GetMapping("/my-trips")
 	public String getUserTrips(Model model, TripViewModel tripViewModel, Principal principal) {
 		tripViewModel.setTripsDTO(this.getAllTripsDTOForUser(principal));
+		
+		if(this.getAllTripsDTOForUser(principal).isEmpty()) {
+			model.addAttribute("hasUserTrips", false);
+		}
 		model.addAttribute("tripViewModel", tripViewModel);
 		return "views/all/mytrips";
 	}

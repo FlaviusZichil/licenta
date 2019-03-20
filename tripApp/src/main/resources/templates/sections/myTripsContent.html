@@ -5,13 +5,18 @@
 		<div class="row" id="content">
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<hr>
+			 		<div>
+					    <h3 class="text-center">Ascensiunile mele</h3>
+					</div>
+			 	<hr>
 				<div class="text-center empty-list-message" th:if="${hasUserTrips} == false">
 					<h3> Nu ai ascensiuni la care te-ai inscris! </h3>
 					<a th:href="@{/all-trips}" class="btn btn-primary">Vezi toate ascensiunile</a>
 				</div>
 				<div class="card trip-card text-center" th:each="tripDTO : *{tripsDTO}">
 				  <div class="card-header bg-info">
-				    <h5 class="card-title" th:text="${tripDTO.peak.peakName} + ' - ' + ${tripDTO.peak.altitude} + 'm'"></h5>
+				    <h5 class="trip-card-title" th:text="${tripDTO.peak.peakName} + ' - ' + ${tripDTO.peak.altitude} + 'm'"></h5>
 				  </div>
 				  <div class="card-body">
 				    <h5 class="card-title" th:text="'Data plecare: ' + ${tripDTO.startDate}"></h5>

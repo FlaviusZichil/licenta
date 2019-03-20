@@ -48,12 +48,19 @@ public class TripController {
 		for (Entry<String, List<String>> entry : tripToRemove.entrySet()) {
 		    String tripId = entry.getKey();
 		    this.removeTripForUser(principal, Integer.parseInt(tripId));
+		    this.increaseTripCapacity(Integer.parseInt(tripId));
 		}
 		
 		tripViewModel.setTripsDTO(this.getAllTripsDTOForUser(principal));
 		model.addAttribute("tripViewModel", tripViewModel);		
 		
 		return "redirect:/my-trips";
+	}
+	
+	private void increaseTripCapacity(Integer tripId) {
+		Trip trip = tripRepository.findById(tripId).get();
+			trip.setCapacity(trip.getCapacity() + 1);
+			tripRepository.save(trip);
 	}
 	
 	private List<TripDTO> getAllTripsDTOForUser(Principal principal){
@@ -74,7 +81,6 @@ public class TripController {
 	private void removeTripForUser(Principal principal, Integer tripId) {
 		UserEntity user = this.getUserByEmail(principal.getName());
 		List<Trip> userTrips = user.getTrips();
-		System.out.println("USER_TRIPS: " + userTrips.toString());
 		
 		if(!userTrips.isEmpty()) {
 			userTrips.remove(tripRepository.findById(tripId).get());

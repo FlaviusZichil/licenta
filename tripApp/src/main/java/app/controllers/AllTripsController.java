@@ -31,10 +31,13 @@ public class AllTripsController {
 	
 	@SessionScope
 	@GetMapping("/all-trips")
-	public String getAllTripsPage(Model model, TripViewModel tripViewModel, HttpSession session, Principal principal) {		
-		tripViewModel.setTripsDTO(this.getAllTripsDTOAvailableForUser(principal));
-		model.addAttribute("tripViewModel", tripViewModel);	
-		
+	public String getAllTripsPage(Model model, TripViewModel tripViewModel, HttpSession session, Principal principal) {
+		if(this.getAllTripsDTOAvailableForUser(principal).isEmpty()) {
+			model.addAttribute("areTripsAvailable", false);
+		}else {
+			tripViewModel.setTripsDTO(this.getAllTripsDTOAvailableForUser(principal));
+			model.addAttribute("tripViewModel", tripViewModel);	
+		}		
 		return "views/all/allTrips";
 	}
 	

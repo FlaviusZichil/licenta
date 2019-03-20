@@ -33,9 +33,13 @@
 }
 
 .trip-card {
-	margin-bottom: 1.7%;
+	margin-bottom: 3%;
 }
 
 .empty-list-message {
 	padding: 10%;
+}
+
+.details-trip-card {
+	margin-top: 3%;
 }

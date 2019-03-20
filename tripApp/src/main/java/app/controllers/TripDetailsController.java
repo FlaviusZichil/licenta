@@ -55,18 +55,47 @@ public class TripDetailsController {
 	}
 
 	@PostMapping("/trip-details")
-	public String postTripDetails(HttpSession session, Principal principal, Model model) throws ParseException {
+	public String postTripDetails(HttpSession session, Principal principal, Model model,
+									@RequestParam(name = "submit", required = false) String actionType) throws ParseException {
 		Integer tripId = Integer.parseInt((String) session.getAttribute("tripId"));
 		UserEntity user = this.getUserByEmail(principal.getName());
 		
-		if (this.isTripAvailableForUser(user, tripId)) {
-			this.addTripForUser(user, tripId);
-			return "redirect:/my-trips";
-		}
-		else {
-			model.addAttribute("isUserAllowedToRegisterForTrip", false);
-			return "views/all/tripDetails";
+		switch(actionType) {
+			case "Inscrie-te la ascensiune": {
+				if (this.isTripAvailableForUser(user, tripId)) {
+					this.addTripForUser(user, tripId);
+					this.decreaseTripCapacity(tripId);
+					return "redirect:/my-trips";
+				}
+				else {
+					model.addAttribute("isUserAllowedToRegisterForTrip", false);
+					return "views/all/tripDetails";
+				}	
+			}
+			case "Toate ascensiunile": {
+				return "redirect:/all-trips";
+			}
+			case "Elimina ascensiunea": {
+				this.removeTripForUser(principal, tripId);
+				this.increaseTripCapacity(tripId);
+				return "redirect:/my-trips";
+			}
 		}	
+		return "views/all/tripDetails";
+	}
+	
+	private void decreaseTripCapacity(Integer tripId) {
+		Trip trip = tripRepository.findById(tripId).get();
+		if(trip.getCapacity() > 0) {
+			trip.setCapacity(trip.getCapacity() - 1);
+			tripRepository.save(trip);
+		}
+	}
+	
+	private void increaseTripCapacity(Integer tripId) {
+		Trip trip = tripRepository.findById(tripId).get();
+			trip.setCapacity(trip.getCapacity() + 1);
+			tripRepository.save(trip);
 	}
 
 	private TripDTO getTripDTOById(Integer tripId) {
@@ -103,6 +132,17 @@ public class TripDetailsController {
 		user.setTrips(trips);
 
 		userRepository.save(user);
+	}
+	
+	private void removeTripForUser(Principal principal, Integer tripId) {
+		UserEntity user = this.getUserByEmail(principal.getName());
+		List<Trip> userTrips = user.getTrips();
+		
+		if(!userTrips.isEmpty()) {
+			userTrips.remove(tripRepository.findById(tripId).get());
+			user.setTrips(userTrips);
+			userRepository.save(user);
+		}
 	}
 
 	private UserEntity getUserByEmail(String email) {

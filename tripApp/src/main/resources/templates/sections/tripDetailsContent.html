@@ -5,18 +5,26 @@
 		 <div class="row" id="article">
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
+		 	<hr>
+		 		<div>
+				    <h3 class="text-center">Detalii despre ascensiune</h3>
+				</div>
+			 <hr>
 		 		<div class="text-center invalid-date-message" th:if="${isUserAllowedToRegisterForTrip} == false">
 		 			<h3> Aveti deja o ascensiune aleasa in aceasta perioada! </h3>
 		 			<a th:href="@{/my-trips}" class="btn btn-primary"> Ascensiunile mele </a>
 		 		</div>
+		 		<div class="text-center error-message" th:if="*{tripDTO.capacity} == 0">
+					<h4> Nu mai sunt locuri! Reveniti in cazul in care cineva se retrage. </h4>
+				</div>
 		 		<!-- Extended card -->
 		 		<div th:if="${isUserAllowedToRegisterForTrip} != false" class="card trip-details-card text-center">
-				  <div class="card-header bg-info">
+				  <div class="card-header bg-info trip-card-title">
 				    <h5 th:text="*{tripDTO.peak.peakName} + ' - ' + *{tripDTO.peak.altitude} + 'm'"></h5>
 				  </div>
 				  <div class="card-body">
 				  <div class="row" id="article">
-		 			<div class="col-md-5 col-sm-5 col-xs-2 fla">
+		 			<div class="col-md-12 col-sm-12 col-xs-2 fla">
 		 				<h5 class="card-title" th:text="'Data plecare: ' + *{tripDTO.startDate}"></h5>
 						<h5 class="card-title" th:text="'Data intoarcere: ' + *{tripDTO.endDate}"></h5>
 			    	    <h5 class="card-title" th:text="'Locuri disponibile: ' + *{tripDTO.capacity}"></h5>
@@ -28,16 +36,17 @@
 						<h5 class="card-title" th:text="'Judet: ' + *{tripDTO.peak.city}"></h5>
 						<h5 class="card-title" th:text="'Munte: ' + *{tripDTO.peak.mountain.mountainName}"></h5>
 						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == false">
-							<input type="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
-							<a th:href="@{/all-trips}" class="btn btn-primary">Toate asceniunile</a>
+							<div th:if="*{tripDTO.capacity} > 0">
+								<input type="submit" name="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
+							</div>
+							<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
 						</div>
 						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == true">
-							<input type="submit" class="btn btn-danger" value="Elimina ascensiunea">
-							<a th:href="@{/all-trips}" class="btn btn-primary">Toate asceniunile</a>
+							<input type="submit" name="submit" class="btn btn-danger" value="Elimina ascensiunea">
+							<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
 						</div>
 		 			</div>
-		 			<div class="col-md-7 col-sm-7 col-xs-2 fla"></div>
-				  	</div>
+				  </div>
 				</div>
 				<!-- Extended card -->
 		 	</div>

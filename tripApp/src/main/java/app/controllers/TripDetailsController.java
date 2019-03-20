@@ -42,6 +42,14 @@ public class TripDetailsController {
 		tripDetailsViewModel.setTripDTO(this.getTripDTOById(Integer.parseInt(tripId)));
 		model.addAttribute("tripDetailsViewModel", tripDetailsViewModel);
 		
+		UserEntity user = this.getUserByEmail(principal.getName());
+		if(isUserRegisteredForTrip(user, Integer.parseInt(tripId))) {
+			model.addAttribute("isAlreadyRegisteredForTrip", true);
+		}
+		else {
+			model.addAttribute("isAlreadyRegisteredForTrip", false);
+		}
+		
 		session.setAttribute("tripId", tripId);
 	
 		return "views/all/tripDetails";
@@ -111,5 +119,14 @@ public class TripDetailsController {
 			}
 		}
 		return null;
+	}
+	
+	private boolean isUserRegisteredForTrip(UserEntity user, Integer tripId) {		
+		for(Trip trip : user.getTrips()) {
+			if(trip.getId() == tripId) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

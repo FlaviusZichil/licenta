@@ -5,7 +5,7 @@
 		 <div class="row" id="article">
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
-		 		<!-- Article -->
+		 		<!-- c -->
 		 		<div class="card trip-details-card">
 				  <div class="card-header bg-info">
 				    <h5 th:text="*{tripDTO.peak.peakName} + ' - ' + *{tripDTO.peak.altitude} + 'm'"></h5>
@@ -14,32 +14,28 @@
 				  <div class="row" id="article">
 		 			<div class="col-md-5 col-sm-5 col-xs-2 fla">
 		 				<h5 class="card-title" th:text="'Data plecare: ' + *{tripDTO.startDate}"></h5>
-							     <h5 class="card-title" th:text="'Data intoarcere: ' + *{tripDTO.endDate}"></h5>
-							     <h5 class="card-title" th:text="'Locuri disponibile: ' + *{tripDTO.capacity}"></h5>
-							     <h5 class="card-title" th:text="'Dificultate: ' + *{tripDTO.difficulty}"></h5>
-							     <h5 class="card-title" th:text="'Puncte: ' + *{tripDTO.points}"></h5>
-							     <h5 class="card-title" th:text="'Traseu: ' + *{tripDTO.route.startPoint} + ' - ' 
-							     											+ *{tripDTO.route.intermediatePoint} + ' - ' 
-							     											+ *{tripDTO.route.endPoint}"></h5>
-							     <h5 class="card-title" th:text="'Judet: ' + *{tripDTO.peak.city}"></h5>
-							     <h5 class="card-title" th:text="'Munte: ' + *{tripDTO.peak.mountain.mountainName}"></h5>
-							     <input type="submit" class="btn btn-primary" value="Inscrie-te la ascensiune">
+						<h5 class="card-title" th:text="'Data intoarcere: ' + *{tripDTO.endDate}"></h5>
+			    	    <h5 class="card-title" th:text="'Locuri disponibile: ' + *{tripDTO.capacity}"></h5>
+			     	    <h5 class="card-title" th:text="'Dificultate: ' + *{tripDTO.difficulty}"></h5>
+						<h5 class="card-title" th:text="'Puncte: ' + *{tripDTO.points}"></h5>
+						<h5 class="card-title" th:text="'Traseu: ' + *{tripDTO.route.startPoint} + ' - ' 
+							     						+ *{tripDTO.route.intermediatePoint} + ' - ' 
+							     						+ *{tripDTO.route.endPoint}"></h5>
+						<h5 class="card-title" th:text="'Judet: ' + *{tripDTO.peak.city}"></h5>
+						<h5 class="card-title" th:text="'Munte: ' + *{tripDTO.peak.mountain.mountainName}"></h5>
+						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == false">
+							<input type="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
+							<a th:href="@{/all-trips}" class="btn btn-primary">Toate asceniunile</a>
+						</div>
+						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == true">
+							<input type="submit" class="btn btn-danger" value="Elimina ascensiunea">
+							<a th:href="@{/all-trips}" class="btn btn-primary">Toate asceniunile</a>
+						</div>
 		 			</div>
-		 			<div class="col-md-7 col-sm-7 col-xs-2 fla">
-		 				<div class="mapouter">
-		 					<div class="gmap_canvas">
-				  				<iframe width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=Varful%20Omu&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-				  				</iframe>
-				  				<a href="https://www.embedgooglemap.net">
-				  				</a>
-				  			</div>
-				  			<style>.mapouter{text-align:right;height:600px;width:500px;}.gmap_canvas {overflow:hidden;background:none!important;height:600px;width:500px;}
-				  			</style>
-				  		</div>
-		 			</div>
+		 			<div class="col-md-7 col-sm-7 col-xs-2 fla"></div>
 				  	</div>
 				</div>
-				<!-- Article -->
+				<!-- Extended card -->
 		 	</div>
 		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
 		 	</div>

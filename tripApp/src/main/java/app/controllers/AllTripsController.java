@@ -49,10 +49,10 @@ public class AllTripsController {
 		
 		for(Trip trip : allTrips) {
 			if(trip.getStatus().equals("Active") && !currentUserTrips.contains(trip)) {
-				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(), trip.getPeak().getAltitude(), trip.getPeak().getCity(), 
-						trip.getPeak().getTrips(), trip.getPeak().getMountain());
-				currentUserTripsDTO.add(new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
-						trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO));
+//				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(), trip.getPeak().getAltitude(), trip.getPeak().getCity(), 
+//						trip.getPeak().getTrips(), trip.getPeak().getMountain());
+//				currentUserTripsDTO.add(new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
+//						trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO));
 			}			
 		}
 		return currentUserTripsDTO;

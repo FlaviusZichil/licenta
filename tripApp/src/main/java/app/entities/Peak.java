@@ -28,11 +28,15 @@ public class Peak {
 	@Column(name = "altitude")
 	private Integer altitude;
 	
-	@Column(name = "city")
-	private String city;
+//	@Column(name = "city")
+//	private String city;
 	
 	@OneToMany(mappedBy = "peak", cascade = CascadeType.ALL)
     private List<Trip> trips;
+	
+	@ManyToOne
+    @JoinColumn
+    private City city;
 	
 	@ManyToOne
     @JoinColumn
@@ -62,20 +66,20 @@ public class Peak {
 		this.altitude = altitude;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	public List<Trip> getTrips() {
 		return trips;
 	}
 
 	public void setTrips(List<Trip> trips) {
 		this.trips = trips;
+	}
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 	public Mountain getMountain() {
@@ -88,6 +92,6 @@ public class Peak {
 
 	@Override
 	public String toString() {
-		return "Peak [peakName=" + peakName + ", altitude=" + altitude + ", city=" + city + "]";
+		return "Peak [peakName=" + peakName + ", altitude=" + altitude + "]";
 	}
 }

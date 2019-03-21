@@ -25,6 +25,9 @@ public class Guide {
 	
 	@Column(name = "years_of_experience")
 	private Integer yearsOfExperience;
+	
+	@Column(name = "phone_number")
+	private String phoneNumber;
 
 	public Integer getId() {
 		return id;
@@ -50,10 +53,16 @@ public class Guide {
 		this.yearsOfExperience = yearsOfExperience;
 	}
 
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
 	@Override
 	public String toString() {
-		return "Guide [yearsOfExperience=" + yearsOfExperience + "]";
+		return "Guide [yearsOfExperience=" + yearsOfExperience + ", phoneNumber=" + phoneNumber + "]";
 	}
 }

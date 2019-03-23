@@ -1,7 +1,7 @@
 package app.controllers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import app.constants.Cities;
+import app.entities.City;
 import app.entities.PromoCode;
 import app.entities.Role;
 import app.entities.UserEntity;
+import app.repositories.CityRepository;
 import app.repositories.RoleRepository;
 import app.repositories.UserRepository;
 import app.validators.RegisterValidator;
@@ -28,6 +29,9 @@ public class RegisterController {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private CityRepository cityRepository;
 
 	@GetMapping("/register")
 	public String register(Model model) {
@@ -46,13 +50,19 @@ public class RegisterController {
 		RegisterValidator validator = new RegisterValidator();
 		model.addAttribute("allCities", this.getAllCities());
 
-		if (this.isFormValid(firstName, lastName, email, password, birthDate, city, model)) {
-			UserEntity user = new UserEntity(validator.formatNameProperly(firstName), validator.formatNameProperly(lastName), birthDate, city, email, password);
+		if (this.isFormValid(firstName, lastName, email, password, birthDate, model)) {
+			UserEntity user = new UserEntity(validator.formatNameProperly(firstName), validator.formatNameProperly(lastName), birthDate, email, password);
+			
 			Role role = this.getRoleByName("ROLE_USER");
 			PromoCode promoCode = new PromoCode(this.generatePromoCode(), "Active");
-
+			
+			System.out.println("City: " + city);
+			City cityForUser = this.getCityByName(city);
+			System.out.println("CITY: " + cityForUser);
+			
 			user.setPromoCode(promoCode);
 			user.setRole(role);
+			user.setCity(cityForUser);
 
 			userRepository.save(user);
 			return "views/all/login";
@@ -60,18 +70,30 @@ public class RegisterController {
 		return "views/all/register";
 	}
 
-	private List<String> getAllCities() {
-		List<Cities> citiesFromEnum = new ArrayList<Cities>(Arrays.asList(Cities.values()));
-		List<String> cities = new ArrayList<String>();
-
-		for (Cities city : citiesFromEnum) {
-			cities.add(city.toString());
+	private City getCityByName(String cityName) {
+		Iterable<City> allCities = cityRepository.findAll();
+		
+		for(City city : allCities) {
+			if(city.getName().trim().toUpperCase().equals(cityName.trim().toUpperCase())) {
+				return city;
+			}
 		}
+		return null;
+	}
+	
+	private List<String> getAllCities() {
+		List<String> cities = new ArrayList<String>();
+		Iterable<City> citiesFromDatabase = cityRepository.findAll();
+		
+		for(City city : citiesFromDatabase) {
+			cities.add(city.getName().trim().toUpperCase());
+		}
+		
+		Collections.sort(cities);		
 		return cities;
 	}
 
-	private boolean isFormValid(String firstName, String lastName, String email, String password, String birthDate,
-			String city, Model model) {
+	private boolean isFormValid(String firstName, String lastName, String email, String password, String birthDate, Model model) {
 		RegisterValidator validator = new RegisterValidator();
 
 		boolean isFirstNameValid = true;

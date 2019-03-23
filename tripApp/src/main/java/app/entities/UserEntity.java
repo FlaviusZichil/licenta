@@ -34,8 +34,9 @@ public class UserEntity {
 	@Column(name = "birth_date")
 	private String birthDate;
 	
-	@Column(name = "city")
-	private String city;
+	@ManyToOne
+    @JoinColumn
+    private City city;
 	
 	@Column(name = "email")
 	private String email;
@@ -62,18 +63,17 @@ public class UserEntity {
 	
     @OneToOne(mappedBy = "user")
     private Guide guide;
-	
-	public UserEntity(String firstName, String lastName, String birthDate, String city, String email, String password) {
+    
+    public UserEntity() {}
+
+	public UserEntity(String firstName, String lastName, String birthDate, String email, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.birthDate = birthDate;
-		this.city = city;
 		this.email = email;
 		this.password = password;
 	}
-
-	public UserEntity() {}
 
 	public Integer getId() {
 		return id;
@@ -107,11 +107,11 @@ public class UserEntity {
 		this.birthDate = birthDate;
 	}
 
-	public String getCity() {
+	public City getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
 
@@ -163,9 +163,17 @@ public class UserEntity {
 		this.promoCode = promoCode;
 	}
 
+	public Guide getGuide() {
+		return guide;
+	}
+
+	public void setGuide(Guide guide) {
+		this.guide = guide;
+	}
+
 	@Override
 	public String toString() {
-		return "UserEntity [firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", city="
-				+ city + ", email=" + email + ", experience=" + experience + ", password=" + password + "]";
+		return "UserEntity [firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", email="
+				+ email + ", experience=" + experience + ", password=" + password + "]";
 	}
 }

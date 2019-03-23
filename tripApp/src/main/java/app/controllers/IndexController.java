@@ -29,7 +29,9 @@ public class IndexController {
 	@GetMapping("/")
 	public String getIndexPage(Model model, TripViewModel tripViewModel, HttpSession session) {
 		// loads the 4 active trips for guest main page
-		tripViewModel.setTripsDTO(this.getTop4TripsDTO());
+		if(this.getTop4TripsDTO().size() > 0) {
+			tripViewModel.setTripsDTO(this.getTop4TripsDTO());
+		}		
 		model.addAttribute("tripViewModel", tripViewModel);	
 		
 		// loads most popular 4 trip locations (to do)

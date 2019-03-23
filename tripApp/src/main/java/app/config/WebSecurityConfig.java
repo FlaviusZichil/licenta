@@ -45,6 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.authorizeRequests().antMatchers("/trip-details").authenticated();
 		http.authorizeRequests().antMatchers("/all-trips").authenticated();
+		http.authorizeRequests().antMatchers("/my-trips").authenticated();
+		http.authorizeRequests().antMatchers("/closest-trips").authenticated();
 
 		// Config for Login Form
 		http.authorizeRequests().and().formLogin()

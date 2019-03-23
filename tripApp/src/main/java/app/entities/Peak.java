@@ -28,9 +28,6 @@ public class Peak {
 	@Column(name = "altitude")
 	private Integer altitude;
 	
-//	@Column(name = "city")
-//	private String city;
-	
 	@OneToMany(mappedBy = "peak", cascade = CascadeType.ALL)
     private List<Trip> trips;
 	

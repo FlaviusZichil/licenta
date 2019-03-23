@@ -32,8 +32,11 @@ public class City {
 	@OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
     private List<Peak> peaks;
 	
+	@OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
+    private List<UserEntity> users;
+	
 	public City() {}
-
+	
 	public City(String name, Double latitude, Double longitude) {
 		super();
 		this.name = name;
@@ -79,6 +82,14 @@ public class City {
 
 	public void setPeaks(List<Peak> peaks) {
 		this.peaks = peaks;
+	}
+
+	public List<UserEntity> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserEntity> users) {
+		this.users = users;
 	}
 
 	@Override

@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import app.dto.CityDTO;
+import app.dto.MountainDTO;
 import app.dto.PeakDTO;
-import app.dto.RouteDTO;
 import app.dto.TripDTO;
 import app.entities.Peak;
 import app.entities.Trip;
@@ -66,8 +67,9 @@ public class IndexController {
 	}
 	
 	private PeakDTO convertPeakToPeakDTO(Peak peak) {
-		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), peak.getCity().getName(), 
-									  peak.getTrips(), peak.getMountain());
+		MountainDTO mountainDTO = new MountainDTO(peak.getMountain().getMountainName());
+		CityDTO cityDTO = new CityDTO(peak.getCity().getName());
+		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), cityDTO, mountainDTO, peak.getTrips());
 		return peakDTO;
 	}
 	

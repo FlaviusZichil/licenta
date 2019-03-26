@@ -42,86 +42,84 @@ public class TripDTO {
 		this.route = route;
 		this.peakDTO = peakDTO;
 	}
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public Integer getCapacity() {
 		return capacity;
 	}
+
 	public void setCapacity(Integer capacity) {
 		this.capacity = capacity;
 	}
+
 	public String getStartDate() {
 		return startDate;
 	}
+
 	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
+
 	public String getEndDate() {
 		return endDate;
 	}
+
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
+
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
 	public Integer getPoints() {
 		return points;
 	}
+
 	public void setPoints(Integer points) {
 		this.points = points;
 	}
+
 	public String getDifficulty() {
 		return difficulty;
 	}
+
 	public void setDifficulty(String difficulty) {
 		this.difficulty = difficulty;
 	}
+
 	public List<UserEntity> getUsers() {
 		return users;
 	}
+
 	public void setUsers(List<UserEntity> users) {
 		this.users = users;
 	}
+
 	public Route getRoute() {
 		return route;
 	}
+
 	public void setRoute(Route route) {
 		this.route = route;
 	}
-	public PeakDTO getPeak() {
+
+	public PeakDTO getPeakDTO() {
 		return peakDTO;
 	}
-	public void setPeak(PeakDTO peakDTO) {
+
+	public void setPeakDTO(PeakDTO peakDTO) {
 		this.peakDTO = peakDTO;
 	}
-    
-	
-    
-    
-    
-//	private Trip trip;
-//	
-//	public TripDTO(Trip trip) {
-//		this.trip = trip;
-//	}
-//	
-//	public Trip getTrip() {
-//		return trip;
-//	}
-//	public void setTrip(Trip trip) {
-//		this.trip = trip;
-//	}
-//
-//	@Override
-//	public String toString() {
-//		return "TripDTO [trip=" + trip + "]";
-//	}
 }

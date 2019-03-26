@@ -20,20 +20,21 @@ public class PeakDTO {
 	private Integer id;
 	private String peakName;
 	private Integer altitude;
-	private String city;
-    private Mountain mountain;
+	private CityDTO cityDTO;
+    private MountainDTO mountainDTO;
     private List<Trip> trips;
-    
-	public PeakDTO(Integer id, String peakName, Integer altitude, String city, List<Trip> trips, Mountain mountain) {
+        
+	public PeakDTO(Integer id, String peakName, Integer altitude, CityDTO cityDTO, MountainDTO mountainDTO,
+			List<Trip> trips) {
 		super();
 		this.id = id;
 		this.peakName = peakName;
 		this.altitude = altitude;
-		this.city = city;
+		this.cityDTO = cityDTO;
+		this.mountainDTO = mountainDTO;
 		this.trips = trips;
-		this.mountain = mountain;
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
@@ -52,11 +53,17 @@ public class PeakDTO {
 	public void setAltitude(Integer altitude) {
 		this.altitude = altitude;
 	}
-	public String getCity() {
-		return city;
+	public CityDTO getCityDTO() {
+		return cityDTO;
 	}
-	public void setCity(String city) {
-		this.city = city;
+	public void setCityDTO(CityDTO cityDTO) {
+		this.cityDTO = cityDTO;
+	}
+	public MountainDTO getMountainDTO() {
+		return mountainDTO;
+	}
+	public void setMountainDTO(MountainDTO mountainDTO) {
+		this.mountainDTO = mountainDTO;
 	}
 	public List<Trip> getTrips() {
 		return trips;
@@ -64,33 +71,4 @@ public class PeakDTO {
 	public void setTrips(List<Trip> trips) {
 		this.trips = trips;
 	}
-	public Mountain getMountain() {
-		return mountain;
-	}
-	public void setMountain(Mountain mountain) {
-		this.mountain = mountain;
-	}
-    
-    
-	
-//	private Peak peak;
-//	private MountainDTO mountainDTO;
-//	
-//	public Peak getPeak() {
-//		return peak;
-//	}
-//	public void setPeak(Peak peak) {
-//		this.peak = peak;
-//	}
-//	public MountainDTO getMountainDTO() {
-//		return mountainDTO;
-//	}
-//	public void setMountainDTO(MountainDTO mountainDTO) {
-//		this.mountainDTO = mountainDTO;
-//	}
-//	
-//	@Override
-//	public String toString() {
-//		return "PeakDTO [peak=" + peak + ", mountainDTO=" + mountainDTO + "]";
-//	}
 }

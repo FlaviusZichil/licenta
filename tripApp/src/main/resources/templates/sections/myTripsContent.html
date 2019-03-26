@@ -16,7 +16,7 @@
 				</div>
 				<div class="card trip-card text-center" th:each="tripDTO : *{tripsDTO}">
 				  <div class="card-header bg-info">
-				    <h5 class="trip-card-title" th:text="${tripDTO.peak.peakName} + ' - ' + ${tripDTO.peak.altitude} + 'm'"></h5>
+				    <h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
 				  </div>
 				  <div class="card-body">
 				    <h5 class="card-title" th:text="'Data plecare: ' + ${tripDTO.startDate}"></h5>

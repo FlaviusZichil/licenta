@@ -22,7 +22,7 @@
 		 		<!-- Extended card -->
 		 		<div th:if="${isUserAllowedToRegisterForTrip} != false" class="card trip-details-card text-center">
 				  <div class="card-header bg-info trip-card-title">
-				    <h5 th:text="*{tripDTO.peak.peakName} + ' - ' + *{tripDTO.peak.altitude} + 'm'"></h5>
+				    <h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
 				  </div>
 				  <div class="card-body">
 				  <div class="row" id="article">
@@ -35,8 +35,8 @@
 						<h5 class="card-title" th:text="'Traseu: ' + *{tripDTO.route.startPoint} + ' - ' 
 							     						+ *{tripDTO.route.intermediatePoint} + ' - ' 
 							     						+ *{tripDTO.route.endPoint}"></h5>
-						<h5 class="card-title" th:text="'Judet: ' + *{tripDTO.peak.city}"></h5>
-						<h5 class="card-title" th:text="'Munte: ' + *{tripDTO.peak.mountain.mountainName}"></h5>
+						<h5 class="card-title" th:text="'Judet: ' + *{tripDTO.peakDTO.cityDTO.name}"></h5>
+						<h5 class="card-title" th:text="'Munte: ' + *{tripDTO.peakDTO.mountainDTO.name}"></h5>
 						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == false">
 							<div th:if="*{tripDTO.capacity} > 0">
 								<input type="submit" name="submit" class="btn btn-success" value="Inscrie-te la ascensiune">

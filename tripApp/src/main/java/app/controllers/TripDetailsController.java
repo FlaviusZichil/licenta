@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
+import app.dto.CityDTO;
+import app.dto.MountainDTO;
 import app.dto.PeakDTO;
 import app.dto.TripDTO;
 import app.entities.Trip;
@@ -106,9 +108,11 @@ public class TripDetailsController {
 
 		for (Trip trip : trips) {
 			if (trip.getId() == tripId) {
-				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(),
-						trip.getPeak().getAltitude(), trip.getPeak().getCity().getName(), trip.getPeak().getTrips(),
-						trip.getPeak().getMountain());
+				CityDTO cityDTO = new CityDTO(trip.getPeak().getCity().getName());
+				MountainDTO mountainDTO = new MountainDTO(trip.getPeak().getMountain().getMountainName());
+				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(), trip.getPeak().getAltitude(), cityDTO, 
+											  mountainDTO, trip.getPeak().getTrips());
+
 				tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(),
 						trip.getStatus(), trip.getPoints(), trip.getDifficulty(), trip.getUsers(), trip.getRoute(),
 						peakDTO);

@@ -106,12 +106,12 @@ public class TripDetailsController {
 
 		for (Trip trip : trips) {
 			if (trip.getId() == tripId) {
-//				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(),
-//						trip.getPeak().getAltitude(), trip.getPeak().getCity(), trip.getPeak().getTrips(),
-//						trip.getPeak().getMountain());
-//				tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(),
-//						trip.getStatus(), trip.getPoints(), trip.getDifficulty(), trip.getUsers(), trip.getRoute(),
-//						peakDTO);
+				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(),
+						trip.getPeak().getAltitude(), trip.getPeak().getCity().getName(), trip.getPeak().getTrips(),
+						trip.getPeak().getMountain());
+				tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(),
+						trip.getStatus(), trip.getPoints(), trip.getDifficulty(), trip.getUsers(), trip.getRoute(),
+						peakDTO);
 			}
 		}
 		return tripDTO;

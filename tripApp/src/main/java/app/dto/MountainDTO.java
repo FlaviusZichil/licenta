@@ -1,21 +1,33 @@
 package app.dto;
 
-import app.entities.Mountain;
-
 public class MountainDTO {
 	
-	private Mountain mountain;
-
-	public Mountain getMountain() {
-		return mountain;
+	private String name;
+	private CityDTO cityDTO;
+	
+	public MountainDTO(String name, CityDTO cityDTO) {
+		super();
+		this.name = name;
+		this.cityDTO = cityDTO;
 	}
-
-	public void setMountain(Mountain mountain) {
-		this.mountain = mountain;
+	
+	public MountainDTO() {}
+	
+	public String getName() {
+		return name;
 	}
-
+	public void setName(String name) {
+		this.name = name;
+	}
+	public CityDTO getCityDTO() {
+		return cityDTO;
+	}
+	public void setCityDTO(CityDTO cityDTO) {
+		this.cityDTO = cityDTO;
+	}
+	
 	@Override
 	public String toString() {
-		return "MountainDTO [mountain=" + mountain + "]";
+		return "MountainDTO [name=" + name + "]";
 	}
 }

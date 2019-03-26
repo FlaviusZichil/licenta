@@ -21,8 +21,8 @@ public class PeakDTO {
 	private String peakName;
 	private Integer altitude;
 	private String city;
-    private List<Trip> trips;
     private Mountain mountain;
+    private List<Trip> trips;
     
 	public PeakDTO(Integer id, String peakName, Integer altitude, String city, List<Trip> trips, Mountain mountain) {
 		super();

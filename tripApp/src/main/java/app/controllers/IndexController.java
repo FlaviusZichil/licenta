@@ -66,10 +66,9 @@ public class IndexController {
 	}
 	
 	private PeakDTO convertPeakToPeakDTO(Peak peak) {
-//		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), peak.getCity(), 
-//									  peak.getTrips(), peak.getMountain());
-//		return peakDTO;
-		return null;
+		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), peak.getCity().getName(), 
+									  peak.getTrips(), peak.getMountain());
+		return peakDTO;
 	}
 	
 	// mai trebuie adaugat ca param si routeDTO

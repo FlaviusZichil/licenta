@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body class="body">
-	<form action="#" th:action="@{/index}" th:object="${tripViewModel}" method="post">
+	<form action="#" th:action="@{/all-trips}" th:object="${tripViewModel}"
+		method="post">
 		<div class="row" id="content">
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-2 col-sm-2 col-xs-2 text-center fla">
-				<div id="resetFilers">
+				<div id="resetFilters">
 				</div>
-				<div class="accordion" id="accordionExample">
-				
+				<div class="accordion" id="accordionExample">				
 				  <div class="card">
 				    <div class="card-header" id="headingOne">
 				      <h5 class="mb-0">
@@ -18,59 +18,58 @@
 				      </h5>
 				    </div>				
 				    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-				      <div class="card-body">
+				      <div class="card-body" style="text-align: left; margin-left: 15%">
 						    <div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna1" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna1" name="groupOfDefaultRadios" th:value="Ianuarie">
 							    <label class="custom-control-label" for="luna1">Ianuarie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna2" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna2" name="groupOfDefaultRadios" th:value="Februarie">
 							    <label class="custom-control-label" for="luna2">Februarie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna3" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna3" name="groupOfDefaultRadios" th:value="Martie">
 							    <label class="custom-control-label" for="luna3">Martie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna4" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna4" name="groupOfDefaultRadios" th:value="Aprilie">
 							    <label class="custom-control-label" for="luna4">Aprilie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna5" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna5" name="groupOfDefaultRadios" th:value="Mai">
 							    <label class="custom-control-label" for="luna5">Mai</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna6" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna6" name="groupOfDefaultRadios" th:value="Iunie">
 							    <label class="custom-control-label" for="luna6">Iunie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna7" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna7" name="groupOfDefaultRadios" th:value="Iulie">
 							    <label class="custom-control-label" for="luna7">Iulie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna8" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna8" name="groupOfDefaultRadios" th:value="August">
 							    <label class="custom-control-label" for="luna8">August</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna9" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna9" name="groupOfDefaultRadios" th:value="Septembrie">
 							    <label class="custom-control-label" for="luna9">Septembrie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna10" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna10" name="groupOfDefaultRadios" th:value="Octombrie">
 							    <label class="custom-control-label" for="luna10">Octombrie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna11" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna11" name="groupOfDefaultRadios" th:value="Noiembrie">
 							    <label class="custom-control-label" for="luna11">Noiembrie</label>
 							</div>
 							<div class="custom-control custom-radio">
-							    <input type="radio" class="custom-control-input filter" id="luna12" name="groupOfDefaultRadios">
+							    <input type="radio" onclick="filter()" class="custom-control-input filter" id="luna12" name="groupOfDefaultRadios" th:value="Decembrie">
 							    <label class="custom-control-label" for="luna12">Decembrie</label>
-							</div>
-							
-							<hr>
-							
-							
+							</div>	
+							<div>
+								<input class="btn btn-info" type="submit" name="submit" value="Aplica filtru"/>
+							</div>						
 				      </div>
 				    </div>
 				  </div>
@@ -163,10 +162,36 @@
 	</form>
 </body>
 <script>
-
-if($('input[type=radio]:checked').size() > 0){
-	document.getElementById("resetFilers").innerHTML = "servus";
-	console.log("servus");
-}
+  	var checks = document.querySelectorAll('input[type = "radio"]');
+  	
+	function filter(){
+		createButton();
+	}	
+	
+	function createButton(){					
+		if(!document.getElementById("resetButton")){
+			var text = document.getElementById("resetFilters");
+			var resetButton = document.createElement("input");
+			resetButton.setAttribute("id", "resetButton");
+			resetButton.setAttribute("type", "reset");
+			resetButton.setAttribute("value", "Reseteaza filtrul");
+			
+			text.appendChild(resetButton);
+		
+			resetButton.setAttribute("onclick", "removeButton()");
+			resetButton.setAttribute("class", "btn btn-danger btn-block");
+		}		
+	}
+	
+	function removeButton(){	
+		var element = document.getElementById("resetButton");
+	    element.parentNode.removeChild(element);
+	    
+	    for (var i = 0; i < checks.length; i++) {
+			if (checks[i].checked == true){
+				checks[i].checked = false;
+			}	
+		}
+	}	
 </script>
 </html>

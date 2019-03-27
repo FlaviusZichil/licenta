@@ -26,7 +26,7 @@ public class ClosestTripsController {
 	
 	@GetMapping("/closest-trips")
 	public String getClosestTrips(Principal principal){
-		List<Trip> trips = this.sortTripsByDistance(principal);		
+		// List<Trip> trips = this.sortTripsByDistance(principal);		
 		return "views/user/userMainPage";
 	}
 	

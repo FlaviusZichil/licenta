@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 import app.dto.CityDTO;
@@ -34,6 +36,8 @@ public class AllTripsController {
 	@SessionScope
 	@GetMapping("/all-trips")
 	public String getAllTripsPage(Model model, TripViewModel tripViewModel, HttpSession session, Principal principal) {
+		
+		
 		if(this.getAllTripsDTOAvailableForUser(principal).isEmpty()) {
 			model.addAttribute("areTripsAvailable", false);
 		}else {
@@ -41,6 +45,15 @@ public class AllTripsController {
 			model.addAttribute("tripViewModel", tripViewModel);	
 		}		
 		return "views/all/allTrips";
+	}
+	
+	@PostMapping("/all-trips")
+	public String allTripsActions(Model model, TripViewModel tripViewModel, Principal principal,
+								  @RequestParam(name = "groupOfDefaultRadios", required = false) String month) {
+		System.out.println("MONTH: " + month);
+				
+		return "redirect:/all-trips";
+
 	}
 	
 	private List<TripDTO> getAllTripsDTOAvailableForUser(Principal principal){

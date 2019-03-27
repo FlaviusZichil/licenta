@@ -1,7 +1,11 @@
 package app.controllers;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -35,9 +39,7 @@ public class AllTripsController {
 	
 	@SessionScope
 	@GetMapping("/all-trips")
-	public String getAllTripsPage(Model model, TripViewModel tripViewModel, HttpSession session, Principal principal) {
-		
-		
+	public String getAllTripsPage(Model model, TripViewModel tripViewModel, HttpSession session, Principal principal) {	
 		if(this.getAllTripsDTOAvailableForUser(principal).isEmpty()) {
 			model.addAttribute("areTripsAvailable", false);
 		}else {
@@ -49,11 +51,30 @@ public class AllTripsController {
 	
 	@PostMapping("/all-trips")
 	public String allTripsActions(Model model, TripViewModel tripViewModel, Principal principal,
-								  @RequestParam(name = "groupOfDefaultRadios", required = false) String month) {
-		System.out.println("MONTH: " + month);
-				
-		return "redirect:/all-trips";
+								  @RequestParam(name = "groupOfDefaultRadios", required = false) String month) throws ParseException {
+	
+		if(month == null) {
+			return "redirect:/all-trips";
+		}
+		
+		List<TripDTO> tripsDTO = new ArrayList<>();
+		
+		for(TripDTO tripDTO : this.getAllTripsDTOAvailableForUser(principal)) {
+			LocalDate startDate = LocalDate.parse(tripDTO.getStartDate());
+			
+			if(startDate.getMonth().toString().equals(month)) {
+				tripsDTO.add(tripDTO);
+			}
+		}
+			
+		if(tripsDTO.isEmpty()) {
+			model.addAttribute("areTripsAvailable", false);
+		}else {
+			tripViewModel.setTripsDTO(tripsDTO);
+			model.addAttribute("tripViewModel", tripViewModel);	
+		}	
 
+		return "views/all/allTrips";
 	}
 	
 	private List<TripDTO> getAllTripsDTOAvailableForUser(Principal principal){

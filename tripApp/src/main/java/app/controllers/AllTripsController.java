@@ -60,11 +60,11 @@ public class AllTripsController {
 		if (month != null || difficulty != null) {
 			model.addAttribute("filterWasApplied", true);
 		}
-		
 
 		List<String> difficulties = new ArrayList<>();
 		List<String> months = new ArrayList<>();
-
+		List<TripDTO> tripsDTO = new ArrayList<>();
+		
 		if (difficulty != null) {
 			difficulties = new ArrayList<>(Arrays.asList(difficulty.split(",")));
 		}
@@ -72,8 +72,6 @@ public class AllTripsController {
 		if (month != null) {
 			months = new ArrayList<>(Arrays.asList(month.split(",")));
 		}
-
-		List<TripDTO> tripsDTO = new ArrayList<>();
 
 		for (TripDTO tripDTO : this.getAllTripsDTOAvailableForUser(principal)) {
 			LocalDate startDate = LocalDate.parse(tripDTO.getStartDate());

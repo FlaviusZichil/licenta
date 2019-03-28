@@ -3,15 +3,28 @@
 <body class="body">
 	<form id="allTripsForm" name="allTripsForm" action="#" th:action="@{/all-trips}" th:object="${tripViewModel}"
 		method="post">
+		
+		<div class="row">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<hr>
+					<div>
+						<h3 class="text-center">Toate ascensiunile</h3>
+					</div>			 			
+				<hr>
+			</div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+		
 		<div class="row" id="content">
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-2 col-sm-2 col-xs-2 text-center fla">
-				<div th:if="${filterWasApplied} == true" style="margin-top: 4%">
+				<div th:if="${filterWasApplied} == true" style="margin-top: 8%">
 					<input id="resetAfterSubmit" class="btn btn-danger btn-block" type="reset" value="Elimina filtrele" onclick="whenButtonRemoved()">
 				</div>
-				<div id="resetFilters" style="margin-top: 4%">
+				<div id="resetFilters" style="margin-top: 10%">
 				</div>
-				<div class="accordion" id="accordionExample" style="margin-top: 5%">				
+				<div class="accordion" id="accordionExample" style="margin-top: 8%">				
 				  <div class="card">
 				    <div class="card-header" id="headingOne">
 				      <h5 class="mb-0">
@@ -107,21 +120,6 @@
 				  </div>
 				  
 				  <div class="card">
-				    <div class="card-header" id="headingThree">
-				      <h5 class="mb-0">
-				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-				          Judet
-				        </button>
-				      </h5>
-				    </div>
-				    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-				      <div class="card-body">
-				        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-				      </div>
-				    </div>
-				  </div>
-				  
-				  <div class="card">
 				    <div class="card-header" id="headingFour">
 				      <h5 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree1" aria-expanded="false" aria-controls="collapseThree">
@@ -142,11 +140,11 @@
 				</div>
 				</div>			
 				<div class="col-md-6 col-sm-6 col-xs-2 text-center fla">
-				<hr>
-			 		<div>
-					    <h3 class="text-center">Toate ascensiunile</h3>
-					</div>
-			 	<hr>
+<!-- 				<hr> -->
+<!-- 			 		<div> -->
+<!-- 					    <h3 class="text-center">Toate ascensiunile</h3> -->
+<!-- 					</div> -->
+<!-- 			 	<hr> -->
 			 	<div class="text-center empty-list-message" th:if="${areTripsAvailable} == false">
 					<h3> In acest moment nu exista ascensiuni disponibile! </h3>
 				</div>

@@ -57,11 +57,11 @@ public class AllTripsController {
 			@RequestParam(name = "difficulty", required = false) String difficulty,
 			@RequestParam(name = "distance", required = false) String distance) throws ParseException {
 
-		if (month == null && difficulty == null) {
+		if (month == null && difficulty == null && distance == null) {
 			return "redirect:/all-trips";
 		}
 		
-		if (month != null || difficulty != null) {
+		if (month != null || difficulty != null || distance != null) {
 			model.addAttribute("filterWasApplied", true);
 		}
 
@@ -77,7 +77,33 @@ public class AllTripsController {
 			months = new ArrayList<>(Arrays.asList(month.split(",")));
 		}
 
-		for (TripDTO tripDTO : this.getAllTripsDTOAvailableForUser(principal)) {
+		tripsDTO = this.applyFiltersOnList(this.getAllTripsDTOAvailableForUser(principal), months, difficulties);
+		
+		// tests if only distance filter is applied
+		if(distance != null && month == null && difficulty == null) {
+			tripsDTO = this.getAllTripsDTOAvailableForUser(principal);
+			tripViewModel.setTripsDTO(sortTripsByDistance(principal, tripsDTO));
+			model.addAttribute("tripViewModel", tripViewModel);
+		}
+
+		if (tripsDTO.isEmpty()) {
+			model.addAttribute("areResultsFoundForSelectedFilters", false);
+		} else {
+			if(distance != null) {
+				tripViewModel.setTripsDTO(sortTripsByDistance(principal, tripsDTO));
+				model.addAttribute("tripViewModel", tripViewModel);
+			}
+			else {
+				tripViewModel.setTripsDTO(tripsDTO);
+				model.addAttribute("tripViewModel", tripViewModel);
+			}
+		}
+		return "views/all/allTrips";
+	}
+	
+	public List<TripDTO> applyFiltersOnList(List<TripDTO> tripsDTO, List<String> months, List<String> difficulties) {
+		List<TripDTO> tripsDTOAfterFilters = new ArrayList<>(); 
+		for (TripDTO tripDTO : tripsDTO) {
 			LocalDate startDate = LocalDate.parse(tripDTO.getStartDate());
 			
 			if(months.contains(startDate.getMonth().toString()) && difficulties.size() > 0 && !difficulties.contains(tripDTO.getDifficulty())) {
@@ -85,39 +111,22 @@ public class AllTripsController {
 			}
 
 			if (months.contains(startDate.getMonth().toString()) && difficulties.contains(tripDTO.getDifficulty())) {
-				tripsDTO.add(tripDTO);
+				tripsDTOAfterFilters.add(tripDTO);
 				continue;
 			}
 			
 			if(months.contains(startDate.getMonth().toString()) && difficulties.size() == 0) {
-				tripsDTO.add(tripDTO);
+				tripsDTOAfterFilters.add(tripDTO);
 				continue;
 			}
 			
 			if(difficulties.contains(tripDTO.getDifficulty()) && months.size() == 0) {
-				tripsDTO.add(tripDTO);
+				tripsDTOAfterFilters.add(tripDTO);
 				continue;
 			}
 		}
-
-		if (tripsDTO.isEmpty()) {
-			model.addAttribute("isFilterApplied", false);
-		} else {
-			tripViewModel.setTripsDTO(tripsDTO);
-//			model.addAttribute("tripViewModel", tripViewModel);
-			tripViewModel.setTripsDTO(sortTripsByDistance(principal, tripsDTO));
-
-		}
 		
-		if(distance != null && month == null && difficulty == null) {
-			System.out.println(distance);
-			System.out.println(tripsDTO.toString());
-			System.out.println(sortTripsByDistance(principal, tripsDTO).toString());
-			tripViewModel.setTripsDTO(sortTripsByDistance(principal, tripsDTO));
-			model.addAttribute("tripViewModel", tripViewModel);
-		}
-
-		return "views/all/allTrips";
+		return tripsDTOAfterFilters;
 	}
 
 	private List<TripDTO> getAllTripsDTOAvailableForUser(Principal principal) {
@@ -128,7 +137,7 @@ public class AllTripsController {
 
 		for (Trip trip : allTrips) {
 			if (trip.getStatus().equals("Active") && !currentUserTrips.contains(trip)) {
-				CityDTO cityDTO = new CityDTO(trip.getPeak().getCity().getName());
+				CityDTO cityDTO = new CityDTO(trip.getPeak().getCity().getName(), trip.getPeak().getCity().getLatitude(), trip.getPeak().getCity().getLongitude());
 				MountainDTO mountainDTO = new MountainDTO(trip.getPeak().getMountain().getMountainName());
 				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(),
 						trip.getPeak().getAltitude(), cityDTO, mountainDTO, trip.getPeak().getTrips());
@@ -172,21 +181,13 @@ public class AllTripsController {
 	
 	private List<TripDTO> sortTripsByDistance(Principal principal, List<TripDTO> tripsDTO){
 		// trebuie luate doar cele active
-		final UserEntity user = this.getUserByEmail(principal.getName());
+		final UserEntity user = this.getUserByEmail(principal.getName());	
 		
 		Collections.sort(tripsDTO, new Comparator<TripDTO>(){
 			   @Override
-			   public int compare(TripDTO firstTripDTO, TripDTO secondTripDTO) {
-				   
-				   System.out.println("CITY DTO: " + firstTripDTO.getPeakDTO().getCityDTO());
-				   
+			   public int compare(TripDTO firstTripDTO, TripDTO secondTripDTO) {			   
 				   City firstTripCity = convertFromCityDTOToCity(firstTripDTO.getPeakDTO().getCityDTO());
 				   City secondTripCity = convertFromCityDTOToCity(secondTripDTO.getPeakDTO().getCityDTO());
-				   
-				   System.out.println("FIRST_TRIP: " + firstTripCity.toString());
-				   
-				   System.out.println("LONGITUDE1" + firstTripCity.getLongitude());
-				   System.out.println("LONGITUDE2" + secondTripCity.getLongitude());
 				   
 				   Double firstDistance = calculateDistanceBetweenTwoCities(user.getCity(), firstTripCity);
 				   Double secondDistance = calculateDistanceBetweenTwoCities(user.getCity(), secondTripCity);

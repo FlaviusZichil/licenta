@@ -71,4 +71,10 @@ public class PeakDTO {
 	public void setTrips(List<Trip> trips) {
 		this.trips = trips;
 	}
+
+	@Override
+	public String toString() {
+		return "PeakDTO [id=" + id + ", peakName=" + peakName + ", altitude=" + altitude + ", cityDTO=" + cityDTO
+				+ ", mountainDTO=" + mountainDTO + "]";
+	}
 }

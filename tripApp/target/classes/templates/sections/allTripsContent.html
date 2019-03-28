@@ -147,7 +147,7 @@
 			 	<div class="text-center empty-list-message" th:if="${areTripsAvailable} == false">
 					<h3> In acest moment nu exista ascensiuni disponibile! </h3>
 				</div>
-				<div class="text-center empty-list-message" th:if="${isFilterApplied} == false">
+				<div class="text-center empty-list-message" th:if="${areResultsFoundForSelectedFilters} == false">
 					<h3> Nu s-au gasit rezultate pentru filtrele aplicate! </h3>
 				</div>
 				<div class="card trip-card" th:each="tripDTO : *{tripsDTO}">

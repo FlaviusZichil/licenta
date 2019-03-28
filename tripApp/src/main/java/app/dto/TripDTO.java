@@ -122,4 +122,11 @@ public class TripDTO {
 	public void setPeakDTO(PeakDTO peakDTO) {
 		this.peakDTO = peakDTO;
 	}
+
+	@Override
+	public String toString() {
+		return "TripDTO [id=" + id + ", capacity=" + capacity + ", startDate=" + startDate + ", endDate=" + endDate
+				+ ", status=" + status + ", points=" + points + ", difficulty=" + difficulty + ", route=" + route
+				+ ", peakDTO=" + peakDTO + "]";
+	}	
 }

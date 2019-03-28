@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,7 @@ import app.dto.CityDTO;
 import app.dto.MountainDTO;
 import app.dto.PeakDTO;
 import app.dto.TripDTO;
+import app.entities.City;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.TripViewModel;
@@ -51,7 +54,8 @@ public class AllTripsController {
 	@PostMapping("/all-trips")
 	public String allTripsActions(Model model, TripViewModel tripViewModel, Principal principal,
 			@RequestParam(name = "month", required = false) String month,
-			@RequestParam(name = "difficulty", required = false) String difficulty) throws ParseException {
+			@RequestParam(name = "difficulty", required = false) String difficulty,
+			@RequestParam(name = "distance", required = false) String distance) throws ParseException {
 
 		if (month == null && difficulty == null) {
 			return "redirect:/all-trips";
@@ -100,6 +104,16 @@ public class AllTripsController {
 			model.addAttribute("isFilterApplied", false);
 		} else {
 			tripViewModel.setTripsDTO(tripsDTO);
+//			model.addAttribute("tripViewModel", tripViewModel);
+			tripViewModel.setTripsDTO(sortTripsByDistance(principal, tripsDTO));
+
+		}
+		
+		if(distance != null && month == null && difficulty == null) {
+			System.out.println(distance);
+			System.out.println(tripsDTO.toString());
+			System.out.println(sortTripsByDistance(principal, tripsDTO).toString());
+			tripViewModel.setTripsDTO(sortTripsByDistance(principal, tripsDTO));
 			model.addAttribute("tripViewModel", tripViewModel);
 		}
 
@@ -136,5 +150,63 @@ public class AllTripsController {
 			}
 		}
 		return null;
+	}
+	
+	private Double calculateDistanceBetweenTwoCities(City firstCity, City secondCity) {
+		if ((firstCity.getLatitude() == secondCity.getLatitude()) && (firstCity.getLongitude() == secondCity.getLongitude())) {
+			return 0.0;
+		}
+		else {
+			double theta = firstCity.getLongitude() - secondCity.getLongitude();
+			double distance = Math.sin(Math.toRadians(firstCity.getLatitude())) * Math.sin(Math.toRadians(secondCity.getLatitude())) + 
+							  Math.cos(Math.toRadians(firstCity.getLatitude())) * Math.cos(Math.toRadians(secondCity.getLatitude())) * 
+							  Math.cos(Math.toRadians(theta));
+			distance = Math.acos(distance);
+			distance = Math.toDegrees(distance);
+			distance = distance * 60 * 1.1515;
+			distance = distance * 1.609344;
+
+			return distance;
+		}
+	}
+	
+	private List<TripDTO> sortTripsByDistance(Principal principal, List<TripDTO> tripsDTO){
+		// trebuie luate doar cele active
+		final UserEntity user = this.getUserByEmail(principal.getName());
+		
+		Collections.sort(tripsDTO, new Comparator<TripDTO>(){
+			   @Override
+			   public int compare(TripDTO firstTripDTO, TripDTO secondTripDTO) {
+				   
+				   System.out.println("CITY DTO: " + firstTripDTO.getPeakDTO().getCityDTO());
+				   
+				   City firstTripCity = convertFromCityDTOToCity(firstTripDTO.getPeakDTO().getCityDTO());
+				   City secondTripCity = convertFromCityDTOToCity(secondTripDTO.getPeakDTO().getCityDTO());
+				   
+				   System.out.println("FIRST_TRIP: " + firstTripCity.toString());
+				   
+				   System.out.println("LONGITUDE1" + firstTripCity.getLongitude());
+				   System.out.println("LONGITUDE2" + secondTripCity.getLongitude());
+				   
+				   Double firstDistance = calculateDistanceBetweenTwoCities(user.getCity(), firstTripCity);
+				   Double secondDistance = calculateDistanceBetweenTwoCities(user.getCity(), secondTripCity);
+				   
+				   if(firstDistance > secondDistance) {
+					   return 1;
+				   }
+				   
+				   if(firstDistance < secondDistance) {
+					   return -1;
+				   }
+				   return 0;
+			     }
+			 });
+		
+		return tripsDTO;
+	}
+	
+	private City convertFromCityDTOToCity(CityDTO cityDTO) {
+		City firstTripCity = new City(cityDTO.getName(), cityDTO.getLatitude(), cityDTO.getLongitude());
+		return firstTripCity;
 	}
 }

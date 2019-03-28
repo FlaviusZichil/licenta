@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body class="body">
-	<form action="#" th:action="@{/all-trips}" th:object="${tripViewModel}"
+	<form id="allTripsForm" name="allTripsForm" action="#" th:action="@{/all-trips}" th:object="${tripViewModel}"
 		method="post">
 		<div class="row" id="content">
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-2 col-sm-2 col-xs-2 text-center fla">
-				<div id="resetFilters">
+				<div th:if="${filterWasApplied} == true" style="margin-top: 4%">
+					<input id="resetAfterSubmit" class="btn btn-danger btn-block" type="reset" value="Elimina filtrele" onclick="whenButtonRemoved()">
 				</div>
-				<div class="accordion" id="accordionExample">				
+				<div id="resetFilters" style="margin-top: 4%">
+				</div>
+				<div class="accordion" id="accordionExample" style="margin-top: 5%">				
 				  <div class="card">
 				    <div class="card-header" id="headingOne">
 				      <h5 class="mb-0">
@@ -68,7 +71,7 @@
 							    <label class="custom-control-label" for="luna12">Decembrie</label>
 							</div>	
 							<div>
-								<input class="btn btn-info" type="submit" name="submit" value="Aplica filtru"/>
+								<input class="btn btn-info" type="submit" name="submit" value="Aplica filtrul"/>
 							</div>						
 				      </div>
 				    </div>
@@ -85,16 +88,19 @@
 				    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 				      <div class="card-body" style="text-align: left; margin-left: 15%">
 							<div class="custom-control custom-checkbox">
-							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="easy" name="difficulty" th:value="usor">
+							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="easy" name="difficulty" th:value="Usor">
 							    <label class="custom-control-label" for="easy">Usor</label>
 							</div>
 							<div class="custom-control custom-checkbox">
-							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="medium" name="difficulty" th:value="medium">
+							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="medium" name="difficulty" th:value="Mediu">
 							    <label class="custom-control-label" for="medium">Mediu</label>
 							</div>
 							<div class="custom-control custom-checkbox">
-							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="difficult" name="difficulty" th:value="dificil">
+							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="difficult" name="difficulty" th:value="Dificil">
 							    <label class="custom-control-label" for="difficult">Dificil</label>
+							</div>
+							<div>
+								<input class="btn btn-info" type="submit" name="submit" value="Aplica filtrul"/>
 							</div>
 				      </div>
 				    </div>
@@ -127,7 +133,7 @@
 				      <div class="card-body">
 				      	<div class="custom-control custom-checkbox">
 						    <input type="checkbox" class="custom-control-input filter" id="distance">
-						    <label class="custom-control-label" for="distance">cele mai apropiate</label>
+						    <label class="custom-control-label" for="distance">Cele mai apropiate</label>
 						</div>
 				      </div>
 				    </div>
@@ -169,21 +175,42 @@
   	
 	function filter(){
 		createButton();
+		testIfNoneSelected();
 	}	
 	
 	function createButton(){					
 		if(!document.getElementById("resetButton")){
+			
+			if(document.getElementById("resetAfterSubmit")){
+				var element = document.getElementById("resetAfterSubmit");
+			    element.parentNode.removeChild(element);
+			}
+			
 			var text = document.getElementById("resetFilters");
 			var resetButton = document.createElement("input");
 			resetButton.setAttribute("id", "resetButton");
 			resetButton.setAttribute("type", "reset");
-			resetButton.setAttribute("value", "Reseteaza filtrul");
+			resetButton.setAttribute("value", "Elimina filtrele");
 			
 			text.appendChild(resetButton);
 		
 			resetButton.setAttribute("onclick", "removeButton()");
 			resetButton.setAttribute("class", "btn btn-danger btn-block");
-		}		
+		}	
+	}
+	
+	function testIfNoneSelected(){
+		var counter = 0;
+		
+		for (var i = 0; i < checks.length; i++) {
+			if (checks[i].checked == false){
+				counter++;
+			}	
+		}
+		
+		if(counter == checks.length){
+			removeButton();
+		}
 	}
 	
 	function removeButton(){	
@@ -194,7 +221,11 @@
 			if (checks[i].checked == true){
 				checks[i].checked = false;
 			}	
-		}
+		}  
 	}	
+	
+	function whenButtonRemoved(){
+		javascript: window.open('all-trips', '_self');
+	}
 </script>
 </html>

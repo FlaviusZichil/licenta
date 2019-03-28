@@ -56,6 +56,11 @@ public class AllTripsController {
 		if (month == null && difficulty == null) {
 			return "redirect:/all-trips";
 		}
+		
+		if (month != null || difficulty != null) {
+			model.addAttribute("filterWasApplied", true);
+		}
+		
 
 		List<String> difficulties = new ArrayList<>();
 		List<String> months = new ArrayList<>();

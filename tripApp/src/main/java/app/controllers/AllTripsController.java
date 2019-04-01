@@ -23,8 +23,13 @@ import app.dto.CityDTO;
 import app.dto.GuideDTO;
 import app.dto.MountainDTO;
 import app.dto.PeakDTO;
+import app.dto.PointDTO;
+import app.dto.RouteDTO;
+import app.dto.RoutePointDTO;
 import app.dto.TripDTO;
 import app.entities.City;
+import app.entities.Route;
+import app.entities.RoutePoint;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.TripViewModel;
@@ -107,11 +112,11 @@ public class AllTripsController {
 		for (TripDTO tripDTO : tripsDTO) {
 			LocalDate startDate = LocalDate.parse(tripDTO.getStartDate());
 			
-			if(months.contains(startDate.getMonth().toString()) && difficulties.size() > 0 && !difficulties.contains(tripDTO.getDifficulty())) {
+			if(months.contains(startDate.getMonth().toString()) && difficulties.size() > 0 && !difficulties.contains(tripDTO.getRouteDTO().getDifficulty())) {
 				continue;
 			}
 
-			if (months.contains(startDate.getMonth().toString()) && difficulties.contains(tripDTO.getDifficulty())) {
+			if (months.contains(startDate.getMonth().toString()) && difficulties.contains(tripDTO.getRouteDTO().getDifficulty())) {
 				tripsDTOAfterFilters.add(tripDTO);
 				continue;
 			}
@@ -121,7 +126,7 @@ public class AllTripsController {
 				continue;
 			}
 			
-			if(difficulties.contains(tripDTO.getDifficulty()) && months.size() == 0) {
+			if(difficulties.contains(tripDTO.getRouteDTO().getDifficulty()) && months.size() == 0) {
 				tripsDTOAfterFilters.add(tripDTO);
 				continue;
 			}
@@ -142,14 +147,29 @@ public class AllTripsController {
 				MountainDTO mountainDTO = new MountainDTO(trip.getPeak().getMountain().getMountainName());
 				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(),
 						trip.getPeak().getAltitude(), cityDTO, mountainDTO, trip.getPeak().getTrips());
-				GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber());
+				GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), 
+						trip.getGuide().getPhoneNumber());
+				RouteDTO routeDTO = new RouteDTO(trip.getRoute().getId(), trip.getRoute().getDifficulty(), this.getRoutePointsDTOForTrip(trip));
 
-				currentUserTripsDTO.add(new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(),
-						trip.getEndDate(), trip.getStatus(), trip.getPoints(), trip.getDifficulty(), trip.getUsers(),
-						trip.getRoute(), peakDTO, guideDTO));
+				currentUserTripsDTO.add(new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(),trip.getEndDate(), trip.getStatus(), 
+						                            trip.getPoints(), trip.getUsers(), routeDTO, peakDTO, guideDTO));
 			}
 		}
 		return currentUserTripsDTO;
+	}
+	
+	private List<RoutePointDTO> getRoutePointsDTOForTrip(Trip trip){
+		List<RoutePointDTO> routePointsDTO = new ArrayList<>();
+		
+		Route route = trip.getRoute();
+		List<RoutePoint> routePoints = route.getRoutePoints();
+		
+		for(RoutePoint routePoint : routePoints) {
+			PointDTO pointDTO = new PointDTO(routePoint.getPoint().getId(), routePoint.getPoint().getPointName());
+			RoutePointDTO routePointDTO = new RoutePointDTO(routePoint.getId(), routePoint.getOrder(), pointDTO);
+			routePointsDTO.add(routePointDTO);
+		}	
+		return routePointsDTO;
 	}
 
 	private UserEntity getUserByEmail(String email) {

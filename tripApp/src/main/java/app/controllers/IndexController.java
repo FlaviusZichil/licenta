@@ -16,8 +16,13 @@ import app.dto.CityDTO;
 import app.dto.GuideDTO;
 import app.dto.MountainDTO;
 import app.dto.PeakDTO;
+import app.dto.PointDTO;
+import app.dto.RouteDTO;
+import app.dto.RoutePointDTO;
 import app.dto.TripDTO;
 import app.entities.Peak;
+import app.entities.Route;
+import app.entities.RoutePoint;
 import app.entities.Trip;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
@@ -77,10 +82,26 @@ public class IndexController {
 	
 	// mai trebuie adaugat ca param si routeDTO
 	private TripDTO convertTripToTripDTO(Trip trip, PeakDTO peakDTO, GuideDTO guideDTO) {
+		RouteDTO routeDTO = new RouteDTO(trip.getRoute().getId(), trip.getRoute().getDifficulty(), this.getRoutePointsDTOForTrip(trip));
 		TripDTO tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
-									  trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO, guideDTO);
+									  trip.getUsers(), routeDTO, peakDTO, guideDTO);
 		
 		return tripDTO;
+	}
+	
+	private List<RoutePointDTO> getRoutePointsDTOForTrip(Trip trip){
+		List<RoutePointDTO> routePointsDTO = new ArrayList<>();
+		
+		Route route = trip.getRoute();
+		List<RoutePoint> routePoints = route.getRoutePoints();
+		
+		for(RoutePoint routePoint : routePoints) {
+			PointDTO pointDTO = new PointDTO(routePoint.getPoint().getId(), routePoint.getPoint().getPointName());
+			RoutePointDTO routePointDTO = new RoutePointDTO(routePoint.getId(), routePoint.getOrder(), pointDTO);
+			routePointsDTO.add(routePointDTO);
+		}
+		
+		return routePointsDTO;
 	}
 	
 	private List<Trip> convertFromIterableToList(Iterable<Trip> allTrips){

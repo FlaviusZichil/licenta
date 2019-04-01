@@ -22,12 +22,12 @@ public class RoutePoint {
 	@JoinColumn
 	private Route route;
 
-//	@ManyToOne
-//	@JoinColumn
-//	private Point point;
+	@ManyToOne
+	@JoinColumn
+	private Point point;
 
-	@Column(name = "order")
-	private String order;
+	@Column(name = "orderOfPoint")
+	private String orderOfPoint;
 
 	public Integer getId() {
 		return id;
@@ -45,19 +45,19 @@ public class RoutePoint {
 		this.route = route;
 	}
 
-//	public Point getPoint() {
-//		return point;
-//	}
-//
-//	public void setPoint(Point point) {
-//		this.point = point;
-//	}
+	public Point getPoint() {
+		return point;
+	}
+
+	public void setPoint(Point point) {
+		this.point = point;
+	}
 
 	public String getOrder() {
-		return order;
+		return orderOfPoint;
 	}
 
 	public void setOrder(String order) {
-		this.order = order;
+		this.orderOfPoint = order;
 	}
 }

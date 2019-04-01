@@ -158,7 +158,7 @@
 				    <h5 class="card-title" th:text="'Data plecare: ' + ${tripDTO.startDate}"></h5>
 				    <h5 class="card-title" th:text="'Data intoarcere: ' + ${tripDTO.endDate}"></h5>
 				    <h5 class="card-title" th:text="'Locuri disponibile: ' + ${tripDTO.capacity}"></h5>
-				    <h5 class="card-title" th:text="'Dificultate: ' + ${tripDTO.difficulty}"></h5>
+				    <h5 class="card-title" th:text="'Dificultate: ' + ${tripDTO.routeDTO.difficulty}"></h5>
 				    <a th:href="@{/trip-details?trip=} + ${tripDTO.id}" class="btn btn-primary">Detalii</a>
 				  </div>
 				</div>

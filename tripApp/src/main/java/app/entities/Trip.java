@@ -39,9 +39,6 @@ public class Trip {
 	@Column(name = "points")
 	private Integer points;
 
-	@Column(name = "difficulty")
-	private String difficulty;
-
 	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
 	private List<UserEntity> users;
 
@@ -105,14 +102,6 @@ public class Trip {
 		this.points = points;
 	}
 
-	public String getDifficulty() {
-		return difficulty;
-	}
-
-	public void setDifficulty(String difficulty) {
-		this.difficulty = difficulty;
-	}
-
 	public List<UserEntity> getUsers() {
 		return users;
 	}
@@ -148,6 +137,6 @@ public class Trip {
 	@Override
 	public String toString() {
 		return "Trip [capacity=" + capacity + ", startDate=" + startDate + ", endDate=" + endDate + ", status=" + status
-				+ ", points=" + points + ", difficulty=" + difficulty + "]";
+				+ ", points=" + points + ", difficulty=" + "]";
 	}
 }

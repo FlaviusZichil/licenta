@@ -20,8 +20,8 @@ public class Point {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-//	@OneToMany(mappedBy = "point", cascade = CascadeType.ALL)
-//	private List<RoutePoint> routePoints;
+	@OneToMany(mappedBy = "point", cascade = CascadeType.ALL)
+	private List<RoutePoint> routePoints;
 
 	@Column(name = "name")
 	private String pointName;
@@ -34,13 +34,13 @@ public class Point {
 		this.id = id;
 	}
 
-//	public List<RoutePoint> getRoutePoints() {
-//		return routePoints;
-//	}
-//
-//	public void setRoutePoints(List<RoutePoint> routePoints) {
-//		this.routePoints = routePoints;
-//	}
+	public List<RoutePoint> getRoutePoints() {
+		return routePoints;
+	}
+
+	public void setRoutePoints(List<RoutePoint> routePoints) {
+		this.routePoints = routePoints;
+	}
 
 	public String getPointName() {
 		return pointName;

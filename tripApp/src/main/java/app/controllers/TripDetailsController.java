@@ -3,14 +3,9 @@ package app.controllers;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,22 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
-
-import app.dto.CityDTO;
-import app.dto.GuideDTO;
-import app.dto.MountainDTO;
-import app.dto.PeakDTO;
-import app.dto.PointDTO;
-import app.dto.RouteDTO;
-import app.dto.RoutePointDTO;
 import app.dto.TripDTO;
-import app.entities.Route;
-import app.entities.RoutePoint;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.TripDetailsViewModel;
 import app.repositories.TripRepository;
 import app.repositories.UserRepository;
+import app.utils.TripUtils;
 
 @Controller
 public class TripDetailsController {
@@ -112,64 +98,14 @@ public class TripDetailsController {
 		TripDTO tripDTO = null;
 
 		Iterable<Trip> allTrips = tripRepository.findAll();
-		List<Trip> trips = this.convertFromIterableToList(allTrips);
+		List<Trip> trips = TripUtils.convertFromIterableToList(allTrips);
 
 		for (Trip trip : trips) {
 			if (trip.getId() == tripId) {
-				CityDTO cityDTO = new CityDTO(trip.getPeak().getCity().getName());
-				MountainDTO mountainDTO = new MountainDTO(trip.getPeak().getMountain().getMountainName());
-				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(), trip.getPeak().getAltitude(), cityDTO, 
-											  mountainDTO, trip.getPeak().getTrips());
-				GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber());
-				RouteDTO routeDTO = new RouteDTO(trip.getRoute().getId(), trip.getRoute().getDifficulty(), this.getRoutePointsDTOForTrip(trip));
-				tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(),
-						trip.getStatus(), trip.getPoints(), trip.getUsers(), routeDTO,
-						peakDTO, guideDTO);
+				tripDTO = TripUtils.convertFromTripToTripDTO(trip);
 			}
 		}
 		return tripDTO;
-	}
-	
-	private List<RoutePointDTO> getRoutePointsDTOForTrip(Trip trip){
-		List<RoutePointDTO> routePointsDTO = new ArrayList<>();
-		
-		Route route = trip.getRoute();
-		List<RoutePoint> routePoints = route.getRoutePoints();
-		
-		for(RoutePoint routePoint : routePoints) {
-			PointDTO pointDTO = new PointDTO(routePoint.getPoint().getId(), routePoint.getPoint().getPointName());
-			RoutePointDTO routePointDTO = new RoutePointDTO(routePoint.getId(), routePoint.getOrder(), pointDTO);
-			routePointsDTO.add(routePointDTO);
-		}
-		
-		return this.sortPointsByOrder(routePointsDTO);
-	}
-	
-	private List<RoutePointDTO> sortPointsByOrder(List<RoutePointDTO> routePointsDTO){
-		Collections.sort(routePointsDTO, new Comparator<RoutePointDTO>(){
-			   @Override
-			   public int compare(RoutePointDTO firstRoutePointDTO, RoutePointDTO secondRoutePointDTO) {				   
-				   if(Integer.parseInt(firstRoutePointDTO.getOrder()) > Integer.parseInt(secondRoutePointDTO.getOrder())) {
-					   return 1;
-				   }
-				   
-				   if(Integer.parseInt(firstRoutePointDTO.getOrder()) < Integer.parseInt(secondRoutePointDTO.getOrder())) {
-					   return -1;
-				   }
-				   return 0;
-			     }
-			 });
-		
-		return routePointsDTO;
-	}
-
-	private List<Trip> convertFromIterableToList(Iterable<Trip> allTrips) {
-		List<Trip> trips = new ArrayList<Trip>();
-
-		for (Trip trip : allTrips) {
-			trips.add(trip);
-		}
-		return trips;
 	}
 
 	private void addTripForUser(UserEntity user, Integer tripId){

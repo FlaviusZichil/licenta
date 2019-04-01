@@ -20,28 +20,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 import app.dto.CityDTO;
-import app.dto.GuideDTO;
-import app.dto.MountainDTO;
-import app.dto.PeakDTO;
-import app.dto.PointDTO;
-import app.dto.RouteDTO;
-import app.dto.RoutePointDTO;
 import app.dto.TripDTO;
 import app.entities.City;
-import app.entities.Route;
-import app.entities.RoutePoint;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
 import app.repositories.UserRepository;
+import app.utils.TripUtils;
 
 @Controller
 public class AllTripsController {
 
 	@Autowired
 	private TripRepository tripRepository;
-
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -142,45 +135,12 @@ public class AllTripsController {
 		List<TripDTO> currentUserTripsDTO = new ArrayList<TripDTO>();
 
 		for (Trip trip : allTrips) {
-			if (trip.getStatus().equals("Active") && !currentUserTrips.contains(trip)) {
-				CityDTO cityDTO = new CityDTO(trip.getPeak().getCity().getName(), trip.getPeak().getCity().getLatitude(), trip.getPeak().getCity().getLongitude());
-				MountainDTO mountainDTO = new MountainDTO(trip.getPeak().getMountain().getMountainName());
-				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(),
-						trip.getPeak().getAltitude(), cityDTO, mountainDTO, trip.getPeak().getTrips());
-				GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), 
-						trip.getGuide().getPhoneNumber());
-				RouteDTO routeDTO = new RouteDTO(trip.getRoute().getId(), trip.getRoute().getDifficulty(), this.getRoutePointsDTOForTrip(trip));
-
-				currentUserTripsDTO.add(new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(),trip.getEndDate(), trip.getStatus(), 
-						                            trip.getPoints(), trip.getUsers(), routeDTO, peakDTO, guideDTO));
+			if (trip.getStatus().equals("Active") && !currentUserTrips.contains(trip)) {				
+				TripDTO tripDTO = TripUtils.convertFromTripToTripDTO(trip);
+				currentUserTripsDTO.add(tripDTO);
 			}
 		}
 		return currentUserTripsDTO;
-	}
-	
-	private List<RoutePointDTO> getRoutePointsDTOForTrip(Trip trip){
-		List<RoutePointDTO> routePointsDTO = new ArrayList<>();
-		
-		Route route = trip.getRoute();
-		List<RoutePoint> routePoints = route.getRoutePoints();
-		
-		for(RoutePoint routePoint : routePoints) {
-			PointDTO pointDTO = new PointDTO(routePoint.getPoint().getId(), routePoint.getPoint().getPointName());
-			RoutePointDTO routePointDTO = new RoutePointDTO(routePoint.getId(), routePoint.getOrder(), pointDTO);
-			routePointsDTO.add(routePointDTO);
-		}	
-		return routePointsDTO;
-	}
-
-	private UserEntity getUserByEmail(String email) {
-		Iterable<UserEntity> users = userRepository.findAll();
-
-		for (UserEntity user : users) {
-			if (user.getEmail().equals(email)) {
-				return user;
-			}
-		}
-		return null;
 	}
 	
 	private Double calculateDistanceBetweenTwoCities(City firstCity, City secondCity) {
@@ -209,7 +169,7 @@ public class AllTripsController {
 			   @Override
 			   public int compare(TripDTO firstTripDTO, TripDTO secondTripDTO) {			   
 				   City firstTripCity = convertFromCityDTOToCity(firstTripDTO.getPeakDTO().getCityDTO());
-				   City secondTripCity = convertFromCityDTOToCity(secondTripDTO.getPeakDTO().getCityDTO());
+				   City secondTripCity = convertFromCityDTOToCity(secondTripDTO.getPeakDTO().getCityDTO());		
 				   
 				   Double firstDistance = calculateDistanceBetweenTwoCities(user.getCity(), firstTripCity);
 				   Double secondDistance = calculateDistanceBetweenTwoCities(user.getCity(), secondTripCity);
@@ -231,5 +191,16 @@ public class AllTripsController {
 	private City convertFromCityDTOToCity(CityDTO cityDTO) {
 		City firstTripCity = new City(cityDTO.getName(), cityDTO.getLatitude(), cityDTO.getLongitude());
 		return firstTripCity;
+	}
+	
+	public UserEntity getUserByEmail(String email) {
+		Iterable<UserEntity> users = userRepository.findAll();
+
+		for (UserEntity user : users) {
+			if (user.getEmail().equals(email)) {
+				return user;
+			}
+		}
+		return null;
 	}
 }

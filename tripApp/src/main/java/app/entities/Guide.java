@@ -1,5 +1,7 @@
 package app.entities;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,16 +21,19 @@ public class Guide {
 	@Column(name = "guide_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private UserEntity user;
-	
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	private UserEntity user;
+
 	@Column(name = "years_of_experience")
 	private Integer yearsOfExperience;
-	
+
 	@Column(name = "phone_number")
 	private String phoneNumber;
+
+	@OneToMany(mappedBy = "guide", cascade = CascadeType.ALL)
+	private List<Trip> trips;
 
 	public Integer getId() {
 		return id;
@@ -59,6 +65,14 @@ public class Guide {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public List<Trip> getTrips() {
+		return trips;
+	}
+
+	public void setTrips(List<Trip> trips) {
+		this.trips = trips;
 	}
 
 	@Override

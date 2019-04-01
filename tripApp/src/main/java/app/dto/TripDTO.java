@@ -27,9 +27,10 @@ public class TripDTO {
 	private List<UserEntity> users;
     private Route route;
     private PeakDTO peakDTO;
+    private GuideDTO guideDTO;
     
 	public TripDTO(Integer id, Integer capacity, String startDate, String endDate, String status, Integer points,
-			String difficulty, List<UserEntity> users, Route route, PeakDTO peakDTO) {
+			String difficulty, List<UserEntity> users, Route route, PeakDTO peakDTO, GuideDTO guideDTO) {
 		super();
 		this.id = id;
 		this.capacity = capacity;
@@ -41,6 +42,7 @@ public class TripDTO {
 		this.users = users;
 		this.route = route;
 		this.peakDTO = peakDTO;
+		this.guideDTO = guideDTO;
 	}
 
 	public Integer getId() {
@@ -121,6 +123,14 @@ public class TripDTO {
 
 	public void setPeakDTO(PeakDTO peakDTO) {
 		this.peakDTO = peakDTO;
+	}
+
+	public GuideDTO getGuideDTO() {
+		return guideDTO;
+	}
+
+	public void setGuideDTO(GuideDTO guideDTO) {
+		this.guideDTO = guideDTO;
 	}
 
 	@Override

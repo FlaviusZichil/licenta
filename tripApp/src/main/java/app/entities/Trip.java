@@ -23,35 +23,39 @@ public class Trip {
 	@Column(name = "trip_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(name = "capacity")
 	private Integer capacity;
-	
+
 	@Column(name = "start_date")
 	private String startDate;
-	
+
 	@Column(name = "end_date")
 	private String endDate;
-	
+
 	@Column(name = "status")
 	private String status;
-	
+
 	@Column(name = "points")
 	private Integer points;
-	
+
 	@Column(name = "difficulty")
 	private String difficulty;
-	
+
 	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
 	private List<UserEntity> users;
-	
+
 	@ManyToOne
-    @JoinColumn
-    private Route route;
-	
+	@JoinColumn
+	private Guide guide;
+
 	@ManyToOne
-    @JoinColumn
-    private Peak peak;
+	@JoinColumn
+	private Route route;
+
+	@ManyToOne
+	@JoinColumn
+	private Peak peak;
 
 	public Integer getId() {
 		return id;
@@ -115,6 +119,14 @@ public class Trip {
 
 	public void setUsers(List<UserEntity> users) {
 		this.users = users;
+	}
+
+	public Guide getGuide() {
+		return guide;
+	}
+
+	public void setGuide(Guide guide) {
+		this.guide = guide;
 	}
 
 	public Route getRoute() {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 import app.dto.CityDTO;
+import app.dto.GuideDTO;
 import app.dto.MountainDTO;
 import app.dto.PeakDTO;
 import app.dto.TripDTO;
@@ -112,10 +113,11 @@ public class TripDetailsController {
 				MountainDTO mountainDTO = new MountainDTO(trip.getPeak().getMountain().getMountainName());
 				PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(), trip.getPeak().getAltitude(), cityDTO, 
 											  mountainDTO, trip.getPeak().getTrips());
+				GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber());
 
 				tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(),
 						trip.getStatus(), trip.getPoints(), trip.getDifficulty(), trip.getUsers(), trip.getRoute(),
-						peakDTO);
+						peakDTO, guideDTO);
 			}
 		}
 		return tripDTO;

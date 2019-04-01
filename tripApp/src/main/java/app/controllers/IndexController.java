@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.dto.CityDTO;
+import app.dto.GuideDTO;
 import app.dto.MountainDTO;
 import app.dto.PeakDTO;
 import app.dto.TripDTO;
@@ -57,7 +58,8 @@ public class IndexController {
 		for(Trip trip : trips) {
 			if(trip.getStatus().equals("Active")) {			
 				PeakDTO peakDTO = convertPeakToPeakDTO(trip.getPeak());
-				top4TripsDTO.add(this.convertTripToTripDTO(trip, peakDTO));
+				GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(),trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber());
+				top4TripsDTO.add(this.convertTripToTripDTO(trip, peakDTO, guideDTO));
 			}
 			if(top4TripsDTO.size() == 4) {
 				break;
@@ -74,9 +76,9 @@ public class IndexController {
 	}
 	
 	// mai trebuie adaugat ca param si routeDTO
-	private TripDTO convertTripToTripDTO(Trip trip, PeakDTO peakDTO) {
+	private TripDTO convertTripToTripDTO(Trip trip, PeakDTO peakDTO, GuideDTO guideDTO) {
 		TripDTO tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
-									  trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO);
+									  trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO, guideDTO);
 		
 		return tripDTO;
 	}

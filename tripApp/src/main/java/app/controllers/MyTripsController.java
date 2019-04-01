@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.dto.CityDTO;
+import app.dto.GuideDTO;
 import app.dto.MountainDTO;
 import app.dto.PeakDTO;
 import app.dto.TripDTO;
@@ -24,7 +25,7 @@ import app.repositories.TripRepository;
 import app.repositories.UserRepository;
 
 @Controller
-public class TripController {
+public class MyTripsController {
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -75,9 +76,10 @@ public class TripController {
 			MountainDTO mountainDTO = new MountainDTO(trip.getPeak().getMountain().getMountainName());
 			PeakDTO peakDTO = new PeakDTO(trip.getPeak().getId(), trip.getPeak().getPeakName(), trip.getPeak().getAltitude(), cityDTO, 
 										  mountainDTO, trip.getPeak().getTrips());
+			GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber());
 			
 			currentUserTripsDTO.add(new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
-					trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO));
+					trip.getDifficulty(), trip.getUsers(), trip.getRoute(), peakDTO, guideDTO));
 						
 		}
 		return currentUserTripsDTO;

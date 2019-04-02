@@ -8,6 +8,7 @@ public class AddTripController {
 
 	@GetMapping("/add-trip")
 	public String addTrip() {
+		System.out.println("salutare test");
 		return "views/guide/guideAddTrip";
 	}
 }

@@ -189,7 +189,7 @@
 		removeButton.innerHTML = "Elimina";
 		removeButton.setAttribute("class", "btn btn-danger");
 		removeButton.setAttribute("style", "margin-top: -1%");
-		removeButton.setAttribute("onclick", "salut()");
+		removeButton.setAttribute("onclick", "removeAction(this)");
 		
 		var rowDiv = document.createElement("div");
 		rowDiv.setAttribute("class", "row");
@@ -209,11 +209,11 @@
 		rowDiv.appendChild(col2Div);
 		col1Div.appendChild(newSelect);
 		col2Div.appendChild(removeButton);
-		allRoutePoints.appendChild(br);
+		// allRoutePoints.appendChild(br);
 	}
 	
-	function salut(){
-		console.log("salut");
+	function removeAction(e){
+		e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
 	}
 </script>
 </body>

@@ -173,9 +173,12 @@
         var points = [[${pointsDTO}]]; 
         for (var i = 0; i < points.length; i++) { 
 
-        	var defaultOption = document.createElement("option");
-    		defaultOption.setAttribute("value", "");
-          console.log(points[i].pointName); 
+        	var option = document.createElement("option");
+    		var optionText = document.createElement("p");
+    		optionText.innerHTML = points[i].pointName;
+    		console.log(optionText.innerHTML);
+    		option.appendChild(optionText);
+    		newSelect.appendChild(option);
         } 
 
       // ]]> 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -12,6 +12,7 @@
 
 </head>
 <body>
+	<form action="#" th:action="@{/add-trip}" th:object="${addTripViewModel}" method="post">
 	<div class="row" id="content">
 		 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 <div class="col-md-8 col-sm-8 col-xs-2 fla">
@@ -28,18 +29,30 @@
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="row">
 							    <div class="col">
-							      <input type="text" class="form-control" placeholder="Numele varfului">
+							    	<select class="browser-default custom-select custom-select-md mb-3">
+							    		<option value="" disabled selected>Numele varfului</option>
+									  	<option th:each="peak : *{peaksDTO}" th:text="${peak.peakName}">  	
+									</select>
 							    </div>
 							    <div class="col">
-							      <input type="number" min="1000" max="2544" class="form-control" placeholder="Altitudinea">
+							    	<select class="browser-default custom-select custom-select-md mb-3">
+							    		<option value="" disabled selected>Altitudinea</option>
+									  	<option th:each="peak : *{peaksDTO}" th:text="${peak.altitude}">  	
+									</select>
 							    </div>
 							 </div>
 							 <div class="row" style="margin-top: 2%; margin-bottom: 2%">
 							    <div class="col">
-							      <input type="text" class="form-control" placeholder="Numele muntelui">
+							    	<select class="browser-default custom-select custom-select-md mb-3">
+							    		<option value="" disabled selected>Numele muntelui</option>
+									  	<option th:each="mountainDTO : *{mountainsDTO}" th:text="${mountainDTO.name}">  	
+									</select>
 							    </div>
 							    <div class="col">
-							      <input type="text" class="form-control" placeholder="Judetul">
+							    	<select class="browser-default custom-select custom-select-md mb-3">
+							    		<option value="" disabled selected>Judetul</option>
+									  	<option th:each="city : *{citiesDTO}" th:text="${city.name}">  	
+									</select>
 							    </div>
 							 </div>
 						</div>
@@ -80,8 +93,20 @@
 				      </h5>
 				    </div>
 				    <div id="collapseTree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-				      <div class="card-body" style="text-align: left; margin-left: 3%">
+				      <div id="allRoutePoints" class="card-body" style="text-align: left; margin-left: 3%">
+							<p class="btn btn-info" onclick="createNewPoint()">Adauga punct intermediar</p><br><br>
+							<select class="browser-default custom-select custom-select-md mb-3">
+							    <option value="" disabled selected> Punct initial </option>
+								<option th:each="pointDTO : *{pointsDTO}" th:text="${pointDTO.pointName}"></option>
+							</select> <br>
 							
+							<div id="puncteIntermediare">
+							</div>
+							
+							<select class="browser-default custom-select custom-select-md mb-3">
+							    <option value="" disabled selected>Punctul final</option>
+								<option th:each="pointDTO : *{pointsDTO}" th:text="${pointDTO.pointName}"></option>
+							</select> <br>
 				      </div>
 				    </div>
 				  </div>
@@ -98,13 +123,18 @@
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="row">
 							    <div class="col">
-							      <input type="text" class="form-control" placeholder="Dificultate">
+							    	<select class="browser-default custom-select custom-select- mb-3">
+							    		<option value="" disabled selected>Dificultate</option>
+									  	<option value="1">Usor</option>
+									  	<option value="2">Mediu</option>
+									  	<option value="3">Dificil</option>
+									</select>
 							    </div>
 							    <div class="col">
 							      <input type="number" min="5" max="50" class="form-control" placeholder="Capacitate">
 							    </div>
 							    <div class="col">
-							      <input type="number" min="5" max="50" class="form-control" placeholder="Puncte">
+							      <input type="number" min="50" max="75" class="form-control" placeholder="Puncte">
 							    </div>
 							 </div>
 				      </div>
@@ -112,9 +142,60 @@
 				  </div>
 				  
 				</div>
+				<input type="submit" value="Adauga ascensiunea" class="btn btn-info"/>
 				</div>
+				
 		 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 </div>
 	</div>
+	</form>
+<script>
+	function createNewPoint(){
+		var allRoutePoints = document.getElementById("puncteIntermediare");
+		var newSelect = document.createElement("select");
+		newSelect.setAttribute("name", "punctIntermediar");
+		newSelect.setAttribute("class", "browser-default custom-select custom-select-md mb-3");
+		
+		var newOption = document.createElement("option");
+		newOption.setAttribute("value", "");
+		newOption.setAttribute("disabled", "disabled");
+		newOption.setAttribute("selected", "selected");
+		
+		var text = document.createElement("p");
+		text.innerHTML = "Punct intermediar";
+		
+		newOption.appendChild(text);
+		newSelect.appendChild(newOption);
+		
+		var br = document.createElement("br");
+		
+		var removeButton = document.createElement("p");
+		removeButton.innerHTML = "Elimina";
+		removeButton.setAttribute("class", "btn btn-danger");
+		removeButton.setAttribute("style", "margin-top: -1%");
+		removeButton.setAttribute("onclick", "salut()");
+		
+		var rowDiv = document.createElement("div");
+		rowDiv.setAttribute("class", "row");
+		removeButton.setAttribute("style", "margin-bottom: -2%");
+		
+		var col1Div = document.createElement("div");
+		col1Div.setAttribute("class", "col-md-10 col-sm-10 col-xs-2");
+		
+		var col2Div = document.createElement("div");
+		col2Div.setAttribute("class", "col-md-2 col-sm-2 col-xs-2");
+			
+		allRoutePoints.appendChild(rowDiv);
+		rowDiv.appendChild(col1Div);
+		rowDiv.appendChild(col2Div);
+		col1Div.appendChild(newSelect);
+		col2Div.appendChild(removeButton);
+		allRoutePoints.appendChild(br);
+	}
+	
+	function salut(){
+		console.log("salut");
+	}
+</script>
 </body>
 </html>

@@ -96,7 +96,7 @@
 				      <div id="allRoutePoints" class="card-body" style="text-align: left; margin-left: 3%">
 							<p class="btn btn-info" onclick="createNewPoint()">Adauga punct intermediar</p><br><br>
 							<select class="browser-default custom-select custom-select-md mb-3">
-							    <option value="" disabled selected> Punct initial </option>
+							    <option value="" disabled selected> Punctul initial </option>
 								<option th:each="pointDTO : *{pointsDTO}" th:text="${pointDTO.pointName}"></option>
 							</select> <br>
 							
@@ -150,12 +150,59 @@
 	</div>
 	</form>
 <script th:inline="javascript">
-	function createNewPoint(){
+
+	function createNewPoint(){		
 		var allRoutePoints = document.getElementById("puncteIntermediare");
-		var newSelect = document.createElement("select");
-		newSelect.setAttribute("name", "punctIntermediar");
-		newSelect.setAttribute("class", "browser-default custom-select custom-select-md mb-3");
+
+		var select = createSelectTag();
+		createDefaultOption(select);
+     	createOptionsForSelect(select);
+     	
+     	var removeButton = createRemoveButton();
+			
+		var rowDiv = document.createElement("div");
+		rowDiv.setAttribute("class", "row");
+			
+		var col1Div = document.createElement("div");
+		col1Div.setAttribute("class", "col-md-10 col-sm-10 col-xs-2");
 		
+		var col2Div = document.createElement("div");
+		col2Div.setAttribute("class", "col-md-2 col-sm-2 col-xs-2");
+		
+		allRoutePoints.appendChild(rowDiv);
+		rowDiv.appendChild(col1Div);
+		rowDiv.appendChild(col2Div);
+		col1Div.appendChild(select);
+		col2Div.appendChild(removeButton);
+	}
+	
+	function createRemoveButton(){
+		var removeButton = document.createElement("p");
+		removeButton.innerHTML = "Elimina";
+		removeButton.setAttribute("class", "btn btn-danger");
+		removeButton.setAttribute("onclick", "removeAction(this)");
+		return removeButton;
+	}
+	
+	function createOptionsForSelect(select){		
+        var points = [[${pointsDTO}]]; 
+        for (var i = 0; i < points.length; i++) { 
+        	var option = document.createElement("option");
+    		var optionText = document.createElement("p");
+    		optionText.innerHTML = points[i].pointName;
+    		option.appendChild(optionText);
+    		select.appendChild(option);
+        }      
+	}
+	
+	function createSelectTag(){
+		var select = document.createElement("select");
+		select.setAttribute("name", "punctIntermediar");
+		select.setAttribute("class", "browser-default custom-select custom-select-md mb-3");
+		return select;
+	}
+	
+	function createDefaultOption(selectTag){
 		var defaultOption = document.createElement("option");
 		defaultOption.setAttribute("value", "");
 		defaultOption.setAttribute("disabled", "disabled");
@@ -165,51 +212,7 @@
 		text.innerHTML = "Punct intermediar";
 		
 		defaultOption.appendChild(text);
-		newSelect.appendChild(defaultOption);
-    
-    	
-		 // <![CDATA[ 
-
-        var points = [[${pointsDTO}]]; 
-        for (var i = 0; i < points.length; i++) { 
-
-        	var option = document.createElement("option");
-    		var optionText = document.createElement("p");
-    		optionText.innerHTML = points[i].pointName;
-    		console.log(optionText.innerHTML);
-    		option.appendChild(optionText);
-    		newSelect.appendChild(option);
-        } 
-
-      // ]]> 
-		
-		var br = document.createElement("br");
-		
-		var removeButton = document.createElement("p");
-		removeButton.innerHTML = "Elimina";
-		removeButton.setAttribute("class", "btn btn-danger");
-		removeButton.setAttribute("style", "margin-top: -1%");
-		removeButton.setAttribute("onclick", "removeAction(this)");
-		
-		var rowDiv = document.createElement("div");
-		rowDiv.setAttribute("class", "row");
-		removeButton.setAttribute("style", "margin-bottom: -2%");
-		
-		var col1Div = document.createElement("div");
-		col1Div.setAttribute("class", "col-md-10 col-sm-10 col-xs-2");
-		
-		var col2Div = document.createElement("div");
-		col2Div.setAttribute("class", "col-md-2 col-sm-2 col-xs-2");
-
-		var message = [[${message}]];
-	    console.log(message);
-		
-		allRoutePoints.appendChild(rowDiv);
-		rowDiv.appendChild(col1Div);
-		rowDiv.appendChild(col2Div);
-		col1Div.appendChild(newSelect);
-		col2Div.appendChild(removeButton);
-		// allRoutePoints.appendChild(br);
+		selectTag.appendChild(defaultOption);
 	}
 	
 	function removeAction(e){

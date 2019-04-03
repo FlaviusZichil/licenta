@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ import app.repositories.PointRepository;
 import app.utils.TripUtils;
 
 @Controller
-public class AddTripController {
+public class AddTripController<T> {
 
 	@Autowired
 	private PeakRepository peakRepository;
@@ -45,10 +46,8 @@ public class AddTripController {
 		addTripViewModel.setPeaksDTO(this.getPeaksDTO());
 		addTripViewModel.setMountainsDTO(this.getMountainsDTO());
 		addTripViewModel.setCitiesDTO(this.getCitiesDTO());
-		addTripViewModel.setPointsDTO(this.getPointsDTO());
-		model.addAttribute("message", "Servus");
+//		addTripViewModel.setPointsDTO(this.getPointsDTO());
 		model.addAttribute("pointsDTO", this.getPointsDTO());
-
 		model.addAttribute("addTripViewModel", addTripViewModel);
 		
 		return "views/guide/guideAddTrip";
@@ -66,7 +65,7 @@ public class AddTripController {
 		List<PeakDTO> peaksDTO = new ArrayList<>();
 		
 		for(Peak peak : peaks) {
-			PeakDTO peakDTO = this.convertFromPeaktoPeakDTO(peak);
+			PeakDTO peakDTO = TripUtils.convertFromPeakToPeakDTO(peak);
 			peaksDTO.add(peakDTO);
 		}		
 		return peaksDTO;
@@ -106,13 +105,5 @@ public class AddTripController {
 			pointsDTO.add(pointDTO);
 		}		
 		return pointsDTO;
-	}
-	
-	private PeakDTO convertFromPeaktoPeakDTO(Peak peak) {
-		CityDTO cityDTO = new CityDTO(peak.getCity().getName(), peak.getCity().getLatitude(), peak.getCity().getLongitude());
-		MountainDTO mountainDTO = new MountainDTO(peak.getMountain().getMountainName());
-		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), cityDTO, mountainDTO, peak.getTrips());
-		
-		return peakDTO;
 	}
 }

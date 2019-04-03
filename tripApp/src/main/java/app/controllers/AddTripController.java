@@ -46,6 +46,9 @@ public class AddTripController {
 		addTripViewModel.setMountainsDTO(this.getMountainsDTO());
 		addTripViewModel.setCitiesDTO(this.getCitiesDTO());
 		addTripViewModel.setPointsDTO(this.getPointsDTO());
+		model.addAttribute("message", "Servus");
+		model.addAttribute("pointsDTO", this.getPointsDTO());
+
 		model.addAttribute("addTripViewModel", addTripViewModel);
 		
 		return "views/guide/guideAddTrip";

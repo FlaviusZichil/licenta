@@ -149,23 +149,36 @@
 		 </div>
 	</div>
 	</form>
-<script>
+<script th:inline="javascript">
 	function createNewPoint(){
 		var allRoutePoints = document.getElementById("puncteIntermediare");
 		var newSelect = document.createElement("select");
 		newSelect.setAttribute("name", "punctIntermediar");
 		newSelect.setAttribute("class", "browser-default custom-select custom-select-md mb-3");
 		
-		var newOption = document.createElement("option");
-		newOption.setAttribute("value", "");
-		newOption.setAttribute("disabled", "disabled");
-		newOption.setAttribute("selected", "selected");
-		
+		var defaultOption = document.createElement("option");
+		defaultOption.setAttribute("value", "");
+		defaultOption.setAttribute("disabled", "disabled");
+		defaultOption.setAttribute("selected", "selected");
+				
 		var text = document.createElement("p");
 		text.innerHTML = "Punct intermediar";
 		
-		newOption.appendChild(text);
-		newSelect.appendChild(newOption);
+		defaultOption.appendChild(text);
+		newSelect.appendChild(defaultOption);
+    
+    	
+		 // <![CDATA[ 
+
+        var points = [[${pointsDTO}]]; 
+        for (var i = 0; i < points.length; i++) { 
+
+        	var defaultOption = document.createElement("option");
+    		defaultOption.setAttribute("value", "");
+          console.log(points[i].pointName); 
+        } 
+
+      // ]]> 
 		
 		var br = document.createElement("br");
 		
@@ -184,7 +197,10 @@
 		
 		var col2Div = document.createElement("div");
 		col2Div.setAttribute("class", "col-md-2 col-sm-2 col-xs-2");
-			
+
+		var message = [[${message}]];
+	    console.log(message);
+		
 		allRoutePoints.appendChild(rowDiv);
 		rowDiv.appendChild(col1Div);
 		rowDiv.appendChild(col2Div);

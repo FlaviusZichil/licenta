@@ -1,14 +1,20 @@
 package app.controllers;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import app.dto.CityDTO;
 import app.dto.MountainDTO;
@@ -26,7 +32,7 @@ import app.repositories.PointRepository;
 import app.utils.TripUtils;
 
 @Controller
-public class AddTripController<T> {
+public class AddTripController {
 
 	@Autowired
 	private PeakRepository peakRepository;
@@ -46,7 +52,7 @@ public class AddTripController<T> {
 		addTripViewModel.setPeaksDTO(this.getPeaksDTO());
 		addTripViewModel.setMountainsDTO(this.getMountainsDTO());
 		addTripViewModel.setCitiesDTO(this.getCitiesDTO());
-//		addTripViewModel.setPointsDTO(this.getPointsDTO());
+		addTripViewModel.setPointsDTO(this.getPointsDTO());
 		model.addAttribute("pointsDTO", this.getPointsDTO());
 		model.addAttribute("addTripViewModel", addTripViewModel);
 		
@@ -54,9 +60,26 @@ public class AddTripController<T> {
 	}
 	
 	@PostMapping("/add-trip")
-	public String postAddTrip() {
+	public String postAddTrip(@RequestParam(name = "startDate", required = false) String startDate,
+							  @RequestParam(name = "endDate", required = false) String endDate) {
 		
-		return "views/guide/guideAddTrip";
+		System.out.println(startDate);
+		System.out.println(endDate);
+		
+		return "redirect:/";
+	}
+	
+	private boolean verifyDates(String startDate, String endDate) throws ParseException {
+		Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+		Date secondDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
+
+		long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
+		long daysDifference = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+		
+		if(firstDate.after(secondDate) || firstDate.before(Timestamp.valueOf(LocalDateTime.now())) || daysDifference > 4) {
+			return false;
+		}
+		return true;
 	}
 	
 	private List<PeakDTO> getPeaksDTO(){

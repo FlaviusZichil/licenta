@@ -19,7 +19,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 2%; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -27,16 +27,18 @@ body {font-family: Arial, Helvetica, sans-serif;}
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  opacity: 0.9;
 }
 
 /* Modal Content */
 .modal-content {
+  opacity: 0.9;
   position: relative;
   background-color: #fefefe;
   margin: auto;
   padding: 0;
   border: 1px solid #888;
-  width: 80%;
+  width: 60%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
@@ -104,13 +106,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="row">
 								<div class="col">
-							    	<select id="mountain" onblur="addToVerify(this, verifyMountain)" class="browser-default custom-select custom-select-md mb-3">
+							    	<select id="mountain" onblur="addSelectToVerify(this, verifyMountain)" class="browser-default custom-select custom-select-md mb-3">
 							    		<option value="" disabled selected>Numele muntelui</option>
 									  	<option th:each="mountainDTO : *{mountainsDTO}" th:text="${mountainDTO.name}">  	
 									</select>
 							    </div>
 							    <div class="col">
-							    	<select onblur="addToVerify(this, verifyCity)" class="browser-default custom-select custom-select-md mb-3">
+							    	<select onblur="addSelectToVerify(this, verifyCity)" class="browser-default custom-select custom-select-md mb-3">
 							    		<option value="" disabled selected>Judetul</option>
 									  	<option th:each="city : *{citiesDTO}" th:text="${city.name}">  	
 									</select>
@@ -118,13 +120,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							 </div>
 							 <div class="row">
 							    <div class="col">
-							    	<select onblur="addToVerify(this, verifyPeak)" class="browser-default custom-select custom-select-md mb-3">
+							    	<select onblur="addSelectToVerify(this, verifyPeak)" class="browser-default custom-select custom-select-md mb-3">
 							    		<option value="" disabled selected>Numele varfului</option>
 									  	<option th:each="peak : *{peaksDTO}" th:text="${peak.peakName}">  	
 									</select>
 							    </div>
 							    <div class="col">
-							    	<select onblur="addToVerify(this, verifyAltitude)" class="browser-default custom-select custom-select-md mb-3">
+							    	<select onblur="addSelectToVerify(this, verifyAltitude)" class="browser-default custom-select custom-select-md mb-3">
 							    		<option value="" disabled selected>Altitudinea</option>
 									  	<option th:each="peak : *{peaksDTO}" th:text="${peak.altitude}">  	
 									</select>
@@ -148,11 +150,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							<div class="row">
 							    <div class="col">
 							      <label for="startDate"> Data inceput </label>
-							      <input type="date" id="startDate" name="startDate" class="form-control" required>
+							      <input onblur="addInputToVerify(this, verifyStartDate)" type="date" id="startDate" name="startDate" class="form-control" required>
 							    </div>
 							    <div class="col">
 							      <label for="endDate"> Data incheiere </label>
-							      <input type="date" id="endDate" name="endDate" class="form-control" required>
+							      <input onblur="addInputToVerify(this, verifyEndDate)" type="date" id="endDate" name="endDate" class="form-control" required>
 							    </div>
 							 </div>
 				      </div>
@@ -162,15 +164,15 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				  <div class="card" style="margin-bottom: 2%">
 				    <div class="card-header" id="headingTree" style="background: linear-gradient(to bottom, #ccd6dd 0%, #55acee 100%);">
 				      <h5 class="mb-0">
-				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTree" aria-expanded="false" aria-controls="collapseTwo">
+				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseTwo">
 				          3. Adauga traseu
 				        </button>
 				      </h5>
 				    </div>
-				    <div id="collapseTree" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+				    <div id="collapseThree" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
 				      <div id="allRoutePoints" class="card-body" style="text-align: left; margin-left: 3%">
 							<p class="btn btn-info" onclick="createNewPoint()">Adauga punct intermediar</p><br><br>
-							<select class="browser-default custom-select custom-select-md mb-3">
+							<select onblur="addSelectToVerify(this, verifyInitialPoint)" class="browser-default custom-select custom-select-md mb-3">
 							    <option value="" disabled selected> Punctul initial </option>
 								<option th:each="pointDTO : *{pointsDTO}" th:text="${pointDTO.pointName}"></option>
 							</select> <br>
@@ -178,7 +180,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							<div id="puncteIntermediare">
 							</div>
 							
-							<select class="browser-default custom-select custom-select-md mb-3">
+							<select onblur="addSelectToVerify(this, verifyFinalPoint)" class="browser-default custom-select custom-select-md mb-3">
 							    <option value="" disabled selected>Punctul final</option>
 								<option th:each="pointDTO : *{pointsDTO}" th:text="${pointDTO.pointName}"></option>
 							</select> <br>
@@ -194,11 +196,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				        </button>
 				      </h5>
 				    </div>
-				    <div id="collapseFour" class="collapse show" aria-labelledby="headingFour" data-parent="#accordionExample">
+				    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="row">
 							    <div class="col">
-							    	<select class="browser-default custom-select custom-select- mb-3">
+							    	<select onblur="addSelectToVerify(this, verifyDifficulty)" id="difficulty" class="browser-default custom-select custom-select- mb-3">
 							    		<option value="" disabled selected>Dificultate</option>
 									  	<option value="1">Usor</option>
 									  	<option value="2">Mediu</option>
@@ -206,10 +208,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 									</select>
 							    </div>
 							    <div class="col">
-							      <input id="capacity" type="number" min="5" max="50" class="form-control" placeholder="Capacitate" required>
+							      <input onblur="addInputToVerify(this, verifyCapacity)" id="capacity" type="number" min="5" max="50" class="form-control" placeholder="Capacitate" required>
 							    </div>
 							    <div class="col">
-							      <input id="points" type="number" min="50" max="75" class="form-control" placeholder="Puncte" required>
+							      <input onblur="addInputToVerify(this, verifyPoints)" id="points" type="number" min="50" max="75" class="form-control" placeholder="Puncte" required>
 							    </div>
 							 </div>
 				      </div>
@@ -218,10 +220,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				  
 				</div>
 				<!-- Trigger/Open The Modal -->
-				<p class="btn btn-success" id="myBtn"> Vizualizeaza ascensiunea </p>
+				<p class="btn btn-success" id="modalTrigger"> Vizualizeaza ascensiunea </p>
 				
 				<!-- The Modal -->
-				<div id="myModal" class="modal">
+				<div id="previewModal" class="modal">
 				
 				  <!-- Modal content -->
 				  <div class="modal-content">
@@ -231,44 +233,112 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				    <div class="modal-body">
 				    	<div class="row" id="content">
 							<div class="col-md-4 col-sm-4 col-xs-2 fla"></div>
-							<div class="col-md-4 col-sm-4 col-xs-2 fla">
+							<div class="col-md-6 col-sm-6 col-xs-2 fla">
 								<table>
 									<tr>
 										<td>
-											<h3> NUMELE MUNTELUI: </h3> 
+											<h4> NUMELE MUNTELUI: </h4> 
 										</td>
 										<td>
-											<h3 id="verifyMountain"></h3>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<h3> JUDETUL: </h3> 
-										</td>
-										<td>
-											<h3 id="verifyCity"></h3>
+											<h4 id="verifyMountain"></h3h4>
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<h3> NUMELE VARFULUI: </h3> 
+											<h4> JUDETUL: </h4> 
 										</td>
 										<td>
-											<h3 id="verifyPeak"></h3>
+											<h4 id="verifyCity"></h4>
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<h3> ALTITUDINE: </h3> 
+											<h4> NUMELE VARFULUI: </h4> 
 										</td>
 										<td>
-							      			<h3 id="verifyAltitude"></h3>
+											<h4 id="verifyPeak"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> ALTITUDINE: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyAltitude"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> DATA INCEPUT: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyStartDate"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> DATA SFARSIT: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyEndDate"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> PUNCT INITIAL: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyInitialPoint"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> PUNCT INTERMEDIAR: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyIntermediarPoint"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> PUNCT FINAL: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyFinalPoint"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> DIFICULTATE: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyDifficulty"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> CAPACITATE: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyCapacity"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h4> PUNCTE: </h4> 
+										</td>
+										<td>
+							      			<h4 id="verifyPoints"></h4>
+										</td>
+									</tr>
+									<tr>
+										<td collspan="2">
+											<input class="btn btn-success btn-block" type="submit" value="Adauga ascensiunea"/>
 										</td>
 									</tr>
 								</table>
-								<input class="btn btn-success" type="submit" value="Adauga ascensiunea"/>
 							</div>							
-							<div class="col-md-4 col-sm-4 col-xs-2 fla"></div>
+							<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 				    </div>
 				    <div class="modal-footer">
 				    </div>
@@ -280,60 +350,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
 		 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 </div>
 	</div>
-	</form>
-	<script>
-			
+</form>
+<script src="scripts/tripPreview.js"></script>
 
-				var modal = document.getElementById('myModal');	
-				var btn = document.getElementById("myBtn");	
-				var span = document.getElementsByClassName("close")[0];
-			
-				btn.onclick = function() {
-					var mountain = document.getElementById("mountain");
-					
-					var inputs = document.forms["addTripForm"].getElementsByTagName("input");
-					var selects = document.forms["addTripForm"].getElementsByTagName("select");
-					
-					var counterInput = 0;
-					for(var i = 0; i < inputs.length; i++){
-						if(inputs[i].value == ""){
-							inputs[i].focus();
-							counterInput++;
-						}
-					}
-					
-					var counterSelect = 0;
-					for(var i = 0; i < selects.length; i++){
-						var option = selects[i].options[selects[i].selectedIndex].text;
-						if(option == "Numele muntelui" || option == "Altitudinea" || option == "Numele varfului" || option == "Judetul"){
-							selects[i].focus();
-							counterSelect++;
-						}
-					}
-					
-					if(counterSelect == 0 && counterInput == 0){
-						modal.style.display = "block";
-					}				  
-				}
-				
-				span.onclick = function() {
-				  modal.style.display = "none";
-				}
-				
-				window.onclick = function(event) {
-				  if (event.target == modal) {
-				    modal.style.display = "none";
-				  }
-				}
-			
-			
-		
-	</script>
-
-<script th:inline="javascript">
-	
-	function addToVerify(select, resultParagraph){
-		var mountain = document.getElementById(resultParagraph);
+<script>
+	function addSelectToVerify(select, resultParagraph){
 		var result = select.options[select.selectedIndex].text;
 		
 		switch(resultParagraph){
@@ -347,12 +368,46 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				resultParagraph.innerHTML = result;
 				break;
 			case verifyAltitude:
-				resultParagraph.innerHTML = result + "m";
+				resultParagraph.innerHTML = result;
+				break;
+			case verifyInitialPoint:
+				resultParagraph.innerHTML = result;
+				break;
+			case verifyIntermediarPoint:
+				resultParagraph.innerHTML = result;
+				break;
+			case verifyFinalPoint:
+				resultParagraph.innerHTML = result;
+				break;
+			case verifyDifficulty:
+				resultParagraph.innerHTML = result;
 				break;
 		}	
 	}
+	
+	function addInputToVerify(input, resultParagraph){
+		var result = input.value;
+		
+		switch(resultParagraph){
+			case verifyStartDate:
+				resultParagraph.innerHTML = result;
+				break;
+			case verifyEndDate:
+				resultParagraph.innerHTML = result;
+				break;
+			case verifyCapacity:
+				resultParagraph.innerHTML = result;
+				break;
+			case verifyPoints:
+				resultParagraph.innerHTML = result;
+				break;
+		}
+	}	
 
-	function createNewPoint(){		
+</script>
+
+<script th:inline="javascript">
+function createNewPoint(){		
 		var allRoutePoints = document.getElementById("puncteIntermediare");
 
 		var select = createSelectTag();
@@ -400,6 +455,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 		var select = document.createElement("select");
 		select.setAttribute("name", "punctIntermediar");
 		select.setAttribute("class", "browser-default custom-select custom-select-md mb-3");
+		select.setAttribute("onblur", "addSelectToVerify(this, verifyIntermediarPoint)");
 		return select;
 	}
 	

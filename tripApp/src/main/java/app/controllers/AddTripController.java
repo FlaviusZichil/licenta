@@ -104,6 +104,7 @@ public class AddTripController {
 		boolean areDatesValid = true;
 		boolean isCapacityValid = true;
 		boolean arePointsValid = true;
+		boolean isLocationValid = true;
 		
 		if(!areDatesValid(startDate, endDate)) {
 			model.addAttribute("invalidDates", true);
@@ -120,22 +121,34 @@ public class AddTripController {
 			arePointsValid = false;
 		}
 		
-		if(areDatesValid && isCapacityValid && arePointsValid) {
-			addTripToDatabase(mountain, city, peak, altitude, startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), principal);
+//		System.out.println(this.getPeakByName(peak, Integer.parseInt(altitude), city, mountain));
+		
+		if(this.getPeakByName(peak, Integer.parseInt(altitude), city, mountain) == null) {
+			model.addAttribute("invalidLocation", true);
+			isLocationValid = false;
+		}
+		
+		System.out.println(areDatesValid);
+		System.out.println(isCapacityValid);
+		System.out.println(arePointsValid);
+		System.out.println(isLocationValid);
+		
+		if(areDatesValid && isCapacityValid && arePointsValid && isLocationValid) {
+			addTripToDatabase(mountain, city, peak, Integer.parseInt(altitude), startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), principal);
 			System.out.println("calatorie adaugata");
 		}
 		else {
 			System.out.println("eroare la adaugare");
 		}
 		
-		return "redirect:/";
+		return "redirect:/all-trips";
 	}
 	
-	private void addTripToDatabase(String mountain, String city, String peak, String altitude, String startDate, 
+	private void addTripToDatabase(String mountain, String city, String peak, Integer altitude, String startDate, 
 								   String endDate, String initialPoint, String interemediatePoints, String finalPoint, 
 								   Integer capacity, String difficulty, Integer points, Principal principal) {
 		
-		Peak peakFortrip = this.getPeakByName(peak);
+		Peak peakFortrip = this.getPeakByName(peak, altitude, city, mountain);
 		
 		Route route = this.addRoute(difficulty);
 		this.addRoutePoints(route, interemediatePoints, initialPoint, finalPoint);
@@ -143,8 +156,7 @@ public class AddTripController {
 		Guide guide = this.getGuideByUserId(principal);
 		
 		Trip trip = new Trip(capacity, startDate, endDate, "Active", points, guide, route, peakFortrip);
-		tripRepository.save(trip);
-		
+		tripRepository.save(trip);		
 	}
 	
 	private Route addRoute(String difficulty) {
@@ -266,11 +278,20 @@ public class AddTripController {
 		return null;
 	}
 	
-	private Peak getPeakByName(String peakName) {
+	private Peak getPeakByName(String peakName, Integer altitude, String city, String mountain) {
 		Iterable<Peak> peaks = peakRepository.findAll();
 		
-		for(Peak peak : peaks) {
-			if(peak.getPeakName().equals(peakName)) {
+		for(Peak peak : peaks) {			
+			System.out.println(peak.getPeakName() + " = " + peakName);
+			System.out.println(peak.getAltitude() + " = " + altitude);
+			System.out.println(peak.getCity().getName() + " = " + city);
+			System.out.println(peak.getMountain().getMountainName() + " = " + mountain);
+			System.out.println("=============================================");
+			
+			if(peak.getPeakName().trim().toUpperCase().equals(peakName.trim().toUpperCase()) && 
+			   peak.getAltitude() == altitude && 
+			   peak.getCity().getName().trim().toUpperCase().equals(city.trim().toUpperCase()) &&
+			   peak.getMountain().getMountainName().trim().toUpperCase().equals(mountain.trim().toUpperCase())) {
 				return peak;
 			}
 		}

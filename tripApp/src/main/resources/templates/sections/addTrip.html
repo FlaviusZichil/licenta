@@ -106,13 +106,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="row">
 								<div class="col">
-							    	<select id="mountain" onblur="addSelectToVerify(this, verifyMountain)" class="browser-default custom-select custom-select-md mb-3">
+							    	<select id="mountain" name="mountain" onblur="addSelectToVerify(this, verifyMountain)" class="browser-default custom-select custom-select-md mb-3">
 							    		<option value="" disabled selected>Numele muntelui</option>
 									  	<option th:each="mountainDTO : *{mountainsDTO}" th:text="${mountainDTO.name}">  	
 									</select>
 							    </div>
 							    <div class="col">
-							    	<select onblur="addSelectToVerify(this, verifyCity)" class="browser-default custom-select custom-select-md mb-3">
+							    	<select id="city" name="city" onblur="addSelectToVerify(this, verifyCity)" class="browser-default custom-select custom-select-md mb-3">
 							    		<option value="" disabled selected>Judetul</option>
 									  	<option th:each="city : *{citiesDTO}" th:text="${city.name}">  	
 									</select>
@@ -120,13 +120,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							 </div>
 							 <div class="row">
 							    <div class="col">
-							    	<select onblur="addSelectToVerify(this, verifyPeak)" class="browser-default custom-select custom-select-md mb-3">
+							    	<select id="peak" name="peak" onblur="addSelectToVerify(this, verifyPeak)" class="browser-default custom-select custom-select-md mb-3">
 							    		<option value="" disabled selected>Numele varfului</option>
 									  	<option th:each="peak : *{peaksDTO}" th:text="${peak.peakName}">  	
 									</select>
 							    </div>
 							    <div class="col">
-							    	<select onblur="addSelectToVerify(this, verifyAltitude)" class="browser-default custom-select custom-select-md mb-3">
+							    	<select id="altitude" name="altitude" onblur="addSelectToVerify(this, verifyAltitude)" class="browser-default custom-select custom-select-md mb-3">
 							    		<option value="" disabled selected>Altitudinea</option>
 									  	<option th:each="peak : *{peaksDTO}" th:text="${peak.altitude}">  	
 									</select>
@@ -172,7 +172,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				    <div id="collapseThree" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
 				      <div id="allRoutePoints" class="card-body" style="text-align: left; margin-left: 3%">
 							<p class="btn btn-info" onclick="createNewPoint()">Adauga punct intermediar</p><br><br>
-							<select onblur="addSelectToVerify(this, verifyInitialPoint)" class="browser-default custom-select custom-select-md mb-3">
+							<select id="initialPoint" name="initialPoint" onblur="addSelectToVerify(this, verifyInitialPoint)" class="browser-default custom-select custom-select-md mb-3">
 							    <option value="" disabled selected> Punctul initial </option>
 								<option th:each="pointDTO : *{pointsDTO}" th:text="${pointDTO.pointName}"></option>
 							</select> <br>
@@ -180,7 +180,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							<div id="puncteIntermediare">
 							</div>
 							
-							<select onblur="addSelectToVerify(this, verifyFinalPoint)" class="browser-default custom-select custom-select-md mb-3">
+							<select id="finalPoint" name="finalPoint" onblur="addSelectToVerify(this, verifyFinalPoint)" class="browser-default custom-select custom-select-md mb-3">
 							    <option value="" disabled selected>Punctul final</option>
 								<option th:each="pointDTO : *{pointsDTO}" th:text="${pointDTO.pointName}"></option>
 							</select> <br>
@@ -200,18 +200,18 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="row">
 							    <div class="col">
-							    	<select onblur="addSelectToVerify(this, verifyDifficulty)" id="difficulty" class="browser-default custom-select custom-select- mb-3">
+							    	<select id="difficulty" name="difficulty" onblur="addSelectToVerify(this, verifyDifficulty)" class="browser-default custom-select custom-select- mb-3">
 							    		<option value="" disabled selected>Dificultate</option>
-									  	<option value="1">Usor</option>
-									  	<option value="2">Mediu</option>
-									  	<option value="3">Dificil</option>
+									  	<option value="Usor">Usor</option>
+									  	<option value="Mediu">Mediu</option>
+									  	<option value="Dificil">Dificil</option>
 									</select>
 							    </div>
 							    <div class="col">
-							      <input onblur="addInputToVerify(this, verifyCapacity)" id="capacity" type="number" min="5" max="50" class="form-control" placeholder="Capacitate" required>
+							      <input id="capacity" name="capacity" onblur="addInputToVerify(this, verifyCapacity)" type="number" min="5" max="50" class="form-control" placeholder="Capacitate" required>
 							    </div>
 							    <div class="col">
-							      <input onblur="addInputToVerify(this, verifyPoints)" id="points" type="number" min="50" max="75" class="form-control" placeholder="Puncte" required>
+							      <input id="points" name="points" onblur="addInputToVerify(this, verifyPoints)" type="number" min="50" max="75" class="form-control" placeholder="Puncte" required>
 							    </div>
 							 </div>
 				      </div>
@@ -237,10 +237,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 								<table>
 									<tr>
 										<td>
-											<h4> NUMELE MUNTELUI: </h4> 
+											<h4> MUNTELE: </h4> 
 										</td>
 										<td>
-											<h4 id="verifyMountain"></h3h4>
+											<h4 id="verifyMountain"></h4>
 										</td>
 									</tr>
 									<tr>
@@ -253,7 +253,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 									</tr>
 									<tr>
 										<td>
-											<h4> NUMELE VARFULUI: </h4> 
+											<h4> VARFUL: </h4> 
 										</td>
 										<td>
 											<h4 id="verifyPeak"></h4>
@@ -332,8 +332,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 										</td>
 									</tr>
 									<tr>
-										<td collspan="2">
-											<input class="btn btn-success btn-block" type="submit" value="Adauga ascensiunea"/>
+										<td colspan="2">
+											<div th:if="${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF') }">
+												<input class="btn btn-success btn-block" type="submit" value="Sugereaza ascensiunea"/>
+											</div>
+											<div th:if="${#request.isUserInRole('ROLE_GUIDE')}">
+												<input class="btn btn-success btn-block" type="submit" value="Adauga ascensiunea"/>
+											</div>
 										</td>
 									</tr>
 								</table>
@@ -352,59 +357,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 	</div>
 </form>
 <script src="scripts/tripPreview.js"></script>
-
-<script>
-	function addSelectToVerify(select, resultParagraph){
-		var result = select.options[select.selectedIndex].text;
-		
-		switch(resultParagraph){
-			case verifyMountain:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyCity:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyPeak:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyAltitude:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyInitialPoint:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyIntermediarPoint:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyFinalPoint:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyDifficulty:
-				resultParagraph.innerHTML = result;
-				break;
-		}	
-	}
-	
-	function addInputToVerify(input, resultParagraph){
-		var result = input.value;
-		
-		switch(resultParagraph){
-			case verifyStartDate:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyEndDate:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyCapacity:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyPoints:
-				resultParagraph.innerHTML = result;
-				break;
-		}
-	}	
-
-</script>
+<script src="scripts/addDataToVerify.js"></script>
 
 <script th:inline="javascript">
 function createNewPoint(){		
@@ -453,7 +406,8 @@ function createNewPoint(){
 	
 	function createSelectTag(){
 		var select = document.createElement("select");
-		select.setAttribute("name", "punctIntermediar");
+// 		select.setAttribute("name", "punctIntermediar");
+		select.setAttribute("name", "intermediatePoint");
 		select.setAttribute("class", "browser-default custom-select custom-select-md mb-3");
 		select.setAttribute("onblur", "addSelectToVerify(this, verifyIntermediarPoint)");
 		return select;

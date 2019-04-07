@@ -38,6 +38,16 @@ public class Peak {
 	@ManyToOne
     @JoinColumn
     private Mountain mountain;
+	
+	public Peak() {}
+
+	public Peak(String peakName, Integer altitude, City city, Mountain mountain) {
+		super();
+		this.peakName = peakName;
+		this.altitude = altitude;
+		this.city = city;
+		this.mountain = mountain;
+	}
 
 	public Integer getId() {
 		return id;

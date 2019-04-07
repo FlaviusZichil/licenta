@@ -37,6 +37,11 @@ public class City {
 	
 	public City() {}
 	
+	public City(String name) {
+		super();
+		this.name = name;
+	}
+	
 	public City(String name, Double latitude, Double longitude) {
 		super();
 		this.name = name;

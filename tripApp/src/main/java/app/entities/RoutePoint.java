@@ -1,5 +1,6 @@
 package app.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,15 @@ public class RoutePoint {
 
 	@Column(name = "orderOfPoint")
 	private String orderOfPoint;
+	
+	public RoutePoint() {}
+
+	public RoutePoint(Route route, Point point, String orderOfPoint) {
+		super();
+		this.route = route;
+		this.point = point;
+		this.orderOfPoint = orderOfPoint;
+	}
 
 	public Integer getId() {
 		return id;

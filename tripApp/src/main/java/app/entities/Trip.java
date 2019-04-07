@@ -53,6 +53,21 @@ public class Trip {
 	@ManyToOne
 	@JoinColumn
 	private Peak peak;
+	
+	public Trip() {}
+
+	public Trip(Integer capacity, String startDate, String endDate, String status, Integer points,
+			Guide guide, Route route, Peak peak) {
+		super();
+		this.capacity = capacity;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = status;
+		this.points = points;
+		this.guide = guide;
+		this.route = route;
+		this.peak = peak;
+	}
 
 	public Integer getId() {
 		return id;

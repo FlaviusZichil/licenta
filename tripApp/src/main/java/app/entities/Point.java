@@ -25,6 +25,13 @@ public class Point {
 
 	@Column(name = "name")
 	private String pointName;
+	
+	public Point() {}
+
+	public Point(String pointName) {
+		super();
+		this.pointName = pointName;
+	}
 
 	public Integer getId() {
 		return id;

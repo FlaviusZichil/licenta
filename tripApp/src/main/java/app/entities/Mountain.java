@@ -25,6 +25,12 @@ public class Mountain {
 	
 	@OneToMany(mappedBy = "mountain", cascade = CascadeType.ALL)
     private List<Peak> peaks;
+	
+	public Mountain() {}
+	
+	public Mountain(String mountainName) {
+		this.mountainName = mountainName;
+	}
 
 	public Integer getId() {
 		return id;

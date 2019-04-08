@@ -121,17 +121,10 @@ public class AddTripController {
 			arePointsValid = false;
 		}
 		
-//		System.out.println(this.getPeakByName(peak, Integer.parseInt(altitude), city, mountain));
-		
 		if(this.getPeakByName(peak, Integer.parseInt(altitude), city, mountain) == null) {
 			model.addAttribute("invalidLocation", true);
 			isLocationValid = false;
 		}
-		
-		System.out.println(areDatesValid);
-		System.out.println(isCapacityValid);
-		System.out.println(arePointsValid);
-		System.out.println(isLocationValid);
 		
 		if(areDatesValid && isCapacityValid && arePointsValid && isLocationValid) {
 			addTripToDatabase(mountain, city, peak, Integer.parseInt(altitude), startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), principal);
@@ -181,7 +174,8 @@ public class AddTripController {
 		}
 				
 		Point finalPointForTrip = this.getPointByName(finalPoint);
-		routePointRepository.save(new RoutePoint(route, finalPointForTrip, (order++).toString()));
+		order++;
+		routePointRepository.save(new RoutePoint(route, finalPointForTrip, order.toString()));
 	}
 	
 	private boolean areDatesValid(String startDate, String endDate) throws ParseException {
@@ -260,7 +254,9 @@ public class AddTripController {
 		Iterable<Guide> guides = guideRepository.findAll();
 		
 		for(Guide guide : guides) {
-			if(guide.getUser() == getUserByEmail(principal.getName())) {
+			System.out.println(guide.getUser().getId());
+			System.out.println(getUserByEmail(principal.getName()).getId());
+			if(guide.getUser().getId() == getUserByEmail(principal.getName()).getId()) {
 				return guide;
 			}
 		}
@@ -281,15 +277,9 @@ public class AddTripController {
 	private Peak getPeakByName(String peakName, Integer altitude, String city, String mountain) {
 		Iterable<Peak> peaks = peakRepository.findAll();
 		
-		for(Peak peak : peaks) {			
-			System.out.println(peak.getPeakName() + " = " + peakName);
-			System.out.println(peak.getAltitude() + " = " + altitude);
-			System.out.println(peak.getCity().getName() + " = " + city);
-			System.out.println(peak.getMountain().getMountainName() + " = " + mountain);
-			System.out.println("=============================================");
-			
+		for(Peak peak : peaks) {					
 			if(peak.getPeakName().trim().toUpperCase().equals(peakName.trim().toUpperCase()) && 
-			   peak.getAltitude() == altitude && 
+			   peak.getAltitude().toString().trim().toUpperCase().equals(altitude.toString().trim().toUpperCase()) && 
 			   peak.getCity().getName().trim().toUpperCase().equals(city.trim().toUpperCase()) &&
 			   peak.getMountain().getMountainName().trim().toUpperCase().equals(mountain.trim().toUpperCase())) {
 				return peak;

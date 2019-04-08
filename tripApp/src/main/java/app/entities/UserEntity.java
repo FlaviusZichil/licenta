@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -64,6 +65,9 @@ public class UserEntity {
     @OneToOne(mappedBy = "user")
     private Guide guide;
     
+    @OneToMany(mappedBy = "userTombola", cascade = CascadeType.ALL)
+    private List<Tombola> tombola;
+    
     public UserEntity() {}
 
 	public UserEntity(String firstName, String lastName, String birthDate, String email, String password) {
@@ -89,6 +93,14 @@ public class UserEntity {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+
+	public List<Tombola> getTombola() {
+		return tombola;
+	}
+
+	public void setTombola(List<Tombola> tombola) {
+		this.tombola = tombola;
 	}
 
 	public String getLastName() {

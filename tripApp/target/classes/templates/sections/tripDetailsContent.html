@@ -40,7 +40,9 @@
 						<h5 class="card-title" th:text="'Ghide: ' + *{tripDTO.guideDTO.user.firstName} + ' ' + *{tripDTO.guideDTO.user.lastName}"></h5>
 						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == false">
 							<div th:if="*{tripDTO.capacity} > 0">
-								<input type="submit" name="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
+								<div th:if="${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
+									<input type="submit" name="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
+								</div>
 							</div>
 							<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
 						</div>

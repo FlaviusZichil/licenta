@@ -24,7 +24,6 @@ public class Tombola {
     private String date;
     
     @Column(name = "status")
-    @ColumnDefault("not winner")
     private String status;
     
     @ManyToOne
@@ -70,5 +69,13 @@ public class Tombola {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Tombola [tombolaId=" + tombolaId + ", date=" + date + ", status=" + status + ", userTombola="
+				+ userTombola + "]";
+	}
+	
+	
 }

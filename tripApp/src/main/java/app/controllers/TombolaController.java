@@ -31,7 +31,7 @@ public class TombolaController {
 		LocalDate date = LocalDate.now();
 		
 		// date.getMonth() == APRIL
-		if(!isUserAlreadyRegisteredForThisMonth(currentUser, date.getMonth().toString())) {
+		if(!isUserAlreadyRegisteredForThisMonth(currentUser, date.getMonth().toString(), date.getYear())) {
 			this.registerUserToTombola(currentUser, date);
 		}
 		else {
@@ -41,14 +41,14 @@ public class TombolaController {
 		return "views/all/tombola";
 	}
 	
-	private boolean isUserAlreadyRegisteredForThisMonth(UserEntity user, String month) {
+	private boolean isUserAlreadyRegisteredForThisMonth(UserEntity user, String month, Integer year) {
 		Iterable<Tombola> registrations = tombolaRepository.findAll();
 		List<Tombola> registrationsToTombola = TripUtils.convertFromIterableToList(registrations);
 		
 		if(registrationsToTombola.size() != 0) {
 			for(Tombola registration : registrations) {
 				LocalDate date = LocalDate.parse(registration.getDate());
-				if(registration.getUser().equals(user) && date.getMonth().toString().equals(month)) {
+				if(registration.getUser().equals(user) && date.getMonth().toString().equals(month) && date.getYear() == year) {
 					return true;
 				}
 			}

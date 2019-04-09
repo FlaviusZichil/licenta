@@ -30,6 +30,15 @@ public class Tombola {
     @ManyToOne
 	@JoinColumn
 	private UserEntity userTombola;
+   
+    public Tombola() {}
+   
+	public Tombola(String date, String status, UserEntity userTombola) {
+		super();
+		this.date = date;
+		this.status = status;
+		this.userTombola = userTombola;
+	}
 
 	public Integer getTombolaId() {
 		return tombolaId;

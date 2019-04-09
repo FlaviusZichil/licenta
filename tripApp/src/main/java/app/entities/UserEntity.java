@@ -35,6 +35,9 @@ public class UserEntity {
 	@Column(name = "birth_date")
 	private String birthDate;
 	
+	@Column(name = "points")
+	private String points;
+	
 	@ManyToOne
     @JoinColumn
     private City city;
@@ -95,14 +98,6 @@ public class UserEntity {
 		this.firstName = firstName;
 	}
 
-	public List<Tombola> getTombola() {
-		return tombola;
-	}
-
-	public void setTombola(List<Tombola> tombola) {
-		this.tombola = tombola;
-	}
-
 	public String getLastName() {
 		return lastName;
 	}
@@ -117,6 +112,14 @@ public class UserEntity {
 
 	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public String getPoints() {
+		return points;
+	}
+
+	public void setPoints(String points) {
+		this.points = points;
 	}
 
 	public City getCity() {
@@ -183,9 +186,100 @@ public class UserEntity {
 		this.guide = guide;
 	}
 
+	public List<Tombola> getTombola() {
+		return tombola;
+	}
+
+	public void setTombola(List<Tombola> tombola) {
+		this.tombola = tombola;
+	}
+
 	@Override
 	public String toString() {
-		return "UserEntity [firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate + ", email="
-				+ email + ", experience=" + experience + ", password=" + password + "]";
+		return "UserEntity [firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate
+				+ ", points=" + points + ", email=" + email + ", experience=" + experience + ", password=" + password
+				+ ", role=" + role + ", promoCode=" + promoCode + "]";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserEntity other = (UserEntity) obj;
+		if (birthDate == null) {
+			if (other.birthDate != null)
+				return false;
+		} else if (!birthDate.equals(other.birthDate))
+			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (experience == null) {
+			if (other.experience != null)
+				return false;
+		} else if (!experience.equals(other.experience))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (guide == null) {
+			if (other.guide != null)
+				return false;
+		} else if (!guide.equals(other.guide))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (points == null) {
+			if (other.points != null)
+				return false;
+		} else if (!points.equals(other.points))
+			return false;
+		if (promoCode == null) {
+			if (other.promoCode != null)
+				return false;
+		} else if (!promoCode.equals(other.promoCode))
+			return false;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		if (tombola == null) {
+			if (other.tombola != null)
+				return false;
+		} else if (!tombola.equals(other.tombola))
+			return false;
+		if (trips == null) {
+			if (other.trips != null)
+				return false;
+		} else if (!trips.equals(other.trips))
+			return false;
+		return true;
 	}
 }

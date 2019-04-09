@@ -40,6 +40,12 @@ public class IndexController {
 	
 	@PostMapping("/")
 	public String indexPage(Model model, @RequestParam(value = "submit", required = false) String actionType) {
+		switch(actionType) {
+			case "Participa":
+			{
+				return "redirect:/tombola";
+			}
+		}
 		return "";
 	}
 	

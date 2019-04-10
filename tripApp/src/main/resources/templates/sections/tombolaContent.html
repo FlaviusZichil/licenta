@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form action="#" th:action="@{/tombola}" method="post">
+	<div class="row" id="content">
+		 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		 <div class="col-md-3 col-sm-3 col-xs-2 fla">
+		 	<hr>
+		 	<h3 class="text-center"> Castigatori </h3>
+		 	<hr>
+		 	<div th:each="winner : ${winners}" class="accordion" id="accordionExample" style="margin-top: 5%">				
+				  <div class="card">
+				    <div class="card-header" id="headingOne">
+				      <h5 class="mb-0">
+				        <button th:text="${winner.date}" class="btn btn-link" type="button" data-toggle="collapse" th:data-target="'#' + ${winner.date}" aria-expanded="true" aria-controls="collapseOne">
+				        </button>
+				      </h5>
+				    </div>				
+				    <div th:id="${winner.date}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+				      <div class="card-body" style="text-align: left;">
+				      	<table class="table">
+				      		<tr>
+				      			<td>
+				      				<h6> Locul 1: </h6>
+				      			</td>
+				      			<td>
+				      				<h6 th:text="${winner.firstPlaceWinner.firstName} + ' ' + ${winner.firstPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.city.name}"></h6>				      				
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td>
+				      				<h6> Locul 2: </h6>
+				      			</td>
+				      			<td>
+				      				<h6 th:text="${winner.secondPlaceWinner.firstName} + ' ' + ${winner.secondPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.city.name}"></h6>
+				      			</td>
+				      		</tr>
+				      		<tr>
+				      			<td>
+				      				<h6> Locul 3: </h6>
+				      			</td>
+				      			<td>
+				      				<h6 th:text="${winner.thirdPlaceWinner.firstName} + ' ' + ${winner.thirdPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.city.name}"></h6>				
+				      			</td>
+				      		</tr>
+				      	</table>
+				      </div>
+				    </div>
+				  </div>			  
+				</div>
+		 </div>
+		 <div class="col-md-5 col-sm-5 col-xs-2 fla">
+		 	<div th:if="${successfulRegistrationToTombola}" style="margin-top: 2%">
+		 		<div class="alert alert-success" role="alert">
+				  	Inregistrare la tombola cu success!
+				</div>
+		 	</div>
+		 	<div th:if="${failRegistrationToTombola}" style="margin-top: 2%">
+		 		<div class="alert alert-danger" role="alert">
+				  	Sunteti deja inregistrat pentru luna curenta sau insuficiente puncte!
+				</div>
+		 	</div>
+		 	<div class="card trip-card" style="margin-top: 3%">
+				  <div class="card-header bg-info">
+				    <h5 class="trip-card-title text-center color"> CONDITII DE PARTICIPARE </h5>
+				  </div>
+				  <div class="card-body">
+				    	<div class="list-group">													  
+							  <p class="list-group-item list-group-item-action list-group-item-light">Este nevoie de 25 de puncte HaiSus pentru inscriere.</p>
+							  <p class="list-group-item list-group-item-action list-group-item-light">Un utilizator se poate inscrie o singura data in decursul unei luni.</p>
+							  <input type="submit" class="btn btn-success" name="registerToTombola" value="Inscrie-te"/>  
+						</div>
+				  </div>
+			</div>
+			<div class="card trip-card" >
+				  <div class="card-header bg-info">
+				    <h5 class="trip-card-title text-center color"> PREMII </h5>
+				  </div>
+				  <div class="card-body">
+				  		<p class="list-group-item list-group-item-action list-group-item-warning text-center">Locul 1</p>
+						<a href="" class="list-group-item list-group-item-action list-group-item-light">O pereche de bocanci din gama Skarp Extreme la alegere</a>
+						<a href="" class="list-group-item list-group-item-action list-group-item-light">Cort de 2 persoane</a>
+						<p class="list-group-item list-group-item-action list-group-item-light">150 puncte HaiSus</p>
+						<p class="list-group-item list-group-item-action list-group-item-warning text-center">Locul 2</p>
+						<a href="" class="list-group-item list-group-item-action list-group-item-light">Rucsac de munte 70L</a>
+						<p class="list-group-item list-group-item-action list-group-item-light">100 puncte HaiSus</p>
+						<p class="list-group-item list-group-item-action list-group-item-warning text-center">Locul 3</p>
+						<p class="list-group-item list-group-item-action list-group-item-light">100 puncte HaiSus</p>
+				  		<hr>
+				    	<p class="list-group-item list-group-item-action list-group-item-light">Extragerea castigatorilor va avea loc in primele 3 zile ale fiecarei luni.</p>
+				    	<p class="list-group-item list-group-item-action list-group-item-light">Se vor extrage 3 castigatori si 5 utilizatori de rezerva.</p>
+						<p class="list-group-item list-group-item-action list-group-item-light">Daca in termen de 4 zile un castigator nu raspunde, premiul va fi oferit unui utilizator rezerva.</p>						
+				  </div>
+			</div>
+		 </div>
+		 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+</div>
+</form>
+</body>
+</html>

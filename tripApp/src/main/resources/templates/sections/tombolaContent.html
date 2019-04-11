@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body class="body">
-	<form action="#" th:action="@{/tombola}" method="post">
+	<form action="#" th:action="@{/tombola}" th:object="${tombolaViewModel}" method="post">
 	<div class="row" id="content">
 		 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 <div class="col-md-3 col-sm-3 col-xs-2 fla">
 		 	<hr>
 		 	<h3 class="text-center"> Castigatori </h3>
 		 	<hr>
-		 	<div th:each="winner : ${winners}" class="accordion" id="accordionExample" style="margin-top: 5%">				
+		 	<div th:each="winner : *{winners}" class="accordion" id="accordionExample" style="margin-top: 5%">				
 				  <div class="card">
 				    <div class="card-header" id="headingOne">
 				      <h5 class="mb-0">

@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import app.dto.TombolaDTO;
 import app.entities.Tombola;
 import app.entities.UserEntity;
-import app.models.TombolaModel;
+import app.models.TombolaViewModel;
 import app.repositories.TombolaRepository;
 import app.repositories.UserRepository;
 import app.utils.TripUtils;
@@ -29,16 +30,20 @@ public class TombolaController {
 	private UserRepository userRepository;
 
 	@GetMapping("/tombola")
-	public String getTombola(Model model, Principal principal) {
-		model.addAttribute("winners", this.getAllWinners());		
+	public String getTombola(Model model, Principal principal, TombolaViewModel tombolaViewModel) {
+//		model.addAttribute("winners", this.getAllWinners());	
+		tombolaViewModel.setWinners(this.getAllWinners());
+		model.addAttribute("tombolaViewModel", tombolaViewModel);
 		return "views/all/tombola";
 	}
 	
 	@PostMapping("/tombola")
-	public String postTombola(Model model, Principal principal,
+	public String postTombola(Model model, Principal principal, TombolaViewModel tombolaViewModel,
 							  @RequestParam(name = "registerToTombola", required = false) String registerToTombolaAction) {
 		
-		model.addAttribute("winners", this.getAllWinners());
+//		model.addAttribute("winners", this.getAllWinners());
+		tombolaViewModel.setWinners(this.getAllWinners());
+		model.addAttribute("tombolaViewModel", tombolaViewModel);
 		UserEntity currentUser = this.getUserByEmail(principal.getName());
 		LocalDate date = LocalDate.now();
 		
@@ -54,27 +59,27 @@ public class TombolaController {
 		return "views/all/tombola";
 	}
 
-	private List<TombolaModel> getAllWinners() {
-		List<TombolaModel> winners = new ArrayList<>();
+	private List<TombolaDTO> getAllWinners() {
+		List<TombolaDTO> winners = new ArrayList<>();
 
 		for (String date : this.getAllDistinctMonths()) {
-			TombolaModel tombolaModel = new TombolaModel();
-			tombolaModel.setDate(this.translateMonth(date));
+			TombolaDTO tombolaDTO = new TombolaDTO();
+			tombolaDTO.setDate(this.translateDate(date));
 			for (Tombola registrationForGivenDate : this.getAllRegistrationsForDate(date.toString())) {
 				if (registrationForGivenDate.getStatus().equals("first")) {
-					tombolaModel.setFirstPlaceWinner(registrationForGivenDate.getUser());
+					tombolaDTO.setFirstPlaceWinner(registrationForGivenDate.getUser());
 				}
 
 				if (registrationForGivenDate.getStatus().equals("second")) {
-					tombolaModel.setSecondPlaceWinner(registrationForGivenDate.getUser());
+					tombolaDTO.setSecondPlaceWinner(registrationForGivenDate.getUser());
 				}
 
 				if (registrationForGivenDate.getStatus().equals("third")) {
-					tombolaModel.setThirdPlaceWinner(registrationForGivenDate.getUser());
+					tombolaDTO.setThirdPlaceWinner(registrationForGivenDate.getUser());
 				}
 			}
-			if(tombolaModel.getFirstPlaceWinner() != null && tombolaModel.getSecondPlaceWinner() != null && tombolaModel.getThirdPlaceWinner() != null) {
-				winners.add(tombolaModel);
+			if(tombolaDTO.getFirstPlaceWinner() != null && tombolaDTO.getSecondPlaceWinner() != null && tombolaDTO.getThirdPlaceWinner() != null) {
+				winners.add(tombolaDTO);
 			}				
 		}
 		return winners;
@@ -109,43 +114,43 @@ public class TombolaController {
 		return registrationsForDate;
 	}
 
-	private String translateMonth(String month) {
-		switch (month.substring(0, month.indexOf(" "))) {
+	private String translateDate(String date) {
+		switch (date.substring(0, date.indexOf(" "))) {
 			case "JANUARY": {
-				return month.replace("JANUARY", "Ianuarie");
+				return date.replace("JANUARY", "Ianuarie");
 			}
 			case "FEBRUARY": {
-				return month.replace("FEBRUARY", "Februarie");
+				return date.replace("FEBRUARY", "Februarie");
 			}
 			case "MARCH": {
-				return month.replace("MARCH", "Martie");
+				return date.replace("MARCH", "Martie");
 			}
 			case "APRIL": {
-				return month.replace("APRIL", "Aprilie");
+				return date.replace("APRIL", "Aprilie");
 			}
 			case "MAY": {
-				return month.replace("MAY", "Mai");
+				return date.replace("MAY", "Mai");
 			}
 			case "JUNE": {
-				return month.replace("JUNE", "Iunie");
+				return date.replace("JUNE", "Iunie");
 			}
 			case "JULY": {
-				return month.replace("JULY", "Iulie");
+				return date.replace("JULY", "Iulie");
 			}
 			case "AUGUST": {
-				return month.replace("AUGUST", "August");
+				return date.replace("AUGUST", "August");
 			}
 			case "SEPTEMBER": {
-				return month.replace("SEPTEMBER", "Septembrie");
+				return date.replace("SEPTEMBER", "Septembrie");
 			}
 			case "OCTOBER": {
-				return month.replace("OCTOBER", "Octombrie");
+				return date.replace("OCTOBER", "Octombrie");
 			}
 			case "NOVEMBER": {
-				return month.replace("NOVEMBER", "Noiembrie");
+				return date.replace("NOVEMBER", "Noiembrie");
 			}
 			case "DECEMBER": {
-				return month.replace("DECEMBER", "December");
+				return date.replace("DECEMBER", "December");
 			}
 		}
 		return null;

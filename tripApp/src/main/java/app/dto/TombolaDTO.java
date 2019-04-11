@@ -1,8 +1,8 @@
-package app.models;
+package app.dto;
 
 import app.entities.UserEntity;
 
-public class TombolaModel {
+public class TombolaDTO {
 
 	private String date;
 	private UserEntity firstPlaceWinner;

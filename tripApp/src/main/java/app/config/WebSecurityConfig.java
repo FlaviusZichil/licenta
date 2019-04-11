@@ -49,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/closest-trips").authenticated();
 		http.authorizeRequests().antMatchers("/add-trip").authenticated();
 		http.authorizeRequests().antMatchers("/tombola").authenticated();
+		http.authorizeRequests().antMatchers("/my-points").authenticated();
 
 		// Config for Login Form
 		http.authorizeRequests().and().formLogin()

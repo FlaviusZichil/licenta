@@ -19,6 +19,7 @@ import app.models.TombolaViewModel;
 import app.repositories.TombolaRepository;
 import app.repositories.UserRepository;
 import app.utils.TripUtils;
+import app.utils.UserUtils;
 
 @Controller
 public class TombolaController {
@@ -30,8 +31,7 @@ public class TombolaController {
 	private UserRepository userRepository;
 
 	@GetMapping("/tombola")
-	public String getTombola(Model model, Principal principal, TombolaViewModel tombolaViewModel) {
-//		model.addAttribute("winners", this.getAllWinners());	
+	public String getTombola(Model model, Principal principal, TombolaViewModel tombolaViewModel) {	
 		tombolaViewModel.setWinners(this.getAllWinners());
 		model.addAttribute("tombolaViewModel", tombolaViewModel);
 		return "views/all/tombola";
@@ -41,7 +41,6 @@ public class TombolaController {
 	public String postTombola(Model model, Principal principal, TombolaViewModel tombolaViewModel,
 							  @RequestParam(name = "registerToTombola", required = false) String registerToTombolaAction) {
 		
-//		model.addAttribute("winners", this.getAllWinners());
 		tombolaViewModel.setWinners(this.getAllWinners());
 		model.addAttribute("tombolaViewModel", tombolaViewModel);
 		UserEntity currentUser = this.getUserByEmail(principal.getName());
@@ -66,16 +65,17 @@ public class TombolaController {
 			TombolaDTO tombolaDTO = new TombolaDTO();
 			tombolaDTO.setDate(this.translateDate(date));
 			for (Tombola registrationForGivenDate : this.getAllRegistrationsForDate(date.toString())) {
+				UserEntity user = registrationForGivenDate.getUser();
 				if (registrationForGivenDate.getStatus().equals("first")) {
-					tombolaDTO.setFirstPlaceWinner(registrationForGivenDate.getUser());
+					tombolaDTO.setFirstPlaceWinner(UserUtils.convertFromUserToUserDTO(user));
 				}
 
 				if (registrationForGivenDate.getStatus().equals("second")) {
-					tombolaDTO.setSecondPlaceWinner(registrationForGivenDate.getUser());
+					tombolaDTO.setSecondPlaceWinner(UserUtils.convertFromUserToUserDTO(user));
 				}
 
 				if (registrationForGivenDate.getStatus().equals("third")) {
-					tombolaDTO.setThirdPlaceWinner(registrationForGivenDate.getUser());
+					tombolaDTO.setThirdPlaceWinner(UserUtils.convertFromUserToUserDTO(user));
 				}
 			}
 			if(tombolaDTO.getFirstPlaceWinner() != null && tombolaDTO.getSecondPlaceWinner() != null && tombolaDTO.getThirdPlaceWinner() != null) {

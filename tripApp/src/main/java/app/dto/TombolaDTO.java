@@ -1,13 +1,11 @@
 package app.dto;
 
-import app.entities.UserEntity;
-
 public class TombolaDTO {
 
 	private String date;
-	private UserEntity firstPlaceWinner;
-	private UserEntity secondPlaceWinner;
-	private UserEntity thirdPlaceWinner;
+	private UserDTO firstPlaceWinner;
+	private UserDTO secondPlaceWinner;
+	private UserDTO thirdPlaceWinner;
 	
 	public String getDate() {
 		return date;
@@ -15,22 +13,22 @@ public class TombolaDTO {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public UserEntity getFirstPlaceWinner() {
+	public UserDTO getFirstPlaceWinner() {
 		return firstPlaceWinner;
 	}
-	public void setFirstPlaceWinner(UserEntity firstPlaceWinner) {
+	public void setFirstPlaceWinner(UserDTO firstPlaceWinner) {
 		this.firstPlaceWinner = firstPlaceWinner;
 	}
-	public UserEntity getSecondPlaceWinner() {
+	public UserDTO getSecondPlaceWinner() {
 		return secondPlaceWinner;
 	}
-	public void setSecondPlaceWinner(UserEntity secondPlaceWinner) {
+	public void setSecondPlaceWinner(UserDTO secondPlaceWinner) {
 		this.secondPlaceWinner = secondPlaceWinner;
 	}
-	public UserEntity getThirdPlaceWinner() {
+	public UserDTO getThirdPlaceWinner() {
 		return thirdPlaceWinner;
 	}
-	public void setThirdPlaceWinner(UserEntity thirdPlaceWinner) {
+	public void setThirdPlaceWinner(UserDTO thirdPlaceWinner) {
 		this.thirdPlaceWinner = thirdPlaceWinner;
 	}
 	@Override

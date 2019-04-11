@@ -24,7 +24,7 @@
 				      				<h6> Locul 1: </h6>
 				      			</td>
 				      			<td>
-				      				<h6 th:text="${winner.firstPlaceWinner.firstName} + ' ' + ${winner.firstPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.city.name}"></h6>				      				
+				      				<h6 th:text="${winner.firstPlaceWinner.firstName} + ' ' + ${winner.firstPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.cityDTO.name}"></h6>				      				
 				      			</td>
 				      		</tr>
 				      		<tr>
@@ -32,7 +32,7 @@
 				      				<h6> Locul 2: </h6>
 				      			</td>
 				      			<td>
-				      				<h6 th:text="${winner.secondPlaceWinner.firstName} + ' ' + ${winner.secondPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.city.name}"></h6>
+				      				<h6 th:text="${winner.secondPlaceWinner.firstName} + ' ' + ${winner.secondPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.cityDTO.name}"></h6>
 				      			</td>
 				      		</tr>
 				      		<tr>
@@ -40,7 +40,7 @@
 				      				<h6> Locul 3: </h6>
 				      			</td>
 				      			<td>
-				      				<h6 th:text="${winner.thirdPlaceWinner.firstName} + ' ' + ${winner.thirdPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.city.name}"></h6>				
+				      				<h6 th:text="${winner.thirdPlaceWinner.firstName} + ' ' + ${winner.thirdPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.cityDTO.name}"></h6>				
 				      			</td>
 				      		</tr>
 				      	</table>

@@ -34,6 +34,4 @@ public class MyPointsController {
 		}
 		return null;
 	}
-	
-
 }

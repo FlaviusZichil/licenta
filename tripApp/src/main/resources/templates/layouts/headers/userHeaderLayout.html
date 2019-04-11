@@ -16,9 +16,6 @@
 		 		 <div class="btn-group" role="group" aria-label="First group">
                     <a class="btn btn-info" th:href="@{/logout}">Deconectare</a>
                  </div>
-                  <div class="btn-group" role="group" aria-label="Second group">
-                    <a class="btn btn-warning" th:href="@{/my-points}">50p</a>
-                 </div>
 		 	</div>
 		 	<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 </div>
@@ -55,7 +52,7 @@
 					    <a class="nav-link color" href="#!">Articole</a>
 					  </li>
 					  <li class="nav-item">
-					    <a class="nav-link color" href="#!">Tombola</a>
+					    <a class="nav-link color" th:href="@{/tombola}">Tombola</a>
 					  </li>
 					  <li class="nav-item">
 					    <a class="nav-link color" href="#!">Ghizi</a>
@@ -66,7 +63,7 @@
 					      </a>
 					      <div class="dropdown-menu">
 					        <a class="dropdown-item" href="#">Date personale</a>
-					        <a class="dropdown-item" href="#">Punctele mele</a>
+					        <a class="dropdown-item" th:href="@{/my-points}">Punctele mele</a>
 					      </div>
 					 </li>
 					</ul>

@@ -28,7 +28,7 @@ public class UserUtils {
 		return userDTO;
 	}
 	
-	private static List<TripDTO> getAllTripsDTOForUser(UserEntity currentUser){
+	public static List<TripDTO> getAllTripsDTOForUser(UserEntity currentUser){
 		List<Trip> currentUserTrips = currentUser.getTrips();
 		List<TripDTO> currentUserTripsDTO = new ArrayList<TripDTO>();
 		

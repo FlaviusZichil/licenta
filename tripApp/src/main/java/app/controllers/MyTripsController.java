@@ -12,6 +12,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import app.dto.TripDTO;
 import app.entities.Trip;
 import app.entities.UserEntity;
@@ -19,6 +20,7 @@ import app.models.TripViewModel;
 import app.repositories.TripRepository;
 import app.repositories.UserRepository;
 import app.utils.TripUtils;
+import app.utils.UserUtils;
 
 @Controller
 public class MyTripsController {
@@ -31,9 +33,9 @@ public class MyTripsController {
 	
 	@GetMapping("/my-trips")
 	public String getUserTrips(Model model, TripViewModel tripViewModel, Principal principal) {
-		tripViewModel.setTripsDTO(this.getAllTripsDTOForUser(principal));
+		tripViewModel.setTripsDTO(UserUtils.getAllTripsDTOForUser(this.getUserByEmail(principal.getName())));
 		
-		if(this.getAllTripsDTOForUser(principal).isEmpty()) {
+		if(UserUtils.getAllTripsDTOForUser(this.getUserByEmail(principal.getName())).isEmpty()) {
 			model.addAttribute("hasUserTrips", false);
 		}
 		model.addAttribute("tripViewModel", tripViewModel);
@@ -50,7 +52,7 @@ public class MyTripsController {
 		    this.increaseTripCapacity(Integer.parseInt(tripId));
 		}
 		
-		tripViewModel.setTripsDTO(this.getAllTripsDTOForUser(principal));
+		tripViewModel.setTripsDTO(UserUtils.getAllTripsDTOForUser(this.getUserByEmail(principal.getName())));
 		model.addAttribute("tripViewModel", tripViewModel);		
 		
 		return "redirect:/my-trips";
@@ -60,18 +62,6 @@ public class MyTripsController {
 		Trip trip = tripRepository.findById(tripId).get();
 			trip.setCapacity(trip.getCapacity() + 1);
 			tripRepository.save(trip);
-	}
-	
-	private List<TripDTO> getAllTripsDTOForUser(Principal principal){
-		UserEntity currentUser = this.getUserByEmail(principal.getName());
-		List<Trip> currentUserTrips = currentUser.getTrips();
-		List<TripDTO> currentUserTripsDTO = new ArrayList<TripDTO>();
-		
-		for(Trip trip : currentUserTrips) {
-			TripDTO tripDTO = TripUtils.convertFromTripToTripDTO(trip);
-			currentUserTripsDTO.add(tripDTO);
-		}
-		return currentUserTripsDTO;
 	}
 	
 	private void removeTripForUser(Principal principal, Integer tripId) {

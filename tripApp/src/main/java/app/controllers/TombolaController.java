@@ -64,6 +64,7 @@ public class TombolaController {
 		for (String date : this.getAllDistinctMonths()) {
 			TombolaDTO tombolaDTO = new TombolaDTO();
 			tombolaDTO.setDate(this.translateDate(date));
+			
 			for (Tombola registrationForGivenDate : this.getAllRegistrationsForDate(date.toString())) {
 				UserEntity user = registrationForGivenDate.getUser();
 				if (registrationForGivenDate.getStatus().equals("first")) {
@@ -172,17 +173,19 @@ public class TombolaController {
 		return false;
 	}
 	
-	
-
 	private void registerUserToTombola(UserEntity user, LocalDate date) {
 		if (Integer.parseInt(user.getPoints()) >= 25) {
 			tombolaRepository.save(new Tombola(date.toString(), "not winner", user));
-			Integer userPoints = Integer.parseInt(user.getPoints()) - 25;
-			user.setPoints(userPoints.toString());
-			userRepository.save(user);
+			decreaseUserPoints(user);
 		} else {
 			System.out.println("not enough points");
 		}
+	}
+	
+	private void decreaseUserPoints(UserEntity user) {
+		Integer userPoints = Integer.parseInt(user.getPoints()) - 25;
+		user.setPoints(userPoints.toString());
+		userRepository.save(user);
 	}
 
 	public UserEntity getUserByEmail(String email) {

@@ -20,13 +20,11 @@
 			 <div class="col-md-4 col-sm-4 col-xs-2 fla">
 			 	<div class="card trip-card" style="margin-top: 3%">
 				  <div class="card-header bg-info">
-				    <h5 class="trip-card-title text-center color"> SITUATIE PUNCTE </h5>
+				    <h5 class="trip-card-title text-center color"> PUNCTE CONSUMATE </h5>
 				  </div>
-				  <div class="card-body">
-				    	<div class="list-group">													  
-							  <p class="list-group-item list-group-item-action list-group-item-light text-center">Puncte consumate</p>
-							  <p class="list-group-item list-group-item-action list-group-item-light">Un utilizator se poate inscrie o singura data in decursul unei luni.</p>
-							  <input type="submit" class="btn btn-success" name="registerToTombola" value="Inscrie-te"/>  
+				  <div class="card-body" style="overflow-y: scroll; height: 200px;">
+				    	<div th:each="registration : ${usedPoints}" class="list-group">													  
+							  <p class="list-group-item list-group-item-action list-group-item-light text-center" th:text="'Ai consumat 25 de puncte HaiSus in data ' + ${registration.date} + ' pentru inscriere la tombola.'"></p>
 						</div>
 				  </div>
 			</div>

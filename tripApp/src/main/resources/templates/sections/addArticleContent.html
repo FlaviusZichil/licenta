@@ -32,9 +32,59 @@
 				  </div>
 				</div>
 			</div>
-			<div class="col-md-5 col-sm-5 col-xs-2 fla"></div>
+			<div class="col-md-5 col-sm-5 col-xs-2 fla">
+				<div class="card trip-card text-center">
+				  <div class="card-body">
+				  		<input class="form-control" type="text" placeholder="Titlul articolului"/>		  			
+				  		<div class="card trip-card text-center">
+					  		<div class="card-body">
+					  			<input class="form-control" type="text" placeholder="Subtitlu"/>
+					  			<textarea style="width: 100%; height: 150px; resize: none"></textarea>	  		
+					  		</div>
+						</div>
+						<div id="addedSections">
+						</div>
+						<p class="btn btn-info" onclick="createNewSection()">Adauga sectiune</p>
+						<p class="btn btn-success">Posteaza</p>										
+				  </div>
+				</div>
+			</div>
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		</div>
 	</form>
+<script>
+	function createNewSection(){
+		var cardDiv = document.createElement("div");
+		cardDiv.setAttribute("class", "card trip-card text-center");
+		
+		var cardBodyDiv = document.createElement("div");
+		cardBodyDiv.setAttribute("class", "card-body");
+		
+		var input = document.createElement("input");
+		input.setAttribute("class", "form-control");
+		input.setAttribute("type", "text");
+		input.setAttribute("placeholder", "Subtitlu");
+		
+		var textarea = document.createElement("textarea");
+		textarea.setAttribute("style", "width: 100%; height: 150px; resize: none");
+		
+		var deleteSection = document.createElement("p");
+		deleteSection.setAttribute("class", "btn btn-danger btn-block");
+		deleteSection.innerHTML = "Elimina sectiunea";
+		deleteSection.setAttribute("onclick", "deleteNewSection(this)");
+		
+		cardDiv.appendChild(cardBodyDiv);
+		cardBodyDiv.appendChild(input);
+		cardBodyDiv.appendChild(textarea);
+		cardBodyDiv.appendChild(deleteSection);
+		
+		var sectionsDiv = document.getElementById("addedSections");
+		sectionsDiv.appendChild(cardDiv);
+	}	
+	
+	function deleteNewSection(e){
+		e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
+	}
+</script>
 </body>
 </html>

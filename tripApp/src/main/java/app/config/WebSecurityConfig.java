@@ -43,6 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/guideHome").access("hasRole('ROLE_GUIDE')");
 		http.authorizeRequests().antMatchers("/staffHome").access("hasRole('ROLE_STAFF')");
 		
+		http.authorizeRequests().antMatchers("/add-article").access("hasRole('ROLE_STAFF') or hasRole('ROLE_GUIDE')");
+		
 		http.authorizeRequests().antMatchers("/trip-details").authenticated();
 		http.authorizeRequests().antMatchers("/all-trips").authenticated();
 		http.authorizeRequests().antMatchers("/my-trips").authenticated();

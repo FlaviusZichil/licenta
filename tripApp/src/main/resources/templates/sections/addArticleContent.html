@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form action="#" th:action="@{/add-article}" method="post">
+		<div class="row" id="content">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-3 col-sm-3 col-xs-2 fla">
+				<div class="card trip-card text-center">
+				  <div class="card-header bg-info">
+				    <h5 class="trip-card-title" > Regulament </h5>
+				  </div>
+				  <div class="card-body">
+				    <h5 class="text-left list-group-item list-group-item-action list-group-item-danger">Articolul nu trebuie sa contina:</h5>
+				    <hr>
+				    <ol>
+				    	<li class="text-left">Cuvinte obscene</li>
+				    	<li class="text-left">Indrumari politice</li>
+				    	<li class="text-left">Indrumari religioase</li>	
+				    	<li class="text-left">Reclama regativa insistenta</li>
+				    	<li class="text-left">Anunturi de vanzare-cumparare</li>			    	
+				    </ol>
+				    <hr>
+				     <h5 class="text-left list-group-item list-group-item-action list-group-item-success">Articolul poate contine:</h5>
+				     <hr>
+				    <ol>
+				    	<li class="text-left">Informatii despre trasee montane</li>
+				    	<li class="text-left">Indicatii relativ la echipamentul montan</li>
+				    	<li class="text-left">Experiente proprii</li>			    	
+				    </ol>
+				    <hr>
+				    <h5 class="text-justify list-group-item list-group-item-action list-group-item-warning">Nerespectarea acestui regulament poate duce la blocarea contului!</h5>
+				  </div>
+				</div>
+			</div>
+			<div class="col-md-5 col-sm-5 col-xs-2 fla"></div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+</html>

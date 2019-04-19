@@ -1,10 +1,8 @@
 package app.controllers;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,14 +10,11 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import app.dto.TripDTO;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
 import app.repositories.UserRepository;
-import app.utils.TripUtils;
 import app.utils.UserUtils;
 
 @Controller
@@ -39,6 +34,7 @@ public class MyTripsController {
 			model.addAttribute("hasUserTrips", false);
 		}
 		model.addAttribute("tripViewModel", tripViewModel);
+		
 		return "views/all/mytrips";
 	}
 	

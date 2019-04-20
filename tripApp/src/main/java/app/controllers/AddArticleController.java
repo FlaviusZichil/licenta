@@ -49,9 +49,25 @@ public class AddArticleController {
 		article.setLikes(0);
 		article.setSections(this.getArticleSectionsToAdd(subtitles, sectionsContent));
 		
-		articleRepository.save(article);
+		if(!this.hasUserAlreadyPostedForCurrentDate(LocalDate.now().toString(), user)) {
+			articleRepository.save(article);
+			model.addAttribute("articleSuccessfullyAdded", true);
 			
+		}
+		else {
+			model.addAttribute("aleadyPostedForToday", true);
+		}
+					
 		return "views/staff/addArticleView";
+	}
+	
+	private boolean hasUserAlreadyPostedForCurrentDate(String date, UserEntity user) {
+		for(Article article : articleRepository.findAll()) {
+			if(article.getUserId() == user.getId() && article.getDate().equals(date)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private List<ArticleSection> getArticleSectionsToAdd(String subtitle, String sectionsContent){

@@ -34,6 +34,12 @@
 				</div>
 			</div>
 			<div class="col-md-5 col-sm-5 col-xs-2 fla">
+				<div th:if="${aleadyPostedForToday}" style="margin-top: 3%">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger">Deja ai postat un articol azi. Incearca din nou maine.</p>
+				</div>
+				<div th:if="${articleSuccessfullyAdded}" style="margin-top: 3%">
+					<p class="text-center list-group-item list-group-item-action list-group-item-success">Articol adaugat cu succes!</p>
+				</div>
 				<div class="card trip-card text-center">
 				  <div class="card-body">
 				  		<input class="form-control" type="text" name="title" placeholder="Titlul articolului"/>		  			

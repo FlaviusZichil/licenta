@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form id="allArticlesForm" name="allArticlesForm" action="#" th:object="${allArticlesViewModel}" th:action="@{/all-articles}" method="POST">	
+		<div class="row">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla">
+				<div class="card mt-3 mb-3">
+				    <div class="card-header bg-info">
+				      <h5 class="color text-center"> FILTRE </h5>
+				    </div>				
+				    <div class="card-body" style="text-align: left;">
+				    	<div class="custom-control custom-radio">
+							 <input type="radio" class="custom-control-input" id="newest">
+							 <label class="custom-control-label" for="newest">Cele mai recente</label>
+						</div>
+						<div class="custom-control custom-radio">
+							 <input type="radio" class="custom-control-input" id="oldest">
+							 <label class="custom-control-label" for="oldest">Cele mai vechi</label>
+						</div>
+						<div class="custom-control custom-radio">
+							 <input type="radio" class="custom-control-input" id="popular">
+							 <label class="custom-control-label" for="popular">Cele mai populare</label>
+						</div>
+				    </div>
+				    <div class="card-footer">
+				    	<input class="btn btn-success btn-block" type="submit" value="Aplica filtrul"/>
+				    </div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-2 fla">
+				<div th:each="articleDTO : *{articlesDTO}">
+					<div class="card mt-3 mb-3">
+					    <div class="card-header">
+					    	<h4 class="text-center" th:text="${articleDTO.title}"></h4>
+					    </div>				
+					    <div class="card-body" style="text-align: left;">
+					    
+					    </div>
+					    <div class="card-footer">
+					    	<p class="text center" th:text="${articleDTO.date}"></p>
+					    	<p class="text center">Ionescu, Daniel</p>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+</html>

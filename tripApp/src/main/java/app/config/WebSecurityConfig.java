@@ -29,7 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Setting Service to find User in the database.
 		// And Setting PassswordEncoder
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
 	}
 
 	@Override
@@ -52,6 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/add-trip").authenticated();
 		http.authorizeRequests().antMatchers("/tombola").authenticated();
 		http.authorizeRequests().antMatchers("/my-points").authenticated();
+		http.authorizeRequests().antMatchers("/my-articles").authenticated();
+		http.authorizeRequests().antMatchers("/all-articles").authenticated();
 
 		// Config for Login Form
 		http.authorizeRequests().and().formLogin()

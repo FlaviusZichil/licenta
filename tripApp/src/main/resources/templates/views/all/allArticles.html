@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Hai sus</title>
+<link rel="stylesheet" th:href="@{/styles/guestHomeStyle.css}" 
+	  href="../../static/styles/guestHomeStyle.css" />
+<link rel="stylesheet" th:href="@{/styles/tripCardStyle.css}" 
+	  href="../../static/styles/tripCardStyle.css" />
+<body>
+	<th:block th:include="layouts/bootstrapIncludes.html"></th:block>
+	<div class="header">
+		<th:block th:include="layouts/headers/header.html"></th:block>
+	</div>
+	<div class="content">
+		<th:block th:include="sections/allArticlesContent.html"></th:block>
+	</div>
+	<div class="footer">
+		<th:block th:include="layouts/footer/guestFooterLayout.html"></th:block>
+	</div>
+</body>
+<html>

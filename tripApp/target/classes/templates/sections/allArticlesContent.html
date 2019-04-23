@@ -1,5 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+<style>
+	
+	.font {
+		 font-family: "Comic Sans MS", "Comic Sans", cursive;
+		 font-size: 130%;
+	}
+	.btn-outline {
+	  color: #4fbfa8;
+	  background-color: #ffffff;
+	  border-color: #4fbfa8;
+	  font-weight: bold;
+	  letter-spacing: 0.05em;
+	}
+	
+	.btn-outline {
+	  color: #4fbfa8;
+	  background-color: #ffffff;
+	  border-color: #4fbfa8;
+	  font-weight: bold;
+	  border-radius: 1;
+	}
+	
+	.btn-outline:hover,
+	.btn-outline:active,
+	.btn-outline:focus,
+	.btn-outline.active {
+	  background: #4fbfa8;
+	  color: #ffffff;
+	  border-color: #4fbfa8; 
+	  }
+	
+}
+</style>
+</head>
 <body class="body">
 	<form id="allArticlesForm" name="allArticlesForm" action="#" th:object="${allArticlesViewModel}" th:action="@{/all-articles}" method="POST">	
 		<div class="row">
@@ -30,19 +65,36 @@
 			</div>
 			<div class="col-md-6 col-sm-6 col-xs-2 fla">
 				<div th:each="articleDTO : *{articlesDTO}">
-					<div class="card mt-3 mb-3">
-					    <div class="card-header">
+					<div class="card mt-3 mb-3" th:style="'background-image:url(' + @{images/article6.jpg} + ')'">
+					    <div class="card-header color">
 					    	<h4 class="text-center" th:text="${articleDTO.title}"></h4>
 					    </div>				
-					    <div id="description" class="card-body" style="text-align: left;">
-					    	<p th:text="${articleDTO.description}"></p>
-					    </div>
+					    <div id="description" class="card-body">
+					    	<div class="card" style="opacity: 0.7;">
+					    		<p class="font text-justify" style="margin: 2%" th:text="${articleDTO.description} + '...'"></p>	
+					    		<p><a href="#" class="btn btn-outline">Citeste mai mult</a></p>
+					    	</div>				    	
+					    </div>					    
 					    <div class="card-footer">
-					    	<p class="text center" th:text="${articleDTO.date}"></p>
-					    	<p class="text center" th:text="${articleDTO.user.lastName} + ', ' + ${articleDTO.user.firstName}"></p>
+					    	<table style="width: 100%">
+					    		<tr>
+					    			<td align="center">
+					    				<p class="text center color" th:text="${articleDTO.date}"></p>
+					    			</td>
+					    			<td align="center">
+					    				<p class="text center color" th:text="${articleDTO.user.lastName} + ', ' + ${articleDTO.user.firstName}"></p>
+					    			</td>
+					    			<td align="center">
+					    				<div class="btn-group">
+						    				<p class="btn btn-outline">Like</p>
+									        <p class="btn btn-outline">5</p>
+								        </div>
+					    			</td>
+					    		</tr>
+					    	</table>				    	
 					    </div>
 					</div>
-				</div>
+				</div>			
 			</div>
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		</div>

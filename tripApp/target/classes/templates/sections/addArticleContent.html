@@ -70,7 +70,7 @@
 
 	$(document).ready(function() {
 	    var text_max = 200;
-	    $('#count').html(text_max + ' caractere mai sunt necesare');
+	    $('#count').html('Mai sunt necesare ' + text_max + ' caractere');
 	
 	    $('#description').keyup(function() {
 	    	if($('#description').val().length >= text_max){
@@ -82,7 +82,7 @@
 	    		var text_length = $('#description').val().length;
 	 	        var text_remaining = text_max - text_length;
 	 	
-	 	        $('#count').html(text_remaining + ' caractere mai sunt necesare');
+	 	        $('#count').html('Mai sunt necesare ' + text_remaining + ' caractere');
 	 	        $('#count').addClass('text-center list-group-item list-group-item-action list-group-item-danger');
 	    	}
 	    });

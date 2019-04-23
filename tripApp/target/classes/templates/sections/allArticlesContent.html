@@ -34,12 +34,12 @@
 					    <div class="card-header">
 					    	<h4 class="text-center" th:text="${articleDTO.title}"></h4>
 					    </div>				
-					    <div class="card-body" style="text-align: left;">
-					    
+					    <div id="description" class="card-body" style="text-align: left;">
+					    	<p th:text="${articleDTO.description}"></p>
 					    </div>
 					    <div class="card-footer">
 					    	<p class="text center" th:text="${articleDTO.date}"></p>
-					    	<p class="text center">Ionescu, Daniel</p>
+					    	<p class="text center" th:text="${articleDTO.user.lastName} + ', ' + ${articleDTO.user.firstName}"></p>
 					    </div>
 					</div>
 				</div>
@@ -47,5 +47,14 @@
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		</div>
 	</form>
+<script>
+
+// 	var section = document.getElementById("section");
+// 	console.log(section.innerText.length);
+
+//     if (section.innerText.length > 50) {
+//     	section.innerText = section.innerText.substr(0, 50) + '...';
+//     }
+</script>
 </body>
 </html>

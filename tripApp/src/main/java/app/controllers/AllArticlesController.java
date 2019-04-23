@@ -11,14 +11,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import app.documents.Article;
 import app.dto.ArticleDTO;
+import app.entities.UserEntity;
 import app.models.AllArticlesViewModel;
 import app.repositories.ArticleRepository;
+import app.repositories.UserRepository;
 
 @Controller
 public class AllArticlesController {
 	
 	@Autowired
 	private ArticleRepository articleRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@GetMapping("/all-articles")
 	public String getAllArticles(Model model) {
@@ -41,8 +46,17 @@ public class AllArticlesController {
 		return articlesDTO;
 	}
 	
+	private UserEntity getUserById(Integer userId) {
+		for(UserEntity user : userRepository.findAll()) {
+			if(user.getId() == userId) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
 	private ArticleDTO convertFromArticleToArticleDTO(Article article) {
-		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), article.getUserId(), article.getDate(), article.getTitle(), article.getLikes(), article.getSections());
+		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), article.getLikes(), article.getDescription(), article.getSections());
 		return articleDTO;
 	}
 }

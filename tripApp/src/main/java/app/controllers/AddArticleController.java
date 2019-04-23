@@ -37,7 +37,8 @@ public class AddArticleController {
 	public String addArticleActions(Model model, Principal principal, 
 									@RequestParam(name = "title", required = false) String title,
 									@RequestParam(name = "subtitle", required = false) String subtitles,
-									@RequestParam(name = "sectionContent", required = false) String sectionsContent) {
+									@RequestParam(name = "sectionContent", required = false) String sectionsContent,
+									@RequestParam(name = "description", required = false) String description) {
 		
 		UserEntity user = this.getUserByEmail(principal.getName());
 		
@@ -47,6 +48,8 @@ public class AddArticleController {
 		article.setTitle(title);
 		article.setDate(LocalDate.now().toString());
 		article.setLikes(0);
+		System.out.println("DESC: "+ description);
+		article.setDescription(description);
 		article.setSections(this.getArticleSectionsToAdd(subtitles, sectionsContent));
 		
 		if(!this.hasUserAlreadyPostedForCurrentDate(LocalDate.now().toString(), user)) {

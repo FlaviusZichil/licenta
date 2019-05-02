@@ -62,7 +62,8 @@ public class AllArticlesController {
 	}
 	
 	private ArticleDTO convertFromArticleToArticleDTO(Article article) {
-		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), article.getLikes(), article.getDescription(), article.getSections());
+		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), 
+											   article.getLikes(), article.getDescription(), article.getSections(), article.getComments());
 		return articleDTO;
 	}
 }

@@ -16,10 +16,11 @@ public class Article {
 	private Integer likes;
 	private String description;
 	private List<ArticleSection> sections;
+	private List<ArticleComment> comments;
 	
 	public Article() {}
 
-	public Article(Integer articleId, Integer userId, String date, String title, Integer likes, String description, List<ArticleSection> sections) {
+	public Article(Integer articleId, Integer userId, String date, String title, Integer likes, String description, List<ArticleSection> sections, List<ArticleComment> comments) {
 		super();
 		this.articleId = articleId;
 		this.userId = userId;
@@ -28,6 +29,7 @@ public class Article {
 		this.likes = likes;
 		this.description = description;
 		this.sections = sections;
+		this.comments = comments;
 	}
 
 	public Integer getArticleId() {
@@ -86,9 +88,18 @@ public class Article {
 		this.sections = sections;
 	}
 
+	public List<ArticleComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<ArticleComment> comments) {
+		this.comments = comments;
+	}
+
 	@Override
 	public String toString() {
 		return "Article [articleId=" + articleId + ", userId=" + userId + ", date=" + date + ", title=" + title
-				+ ", likes=" + likes + ", sections=" + sections + "]";
+				+ ", likes=" + likes + ", description=" + description + ", sections=" + sections + ", comments="
+				+ comments + "]";
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
+import app.documents.ArticleComment;
 import app.documents.ArticleSection;
 import app.entities.UserEntity;
 import app.repositories.ArticleRepository;
@@ -48,14 +49,14 @@ public class AddArticleController {
 		article.setTitle(title);
 		article.setDate(LocalDate.now().toString());
 		article.setLikes(0);
-		System.out.println("DESC: "+ description);
 		article.setDescription(description);
 		article.setSections(this.getArticleSectionsToAdd(subtitles, sectionsContent));
+		List<ArticleComment> comments = new ArrayList<ArticleComment>();
+		article.setComments(comments);
 		
 		if(!this.hasUserAlreadyPostedForCurrentDate(LocalDate.now().toString(), user)) {
 			articleRepository.save(article);
-			model.addAttribute("articleSuccessfullyAdded", true);
-			
+			model.addAttribute("articleSuccessfullyAdded", true);		
 		}
 		else {
 			model.addAttribute("aleadyPostedForToday", true);

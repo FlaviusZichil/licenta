@@ -2,6 +2,7 @@ package app.dto;
 
 import java.util.List;
 
+import app.documents.ArticleComment;
 import app.documents.ArticleSection;
 import app.entities.UserEntity;
 
@@ -14,11 +15,11 @@ public class ArticleDTO {
 	private Integer likes;
 	private String description;
 	private List<ArticleSection> sections;
-	
+	private List<ArticleComment> comments;
 	public ArticleDTO() {}
 	
 	public ArticleDTO(Integer articleId, UserEntity user, String date, String title, Integer likes, String description,
-			List<ArticleSection> sections) {
+			List<ArticleSection> sections, List<ArticleComment> comments) {
 		super();
 		this.articleId = articleId;
 		this.user = user;
@@ -27,6 +28,7 @@ public class ArticleDTO {
 		this.likes = likes;
 		this.description = description;
 		this.sections = sections;
+		this.comments = comments;
 	}
 	
 	public Integer getArticleId() {
@@ -70,6 +72,14 @@ public class ArticleDTO {
 	}
 	public void setSections(List<ArticleSection> sections) {
 		this.sections = sections;
+	}
+
+	public List<ArticleComment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<ArticleComment> comments) {
+		this.comments = comments;
 	}
 
 	@Override

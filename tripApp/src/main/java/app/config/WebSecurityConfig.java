@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/my-points").authenticated();
 		http.authorizeRequests().antMatchers("/my-articles").authenticated();
 		http.authorizeRequests().antMatchers("/all-articles").authenticated();
+		http.authorizeRequests().antMatchers("/article").authenticated();
 
 		// Config for Login Form
 		http.authorizeRequests().and().formLogin()

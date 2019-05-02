@@ -8,9 +8,7 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="row" >
-							<div class="col-md-1 col-sm-1 col-xs-2 fla"></div>
-							<div class="col-md-10 col-sm-10 col-xs-2 fla">
-								<div class="card" style="background-color: #d2dff4">
+								<div class="card mt-2 ml-4 mr-4 mb-2" style="background-color: #d2dff4">
 									<div class="card-body">
 										<div class="text-center">
 											<h2 th:text="*{articleDTO.title}"></h2>
@@ -32,8 +30,41 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-1 col-sm-1 col-xs-2 fla"></div>
+						</div>
+						<div id="comments" class="row">
+							<div class="card mt-2 ml-4 mr-4 mb-2" style="width: 100%">
+								<div class="card-body">
+										<div th:each="comment : *{articleDTO.comments}">
+											<div class="card">
+												<div class="card-body">
+													<div class="row">
+														<div class="col-md-3 col-sm-3 col-xs-2 fla bg-info color" style="border-radius: 25px;">
+															<h5 class="text-center mt-3" th:text="${comment.userId}"></h5>
+															<h5 class="text-center" th:text="${comment.date}"></h5>
+														</div>
+														<div class="col-md-9 col-sm-9 col-xs-2 fla">
+							  								<h5 class="text-justify ml-3" th:text="${comment.content}"></h5>	 
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+								</div>
+									<div class="card">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-md-3 col-sm-3 col-xs-2 fla bg-info color" style="border-radius: 25px;">
+														<h5 class="text-center mt-3" th:text="${userName}"></h5>
+														<h5 class="text-center" th:text="${date}"></h5>
+													</div>
+													<div class="col-md-9 col-sm-9 col-xs-2 fla">
+						  								<textarea class="text-justify" name="commentContent" style="width: 100%; height: 70px; resize: none" placeholder="Adauga un comentariu..." required></textarea>
+						  								<input class="btn btn-success" style="float: right" type="submit" value="Adauga comentariu"/>	 
+													</div>
+												</div>
+											</div>
+										</div>
+								</div>
 						</div>
 					</div>
 				</div>

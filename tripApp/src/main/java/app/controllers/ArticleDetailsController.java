@@ -3,6 +3,7 @@ package app.controllers;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.expression.Lists;
 
 import app.documents.Article;
 import app.documents.ArticleComment;
@@ -51,9 +53,18 @@ public class ArticleDetailsController {
 	
 	@PostMapping("/article")
 	public String articleActions(Model model, HttpSession session, Principal principal,
-								@RequestParam(name="commentContent", required = false) String commentContent) {
+								@RequestParam(name="commentContent", required = false) String commentContent,
+								@RequestParam(name="submit", required = false) String actionType) {
 		
-		this.addCommentToArticle(commentContent, Integer.parseInt((String)session.getAttribute("articleId")), principal);
+		switch(actionType) {
+			case "Adauga comentariu":{
+				this.addCommentToArticle(commentContent, Integer.parseInt((String)session.getAttribute("articleId")), principal);
+				break;
+			}
+			case "Reseteaza":{
+				break;
+			}
+		}
 		
 		String redirectUrl = "article?a=" + session.getAttribute("articleId");
 		return "redirect:/" + redirectUrl;
@@ -93,6 +104,8 @@ public class ArticleDetailsController {
 		for(ArticleComment comment : article.getComments()) {
 			commentsDTO.add(this.convertFromArticleCommentToArticleCommentDTO(comment));
 		}
+		
+		Collections.reverse(commentsDTO);
 		
 		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), article.getLikes(), 
 											   article.getDescription(), article.getSections(), commentsDTO);

@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
-<!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
-<!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
 <body class="body">
 	<form action="#" name="articleForm" th:action="@{/article}" th:object="${articleDetailsViewModel}" method="POST">
 		<div class="row" id="content">
@@ -18,18 +15,38 @@
 										</div> 
 										<div id="descriptionCard" class="card mt-3 mb-3">				
 											<div id="description" class="card-body">
-												<h5 class="text-justify" th:text="*{articleDTO.description}"></h5>	    	
+												<h6 class="text-justify" th:text="*{articleDTO.description}"></h6>	    	
 											</div>					    
 										</div>
 										<div th:each="section : *{articleDTO.sections}">
 											<div id="sectionCard" class="card mt-3 mb-3">
 												<div class="card-header bg-info color">
-													 <h5 class="text-left" th:text="${section.sectionTitle}"></h5>
+													 <h6 class="text-left" th:text="${section.sectionTitle}"></h6>
 												</div>					
 												<div id="section" class="card-body">
-													<h5 class="text-justify" th:text="${section.sectionContent}"></h5>	    	
+													<h6 class="text-justify" th:text="${section.sectionContent}"></h6>	    	
 												</div>					    
 											</div>
+										</div>
+										<div id="articleActions" class="card mt-3 mb-3">				
+											<div  class="card-body">
+												<table style="width: 100%">
+													<tr>
+														<td align=center>
+															<h6 th:text="*{articleDTO.user.lastName} + ', ' + *{articleDTO.user.firstName}"></h6>
+														</td>
+														<td align=center>
+															<h6 th:text="*{articleDTO.date}"></h6>
+														</td>
+														<td align=center>
+															<h6 th:text="*{articleDTO.likes}"></h6>
+														</td>
+														<td align=center>
+															<p id="addNewComment" class="btn btn-info">Adauga comentariu</p>
+														</td>
+													</tr>
+												</table>	    	
+											</div>					    
 										</div>
 									</div>
 								</div>
@@ -46,27 +63,34 @@
 												
 												    <div class="col-md-10 col-sm-10 col-xs-2">
 												        <div class="card">
-												            <div class="card-header">
-												                <p th:text="'adaugat in data de ' + ${comment.date}"></p>
+												            <div class="card-header" style="background-color: #BCBDBF">
+												                <h6 th:text="'adaugat in data de ' + ${comment.date}" style="float: left"></h6>
+												                <div class="dropdown" style="float: right">
+																	  <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="actions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+																	  <div class="dropdown-menu" aria-labelledby="actions">
+																	    <input id="removeComment" class="dropdown-item" type="submit" value="Sterge"/>
+																	    <p id="editComment" class="dropdown-item"> Editeaza </p>
+																	  </div>
+																</div>
 												            </div>
-												            <div class="card-body mt-2">
-												                <h5 class="text-justify ml-1" th:text="${comment.content}"></h5>
+												            <div class="card-body" id="postedCommentContent">
+												                <h6 class="text-justify ml-1" th:text="${comment.content}"></h6>
 												            </div>
 												        </div>
 												    </div>
 												</div>
 										</div>
 								</div>
-									<div class="card">
+									<div class="card" id="addCommentCard">
 											<div class="card-body">
 												<div class="row">
 													<div class="col-md-2 col-sm-2 col-xs-2">
 									        	        <img src="https://image.ibb.co/jw55Ex/def_face.jpg" class="img img-rounded img-fluid"/>
-									        	        <p class="text-secondary text-center" th:text="${userName}"></p>
+									        	        <h6 class="text-secondary text-center" th:text="${userName}"></h6>
 									        	    </div>
 													<div class="col-md-10 col-sm-10 col-xs-2 fla">
-						  								<textarea class="text-justify" name="commentContent" style="width: 100%; height: 100px; resize: none;" placeholder="Adauga un comentariu..." required></textarea>
-						  								<input class="btn btn-success" style="float: right" type="submit" value="Adauga comentariu"/>	 
+						  								<textarea id="commentContent" class="text-justify" name="commentContent" style="width: 100%; height: 100px; resize: none;" placeholder="Adauga un comentariu..."></textarea>
+						  								<input id="addComment" name="submit" class="btn btn-success disabled" style="float: right" type="submit" value="Adauga comentariu"/>	 
 													</div>
 												</div>
 											</div>
@@ -79,5 +103,49 @@
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		</div>
 	</form>
+<script>
+	$(document).ready(function() {
+	    $('#commentContent').keyup(function() {
+	    	if($('#commentContent').val().length >= 2){
+	        	$('#addComment').removeClass('btn btn-success disabled');
+	        	$('#addComment').addClass('btn btn-success');
+	        }
+	    	else{
+	    		$('#addComment').removeClass('btn btn-success');
+	        	$('#addComment').addClass('btn btn-success disabled');
+	    	}
+	    });
+	});
+	
+	var addComment = document.getElementById("addNewComment");
+	var card = document.getElementById("addCommentCard");
+	
+	addComment.onclick = function(){		
+		card.scrollIntoView();
+	}
+	
+	
+	var editComment = document.getElementById("editComment");
+	var postedCommentContent = document.getElementById("postedCommentContent");
+	
+	editComment.onclick = function(){		
+		postedCommentContent.setAttribute("contenteditable", "true");
+		
+		var saveButton = document.createElement("p");
+		saveButton.innerHTML = "Salveaza modificarile";
+		saveButton.setAttribute("class", "btn btn-success");
+		
+		var resetButton = document.createElement("input");
+		resetButton.setAttribute("class", "btn btn-info");
+		resetButton.setAttribute("type", "submit");
+		resetButton.setAttribute("name", "submit");
+		resetButton.setAttribute("value", "Reseteaza");
+		
+		
+		postedCommentContent.appendChild(saveButton);
+		postedCommentContent.appendChild(resetButton);
+		postedCommentContent.focus();
+	}
+</script>
 </body>
 </html>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
 import app.dto.ArticleDTO;
@@ -34,7 +35,12 @@ public class AllArticlesController {
 	}
 	
 	@PostMapping("/all-articles")
-	public String allArticlesActions() {
+	public String allArticlesActions(@RequestParam(name = "submit", required = false) String actionType) {
+		switch(actionType) {
+			case "Citeste mai mult":{
+				return "redirect:/article";
+			}
+		}
 		return "views/all/allArticles";
 	}
 	

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form action="#" name="articleForm" th:action="@{/article}" th:object="${articleDetailsViewModel}" method="POST">
+		<div class="row" id="content">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<div class="card">
+					<div class="card-body">
+						<div class="row" >
+							<div class="col-md-1 col-sm-1 col-xs-2 fla"></div>
+							<div class="col-md-10 col-sm-10 col-xs-2 fla">
+								<div class="card" style="background-color: #d2dff4">
+									<div class="card-body">
+										<div class="text-center">
+											<h2 th:text="*{articleDTO.title}"></h2>
+										</div> 
+										<div id="descriptionCard" class="card mt-3 mb-3">				
+											<div id="description" class="card-body">
+												<h5 class="text-justify" th:text="*{articleDTO.description}"></h5>	    	
+											</div>					    
+										</div>
+										<div th:each="section : *{articleDTO.sections}">
+											<div id="sectionCard" class="card mt-3 mb-3">
+												<div class="card-header bg-info color">
+													 <h5 class="text-left" th:text="${section.sectionTitle}"></h5>
+												</div>					
+												<div id="section" class="card-body">
+													<h5 class="text-justify" th:text="${section.sectionContent}"></h5>	    	
+												</div>					    
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-1 col-sm-1 col-xs-2 fla"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+</html>

@@ -15,11 +15,11 @@ public class ArticleDTO {
 	private Integer likes;
 	private String description;
 	private List<ArticleSection> sections;
-	private List<ArticleComment> comments;
+	private List<ArticleCommentDTO> commentsDTO;
 	public ArticleDTO() {}
 	
 	public ArticleDTO(Integer articleId, UserEntity user, String date, String title, Integer likes, String description,
-			List<ArticleSection> sections, List<ArticleComment> comments) {
+			List<ArticleSection> sections, List<ArticleCommentDTO> commentsDTO) {
 		super();
 		this.articleId = articleId;
 		this.user = user;
@@ -28,7 +28,7 @@ public class ArticleDTO {
 		this.likes = likes;
 		this.description = description;
 		this.sections = sections;
-		this.comments = comments;
+		this.commentsDTO = commentsDTO;
 	}
 	
 	public Integer getArticleId() {
@@ -74,12 +74,12 @@ public class ArticleDTO {
 		this.sections = sections;
 	}
 
-	public List<ArticleComment> getComments() {
-		return comments;
+	public List<ArticleCommentDTO> getCommentsDTO() {
+		return commentsDTO;
 	}
 
-	public void setComments(List<ArticleComment> comments) {
-		this.comments = comments;
+	public void setCommentsDTO(List<ArticleCommentDTO> commentsDTO) {
+		this.commentsDTO = commentsDTO;
 	}
 
 	@Override

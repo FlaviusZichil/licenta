@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
+import app.documents.ArticleComment;
+import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
 import app.entities.UserEntity;
 import app.models.AllArticlesViewModel;
@@ -62,8 +64,19 @@ public class AllArticlesController {
 	}
 	
 	private ArticleDTO convertFromArticleToArticleDTO(Article article) {
-		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), 
-											   article.getLikes(), article.getDescription(), article.getSections(), article.getComments());
+		List<ArticleCommentDTO> commentsDTO = new ArrayList<>();
+		
+		for(ArticleComment comment : article.getComments()) {
+			commentsDTO.add(this.convertFromArticleCommentToArticleCommentDTO(comment));
+		}
+		
+		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), article.getLikes(), 
+											   article.getDescription(), article.getSections(), commentsDTO);
 		return articleDTO;
+	}
+	
+	private ArticleCommentDTO convertFromArticleCommentToArticleCommentDTO(ArticleComment comment) {
+		ArticleCommentDTO commentDTO = new ArticleCommentDTO(this.getUserById(comment.getUserId()), comment.getDate(), comment.getContent());
+		return commentDTO;
 	}
 }

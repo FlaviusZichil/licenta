@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
 import app.documents.ArticleComment;
+import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
 import app.entities.UserEntity;
 import app.models.ArticleDetailsViewModel;
@@ -41,8 +42,7 @@ public class ArticleDetailsController {
 		model.addAttribute("articleDetailsViewModel", articleDetailsViewModel);
 		
 		UserEntity user = this.getUserByEmail(principal.getName());
-		model.addAttribute("userName", user.getFirstName() + " " + user.getLastName());
-		model.addAttribute("date", LocalDate.now().toString());
+		model.addAttribute("userName", user.getLastName() + " " + user.getFirstName());	
 		
 		session.setAttribute("articleId", articleId);
 		
@@ -88,9 +88,20 @@ public class ArticleDetailsController {
 	}
 	
 	private ArticleDTO convertFromArticleToArticleDTO(Article article) {
+		List<ArticleCommentDTO> commentsDTO = new ArrayList<>();
+		
+		for(ArticleComment comment : article.getComments()) {
+			commentsDTO.add(this.convertFromArticleCommentToArticleCommentDTO(comment));
+		}
+		
 		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), article.getLikes(), 
-											   article.getDescription(), article.getSections(), article.getComments());
+											   article.getDescription(), article.getSections(), commentsDTO);
 		return articleDTO;
+	}
+	
+	private ArticleCommentDTO convertFromArticleCommentToArticleCommentDTO(ArticleComment comment) {
+		ArticleCommentDTO commentDTO = new ArticleCommentDTO(this.getUserById(comment.getUserId()), comment.getDate(), comment.getContent());
+		return commentDTO;
 	}
 	
 	private UserEntity getUserById(Integer userId) {

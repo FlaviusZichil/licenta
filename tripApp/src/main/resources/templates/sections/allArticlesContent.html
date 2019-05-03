@@ -46,20 +46,20 @@
 				    </div>				
 				    <div class="card-body" style="text-align: left;">
 				    	<div class="custom-control custom-radio">
-							 <input type="radio" class="custom-control-input" id="newest">
-							 <label class="custom-control-label" for="newest">Cele mai recente</label>
+						  <input type="radio" class="custom-control-input" id="defaultGroupExample1" name="articleFilter" value="Cele mai recente">
+						  <label class="custom-control-label" for="defaultGroupExample1">Cele mai recente</label>
 						</div>
 						<div class="custom-control custom-radio">
-							 <input type="radio" class="custom-control-input" id="oldest">
-							 <label class="custom-control-label" for="oldest">Cele mai vechi</label>
+						  <input type="radio" class="custom-control-input" id="defaultGroupExample2" name="articleFilter" value="Cele mai populare">
+						  <label class="custom-control-label" for="defaultGroupExample2">Cele mai populare</label>
 						</div>
 						<div class="custom-control custom-radio">
-							 <input type="radio" class="custom-control-input" id="popular">
-							 <label class="custom-control-label" for="popular">Cele mai populare</label>
+						  <input type="radio" class="custom-control-input" id="defaultGroupExample3" name="articleFilter" value="Cele mai vechi">
+						  <label class="custom-control-label" for="defaultGroupExample3">Cele mai vechi</label>
 						</div>
 				    </div>
 				    <div class="card-footer">
-				    	<input class="btn btn-success btn-block" type="submit" value="Aplica filtrul"/>
+				    	<input class="btn btn-success btn-block" type="submit" name="submit" value="Aplica filtrul"/>
 				    </div>
 				</div>
 			</div>
@@ -73,7 +73,6 @@
 					    	<div class="card" style="opacity: 0.7;">
 					    		<p class="font text-justify" style="margin: 2%" th:text="${articleDTO.description} + '...'"></p>	
 					    		<a th:href="@{/article?a=} + ${articleDTO.articleId}" class="btn btn-outline">Citeste mai mult</a>
-<!-- 					    		<p><input type="submit" name="submit" class="btn btn-outline" value="Citeste mai mult"></p> -->
 					    	</div>				    	
 					    </div>					    
 					    <div class="card-footer">
@@ -88,7 +87,7 @@
 					    			<td align="center">
 					    				<div class="btn-group">
 						    				<p class="btn btn-outline">Like</p>
-									        <p class="btn btn-outline">5</p>
+									        <p class="btn btn-outline" th:text="${articleDTO.likes}"></p>
 								        </div>
 					    			</td>
 					    		</tr>

@@ -3,6 +3,8 @@ package app.controllers;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import app.documents.Article;
 import app.documents.ArticleComment;
 import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
+import app.dto.TripDTO;
+import app.entities.City;
 import app.entities.UserEntity;
 import app.models.AllArticlesViewModel;
 import app.repositories.ArticleRepository;
@@ -39,13 +43,83 @@ public class AllArticlesController {
 	}
 	
 	@PostMapping("/all-articles")
-	public String allArticlesActions(@RequestParam(name = "submit", required = false) String actionType) {
+	public String allArticlesActions(Model model,
+									 @RequestParam(name = "submit", required = false) String actionType,
+									 @RequestParam(name = "articleFilter", required = false) String articleFilter) {
 		switch(actionType) {
 			case "Citeste mai mult":{
 				return "redirect:/article";
 			}
+			case "Aplica filtrul": {
+				if(articleFilter != null) {
+					AllArticlesViewModel allArticlesViewModel = new AllArticlesViewModel();
+					switch(articleFilter) {
+						case "Cele mai recente":{
+							allArticlesViewModel.setArticlesDTO(this.sortArticlesByDate("ascending"));
+							break;
+						}
+						case "Cele mai populare":{
+							allArticlesViewModel.setArticlesDTO(this.sortArticlesByLikes());
+							break;
+						}
+						case "Cele mai vechi":{
+							allArticlesViewModel.setArticlesDTO(this.sortArticlesByDate("descending"));
+							break;
+						}
+					}
+					model.addAttribute("allArticlesViewModel", allArticlesViewModel);
+				}
+				break;
+			}
 		}
 		return "views/all/allArticles";
+	}
+	
+	private List<ArticleDTO> sortArticlesByDate(String way){
+		List<ArticleDTO> articlesDTO = this.getAllArticlesDTO();
+		Collections.sort(articlesDTO, new Comparator<ArticleDTO>(){
+			   @Override
+			   public int compare(ArticleDTO firstArticleDTO, ArticleDTO secondArticleDTO) {			   
+				   LocalDate firstArticleDTODate = LocalDate.parse(firstArticleDTO.getDate());
+				   LocalDate secondArticleDTODate = LocalDate.parse(secondArticleDTO.getDate());
+				   
+				   if(firstArticleDTODate.isBefore(secondArticleDTODate)) {
+					   if(way.equals("ascending")) {
+						   return 1;
+					   }
+					   if(way.equals("descending")) {
+						   return -1;
+					   }				   
+				   }				   
+				   if(firstArticleDTODate.isAfter(secondArticleDTODate)) {
+					   if(way.equals("ascending")) {
+						   return -1;
+					   }
+					   if(way.equals("descending")) {
+						   return 1;
+					   }
+				   }
+				   return 0;
+			     }
+			 });
+		return articlesDTO;
+	}
+	
+	private List<ArticleDTO> sortArticlesByLikes(){
+		List<ArticleDTO> articlesDTO = this.getAllArticlesDTO();
+		Collections.sort(articlesDTO, new Comparator<ArticleDTO>(){
+			   @Override
+			   public int compare(ArticleDTO firstArticleDTO, ArticleDTO secondArticleDTO) {			   				   
+				   if(firstArticleDTO.getLikes() > secondArticleDTO.getLikes()) {
+					   return -1;			   
+				   }				   
+				   if(firstArticleDTO.getLikes() < secondArticleDTO.getLikes()) {
+					   return 1;
+				   }
+				   return 0;
+			     }
+			 });
+		return articlesDTO;
 	}
 	
 	private List<ArticleDTO> getAllArticlesDTO(){

@@ -1,5 +1,7 @@
 package app.controllers;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +78,11 @@ public class AllArticlesController {
 	}
 	
 	private ArticleCommentDTO convertFromArticleCommentToArticleCommentDTO(ArticleComment comment) {
-		ArticleCommentDTO commentDTO = new ArticleCommentDTO(this.getUserById(comment.getUserId()), comment.getDate(), comment.getContent());
+		LocalDate articleDate = LocalDate.parse(comment.getDate());
+		Period period = Period.between(LocalDate.now(), articleDate);
+		int days = Math.abs(period.getDays());
+	    
+		ArticleCommentDTO commentDTO = new ArticleCommentDTO(comment.getCommentId(), this.getUserById(comment.getUserId()), comment.getDate(), comment.getContent(), days);
 		return commentDTO;
 	}
 }

@@ -64,12 +64,27 @@
 												    <div class="col-md-10 col-sm-10 col-xs-2">
 												        <div class="card">
 												            <div class="card-header" style="background-color: #BCBDBF">
-												                <h6 th:text="'adaugat in data de ' + ${comment.date}" style="float: left"></h6>
+												            	<div th:if="${comment.daysSincePosted} == 0">
+												            		<h6 style="float: left">adaugat astazi</h6>
+												            	</div>
+												            	<div th:if="${comment.daysSincePosted} == 1">
+												            		<h6 style="float: left">adaugat ieri</h6>
+												            	</div>
+												            	<div th:if="${comment.daysSincePosted} > 1">
+												            		<h6 th:text="'adaugat acum ' + ${comment.daysSincePosted} + ' zile'" style="float: left"></h6>
+												            	</div>
 												                <div class="dropdown" style="float: right">
 																	  <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="actions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 																	  <div class="dropdown-menu" aria-labelledby="actions">
-																	    <input id="removeComment" class="dropdown-item" type="submit" value="Sterge"/>
-																	    <p id="editComment" class="dropdown-item"> Editeaza </p>
+																	  	<div th:if="${comment.user.id} == ${loggedUserId}">
+																	  		 <input id="removeComment" class="dropdown-item" th:name="${comment.commentId}" type="submit" value="Sterge"/>
+																	  		 <p id="editComment" class="dropdown-item"> Editeaza </p>
+																	  	</div>
+																	  	<div th:if="${comment.user.id} != ${loggedUserId}">
+																	  		 <input class="dropdown-item disabled" type="submit" th:name="${comment.commentId}" value="Sterge"/>
+																	  		 <p class="dropdown-item disabled"> Editeaza </p>
+																	  	</div>
+																	    
 																	  </div>
 																</div>
 												            </div>
@@ -136,10 +151,10 @@
 		saveButton.setAttribute("class", "btn btn-success");
 		
 		var resetButton = document.createElement("input");
-		resetButton.setAttribute("class", "btn btn-info");
+		resetButton.setAttribute("class", "btn btn-danger");
 		resetButton.setAttribute("type", "submit");
 		resetButton.setAttribute("name", "submit");
-		resetButton.setAttribute("value", "Reseteaza");
+		resetButton.setAttribute("value", "Renunta");
 		
 		
 		postedCommentContent.appendChild(saveButton);

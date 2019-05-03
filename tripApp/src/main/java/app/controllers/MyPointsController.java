@@ -46,10 +46,8 @@ public class MyPointsController {
 		return userRegistrations;
 	}
 	
-	private UserEntity getUserByEmail(String email) {
-		Iterable<UserEntity> users = userRepository.findAll();
-		
-		for(UserEntity user : users) {
+	private UserEntity getUserByEmail(String email) {		
+		for(UserEntity user : userRepository.findAll()) {
 			if(user.getEmail().equals(email)) {
 				return user;
 			}

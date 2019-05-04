@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
 import app.documents.ArticleComment;
+import app.documents.ArticleSection;
 import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
 import app.entities.UserEntity;
@@ -54,6 +56,7 @@ public class ArticleDetailsController {
 		if(session.getAttribute("isUserAllowedToEdit") != null) {
 			if(((boolean)session.getAttribute("isUserAllowedToEdit")) == true) {
 				model.addAttribute("isUserAllowedToEdit", true);
+				session.setAttribute("isUserAllowedToEdit", null);
 			}
 		}
 
@@ -70,10 +73,10 @@ public class ArticleDetailsController {
 								@RequestParam(name = "sectionTitles", required = false) String sectionsTitle,
 								@RequestParam(name = "sectionContent", required = false) String sectionsContent,
 								@RequestParam(name = "description", required = false) String description,
-								@RequestParam MultiValueMap<String, String> selectedComment) {
+								@RequestParam MultiValueMap<String, String> submitInputs) {
 			
-		if(selectedComment != null) {
-			for(Map.Entry<String, List<String>> commentId : selectedComment.entrySet()){
+		if(submitInputs != null) {
+			for(Map.Entry<String, List<String>> commentId : submitInputs.entrySet()){
 					if(commentId.getValue().contains("Sterge")){
 						this.removeComment(Integer.parseInt(commentId.getKey()));
 						break;
@@ -91,10 +94,23 @@ public class ArticleDetailsController {
 					break;
 				}
 				case "Salveaza modificarile":{
-					System.out.println("TITLE: " + title);
-					System.out.println("DESCRIPTION: " + description);
-					System.out.println("SUBTITLES: " + sectionsTitle);
-					System.out.println("CONTENTS: " + sectionsContent);
+					Article articleToModify = this.getArticleById(Integer.parseInt((String) session.getAttribute("articleId")));
+
+					articleToModify.setArticleId(articleToModify.getArticleId());
+					articleToModify.setUserId(articleToModify.getUserId());
+					articleToModify.setTitle(title);
+					articleToModify.setDate(articleToModify.getDate());
+					articleToModify.setLikes(0);
+					articleToModify.setDescription(description);
+					articleToModify.setSections(this.getArticleSectionsToAdd(sectionsTitle, sectionsContent));
+					List<ArticleComment> comments = new ArrayList<ArticleComment>();
+					
+					if(articleToModify.getComments().size() > 0) {
+						comments = articleToModify.getComments();
+					}
+					articleToModify.setComments(comments);
+					articleRepository.save(articleToModify);
+					session.setAttribute("isUserAllowedToEdit", null);
 					break;
 				}
 			}
@@ -103,6 +119,32 @@ public class ArticleDetailsController {
 		String redirectUrl = "article?a=" + session.getAttribute("articleId");
 		return "redirect:/" + redirectUrl;
 	}
+	
+	private List<ArticleSection> getArticleSectionsToAdd(String subtitle, String sectionsContent){
+		List<ArticleSection> articleSections = new ArrayList<>();
+		
+		List<String> subtitles = new ArrayList<>(Arrays.asList(subtitle.split(",")));
+		List<String> sections = new ArrayList<>(Arrays.asList(sectionsContent.split(",")));
+		
+		for(int index = 0; index < subtitles.size(); index++) {
+			ArticleSection articleSection = new ArticleSection(subtitles.get(index), sections.get(index));
+			articleSections.add(articleSection);
+		}
+		return articleSections;
+	}
+	
+	private Integer getLastArticleId() {
+		List<Integer> articleIds = new ArrayList<>();
+		for(Article article : articleRepository.findAll()) {
+			articleIds.add(article.getArticleId());
+		}
+		
+		if(articleIds.size() > 0) {
+			return this.getMaxIdFromList(articleIds);
+		}
+		return 0;		
+	}
+	
 	
 	private Article getArticleThatContainsComment(Integer commentId) {
 		for(Article article : articleRepository.findAll()) {

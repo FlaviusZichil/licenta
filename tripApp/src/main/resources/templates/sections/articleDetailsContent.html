@@ -22,7 +22,8 @@
 										<div id="descriptionCard" class="card mt-3 mb-3">				
 											<div id="description" class="card-body">
 												<div th:if="${isUserAllowedToEdit} == true">
-													<textarea class="text-justify" contenteditable="true" th:text="*{articleDTO.description}" name="description" style="width: 100%"></textarea>
+													<textarea class="text-justify" contenteditable="true"  th:text="*{articleDTO.description}" id="description" name="description" style="width: 100%; height: 150px;"></textarea>
+					  								<div class="text-center list-group-item list-group-item-action list-group-item-danger" id="count"></div>  											
 												</div>
 												<div th:if="${isUserAllowedToEdit} == false">
 													<h6 class="text-justify" th:text="*{articleDTO.description}"></h6>
@@ -41,7 +42,7 @@
 												</div>					
 												<div id="section" class="card-body">
 													<div th:if="${isUserAllowedToEdit} == true">	
-														<textarea class="text-justify" contenteditable="true" th:text="${section.sectionContent}" name="sectionContent" style="width: 100%"></textarea>	    															
+														<textarea class="text-justify" contenteditable="true" th:text="${section.sectionContent}" name="sectionContent" style="width: 100%; height: 150px;"></textarea>	    															
 													</div>	
 													<div th:if="${isUserAllowedToEdit} == false">	
 														<h6 class="text-justify" th:text="${section.sectionContent}"></h6>	    															
@@ -49,6 +50,7 @@
 												</div>					    
 											</div>
 										</div>
+										<div id="addedSections"></div>
 										<div id="articleActions" class="card mt-3 mb-3">				
 											<div  class="card-body">
 												<table style="width: 100%">
@@ -65,9 +67,12 @@
 														<td align=center>
 															<p id="addNewComment" class="btn btn-info">Adauga comentariu</p>
 														</td>
+														<td align=center th:if="${isUserAllowedToEdit} == true">							
+															<p id="addSection" class="btn btn-info" onclick="createNewSection();">Adauga sectiune</p>
+														</td>
 														<td align=center th:if="${isUserAllowedToEdit} == true">
 															<input id="saveAfterEdit" class="btn btn-success" type="submit" name="submit" value="Salveaza modificarile"/>
-														</td>
+														</td>																																									
 													</tr>
 												</table>	    	
 											</div>					    
@@ -155,15 +160,22 @@
 	    	}
 	    });
 	});
+</script>
 	
+	
+<script>	
 	var addComment = document.getElementById("addNewComment");
 	var card = document.getElementById("addCommentCard");
 	
 	addComment.onclick = function(){		
 		card.scrollIntoView();
 	}
+</script>
 	
 	
+	
+	
+<script>	
 	var editComment = document.getElementById("editComment");
 	var postedCommentContent = document.getElementById("postedCommentContent");
 	
@@ -179,12 +191,102 @@
 		resetButton.setAttribute("type", "submit");
 		resetButton.setAttribute("name", "submit");
 		resetButton.setAttribute("value", "Renunta");
-		
-		
+			
 		postedCommentContent.appendChild(saveButton);
 		postedCommentContent.appendChild(resetButton);
 		postedCommentContent.focus();
 	}
+</script>	
+	
+	
+<script>	
+	$(document).ready(function() {
+	    var text_max = 200;
+	    $('#count').html('Mai sunt necesare ' + text_max + ' caractere');
+		console.log($('#description').val().length);
+	    $('#description').keyup(function() {
+	    	if($('#description').val().length >= text_max){
+	        	$('#count').html('A fost atinsa limita minima de caractere');
+	        	$('#count').removeClass('text-center list-group-item list-group-item-action list-group-item-danger');
+	        	$('#count').addClass('text-center list-group-item list-group-item-action list-group-item-success');
+	        }
+	    	else{
+	    		var text_length = $('#description').val().length;
+	 	        var text_remaining = text_max - text_length;
+	 	
+	 	        $('#count').html('Mai sunt necesare ' + text_remaining + ' caractere');
+	 	        $('#count').addClass('text-center list-group-item list-group-item-action list-group-item-danger');
+	    	}
+	    });
+	});		
+</script>
+
+<script>
+function createNewSection(){
+	var cardDiv = document.createElement("div");
+	cardDiv.setAttribute("class", "card trip-card text-center");
+	
+	var cardBodyDiv = document.createElement("div");
+	cardBodyDiv.setAttribute("class", "card-body");
+	
+	var input = document.createElement("input");
+	input.setAttribute("class", "form-control");
+	input.setAttribute("type", "text");
+	input.setAttribute("placeholder", "Subtitlu");
+	input.setAttribute("name", "subtitle");
+	input.setAttribute("required", "required");
+	
+	var textarea = document.createElement("textarea");
+	textarea.setAttribute("style", "width: 100%; height: 150px; resize: none");
+	textarea.setAttribute("class", "text-justify");
+	textarea.setAttribute("name", "sectionContent");
+	textarea.setAttribute("required", "required");
+	
+	var deleteSection = document.createElement("p");
+	deleteSection.setAttribute("class", "btn btn-danger btn-block");
+	deleteSection.innerHTML = "Elimina sectiunea";
+	deleteSection.setAttribute("onclick", "deleteNewSection(this)");
+	
+	cardDiv.appendChild(cardBodyDiv);
+	cardBodyDiv.appendChild(input);
+	cardBodyDiv.appendChild(textarea);
+	cardBodyDiv.appendChild(deleteSection);
+	
+	var sectionsDiv = document.getElementById("addedSections");
+	sectionsDiv.appendChild(cardDiv);
+	}	
+	
+	function deleteNewSection(e){
+		e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
+	}
+	
+	function focusInputIfEmpty(){
+		var inputs = document.forms["addArticleForm"].getElementsByTagName("input");
+		  for (var i = 0; i < inputs.length; i++) { 
+			  if(inputs[i].value == ""){
+				  inputs[i].focus();
+				  return false;
+			  }
+		  }
+		  return true;
+	}
+	
+	function focusTextAreaIfEmpty(){
+		var texts = document.forms["addArticleForm"].getElementsByTagName("textarea");
+		  for (var i = 0; i < texts.length; i++) { 
+			  if(texts[i].value == ""){
+				  texts[i].focus();
+				  return false;
+			  }
+		  }
+		  return true;
+	}
+	
+	function testEmpty(){
+		if(!focusInputIfEmpty() || !focusTextAreaIfEmpty()){
+			return false;
+	}
+
 </script>
 </body>
 </html>

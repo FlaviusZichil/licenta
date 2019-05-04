@@ -8,23 +8,44 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="row" >
-								<div class="card mt-2 ml-4 mr-4 mb-2" style="background-color: #d2dff4">
+								<div class="card mt-2 ml-4 mr-4 mb-2" style="background-color: #d2dff4; width: 100%">
 									<div class="card-body">
 										<div class="text-center">
-											<h2 th:text="*{articleDTO.title}"></h2>
+											<div th:if="${isUserAllowedToEdit} == true">
+												<input type="text" th:value="*{articleDTO.title}" contenteditable="true" name="title" class="text-center" style="width: 100%"/>
+											</div>
+											<div th:if="${isUserAllowedToEdit} == false">
+												<h2 th:text="*{articleDTO.title}"></h2>
+											</div>
+											
 										</div> 
 										<div id="descriptionCard" class="card mt-3 mb-3">				
 											<div id="description" class="card-body">
-												<h6 class="text-justify" th:text="*{articleDTO.description}"></h6>	    	
+												<div th:if="${isUserAllowedToEdit} == true">
+													<textarea class="text-justify" contenteditable="true" th:text="*{articleDTO.description}" name="description" style="width: 100%"></textarea>
+												</div>
+												<div th:if="${isUserAllowedToEdit} == false">
+													<h6 class="text-justify" th:text="*{articleDTO.description}"></h6>
+												</div>
 											</div>					    
 										</div>
 										<div th:each="section : *{articleDTO.sections}">
 											<div id="sectionCard" class="card mt-3 mb-3">
 												<div class="card-header bg-info color">
-													 <h6 class="text-left" th:text="${section.sectionTitle}"></h6>
+													<div th:if="${isUserAllowedToEdit} == true">
+														<input type="text" class="text-left" contenteditable="true" th:value="${section.sectionTitle}" name="sectionTitles" style="width: 100%"/>
+													</div>
+													<div th:if="${isUserAllowedToEdit} == false">
+														<h6 class="text-left" th:text="${section.sectionTitle}"></h6>
+													</div>
 												</div>					
 												<div id="section" class="card-body">
-													<h6 class="text-justify" th:text="${section.sectionContent}"></h6>	    	
+													<div th:if="${isUserAllowedToEdit} == true">	
+														<textarea class="text-justify" contenteditable="true" th:text="${section.sectionContent}" name="sectionContent" style="width: 100%"></textarea>	    															
+													</div>	
+													<div th:if="${isUserAllowedToEdit} == false">	
+														<h6 class="text-justify" th:text="${section.sectionContent}"></h6>	    															
+													</div>												
 												</div>					    
 											</div>
 										</div>
@@ -43,6 +64,9 @@
 														</td>
 														<td align=center>
 															<p id="addNewComment" class="btn btn-info">Adauga comentariu</p>
+														</td>
+														<td align=center th:if="${isUserAllowedToEdit} == true">
+															<input id="saveAfterEdit" class="btn btn-success" type="submit" name="submit" value="Salveaza modificarile"/>
 														</td>
 													</tr>
 												</table>	    	

@@ -5,12 +5,17 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
 import app.documents.ArticleComment;
@@ -41,8 +46,38 @@ public class MyArticlesController {
 	}
 	
 	@PostMapping("/my-articles")
-	public String myArticlesActions(Model model) {
+	public String myArticlesActions(Model model, Principal principal, HttpSession session,
+								   @RequestParam MultiValueMap<String, String> articleToRemove) {
+		UserEntity user = this.getUserByEmail(principal.getName());
+		
+		if(articleToRemove != null) {
+			for(Map.Entry<String, List<String>> articleId : articleToRemove.entrySet()){
+				if(articleId.getValue().contains("Sterge articolul")){
+					this.removeArticleForUser(Integer.parseInt(articleId.getKey()), user);
+					return "redirect:/my-articles";
+				}
+			}
+			
+			for(Map.Entry<String, List<String>> articleId : articleToRemove.entrySet()){
+				if(articleId.getValue().contains("Modifica articolul")){
+//					model.addAttribute("isUserAllowedToEdit", true);
+					session.setAttribute("isUserAllowedToEdit", true);
+					String redirectUrl = "article?a=" + articleId.getKey();
+					return "redirect:/" + redirectUrl;
+				}
+			}
+		}
+		
 		return "views/staff/myArticlesView";
+	}
+	
+	private void removeArticleForUser(Integer articleId, UserEntity user) {
+		for(Article article : articleRepository.findAll()) {
+			if(article.getArticleId() == articleId && article.getUserId() == user.getId()) {
+				articleRepository.delete(article);
+				System.out.println("article removed");
+			}
+		}
 	}
 	
 	private List<ArticleDTO> getArticlesDTOForUser(UserEntity user){

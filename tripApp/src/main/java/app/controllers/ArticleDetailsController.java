@@ -48,7 +48,15 @@ public class ArticleDetailsController {
 		UserEntity user = this.getUserByEmail(principal.getName());
 		model.addAttribute("userName", user.getLastName() + " " + user.getFirstName());	
 		model.addAttribute("loggedUserId", user.getId());
+		model.addAttribute("isUserAllowedToEdit", false);
 		
+		// pun pe sesiune in MyArticlesController
+		if(session.getAttribute("isUserAllowedToEdit") != null) {
+			if(((boolean)session.getAttribute("isUserAllowedToEdit")) == true) {
+				model.addAttribute("isUserAllowedToEdit", true);
+			}
+		}
+
 		session.setAttribute("articleId", articleId);
 		
 		return "views/all/articleDetailsView";
@@ -58,6 +66,10 @@ public class ArticleDetailsController {
 	public String articleActions(Model model, HttpSession session, Principal principal,
 								@RequestParam(name="commentContent", required = false) String commentContent,
 								@RequestParam(name="submit", required = false) String actionType,
+								@RequestParam(name = "title", required = false) String title,
+								@RequestParam(name = "sectionTitles", required = false) String sectionsTitle,
+								@RequestParam(name = "sectionContent", required = false) String sectionsContent,
+								@RequestParam(name = "description", required = false) String description,
 								@RequestParam MultiValueMap<String, String> selectedComment) {
 			
 		if(selectedComment != null) {
@@ -78,8 +90,11 @@ public class ArticleDetailsController {
 				case "Reseteaza":{
 					break;
 				}
-				case "Sterge":{
-					System.out.println(selectedComment.toString());
+				case "Salveaza modificarile":{
+					System.out.println("TITLE: " + title);
+					System.out.println("DESCRIPTION: " + description);
+					System.out.println("SUBTITLES: " + sectionsTitle);
+					System.out.println("CONTENTS: " + sectionsContent);
 					break;
 				}
 			}

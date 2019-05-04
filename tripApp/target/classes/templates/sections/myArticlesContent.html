@@ -61,9 +61,6 @@
 					    <div class="card-footer">
 					    	<table style="width: 100%">
 					    		<tr>
-<!-- 					    			<td align="center"> -->
-<!-- 					    				<p class="text center color" th:text="${articleDTO.date}"></p> -->
-<!-- 					    			</td> -->
 					    			<td align="center">
 					    				<div class="btn-group">
 						    				<p class="btn btn-outline">Like</p>
@@ -71,10 +68,10 @@
 								        </div>
 					    			</td>
 					    			<td align="right">
-					    				<input type="submit" name="submit" class="btn btn-info" value="Modifica articolul">
+					    				<input type="submit" th:name="${articleDTO.articleId}" class="btn btn-info" value="Modifica articolul">
 					    			</td>
 					    			<td align="right">
-					    				<input type="submit" name="submit" class="btn btn-danger" value="Sterge articolul">
+					    				<input type="submit" th:name="${articleDTO.articleId}" class="btn btn-danger" value="Sterge articolul">
 					    			</td>				    			
 					    		</tr>
 					    	</table>				    	

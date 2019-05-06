@@ -5,12 +5,6 @@
 		<div class="row" id="content">
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-8 col-sm-8 col-xs-2 fla">
-				<div th:if="${wrongTitle} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Titlul trebuie sa aiba cel putin 2 caractere.</p> 									
-				</div>
-				<div th:if="${wrongDescription} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie sa aiba cel putin 200 caractere.</p> 									
-				</div>
 				<div th:if="${wrongSectionTitle} == true">
 					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Subtitlurile trebuie sa aiba minim 1 caracter.</p> 									
 				</div>
@@ -29,16 +23,21 @@
 											<div th:if="${isUserAllowedToEdit} == false">
 												<h2 th:text="*{articleDTO.title}"></h2>
 											</div>
-											
+											<div th:if="${wrongTitle} == true">
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3 alert-dismissable"> Titlul trebuie sa aiba cel putin 2 caractere.</p> 									
+											</div>
 										</div> 
 										<div id="descriptionCard" class="card mt-3 mb-3">				
 											<div id="description" class="card-body">
 												<div th:if="${isUserAllowedToEdit} == true">
 													<textarea class="text-justify" contenteditable="true"  th:text="*{articleDTO.description}" id="description" name="description" style="width: 100%; height: 150px;"></textarea>
-					  								<div class="text-center list-group-item list-group-item-action list-group-item-danger" id="count"></div>  											
+<!-- 					  								<div class="text-center list-group-item list-group-item-action list-group-item-danger" id="count"></div>  											 -->
 												</div>
 												<div th:if="${isUserAllowedToEdit} == false">
 													<h6 class="text-justify" th:text="*{articleDTO.description}"></h6>
+												</div>
+												<div th:if="${wrongDescription} == true">
+													<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie sa aiba cel putin 200 caractere.</p> 									
 												</div>
 											</div>					    
 										</div>
@@ -218,25 +217,25 @@
 	
 	
 <script>	
-	$(document).ready(function() {
-	    var text_max = 200;
-	    $('#count').html('Mai sunt necesare ' + text_max + ' caractere');
-		console.log($('#description').val().length);
-	    $('#description').keyup(function() {
-	    	if($('#description').val().length >= text_max){
-	        	$('#count').html('A fost atinsa limita minima de caractere');
-	        	$('#count').removeClass('text-center list-group-item list-group-item-action list-group-item-danger');
-	        	$('#count').addClass('text-center list-group-item list-group-item-action list-group-item-success');
-	        }
-	    	else{
-	    		var text_length = $('#description').val().length;
-	 	        var text_remaining = text_max - text_length;
+// 	$(document).ready(function() {
+// 	    var text_max = 200;
+// 	    $('#count').html('Mai sunt necesare ' + text_max + ' caractere');
+// 		console.log($('#description').val().length);
+// 	    $('#description').keyup(function() {
+// 	    	if($('#description').val().length >= text_max){
+// 	        	$('#count').html('A fost atinsa limita minima de caractere');
+// 	        	$('#count').removeClass('text-center list-group-item list-group-item-action list-group-item-danger');
+// 	        	$('#count').addClass('text-center list-group-item list-group-item-action list-group-item-success');
+// 	        }
+// 	    	else{
+// 	    		var text_length = $('#description').val().length;
+// 	 	        var text_remaining = text_max - text_length;
 	 	
-	 	        $('#count').html('Mai sunt necesare ' + text_remaining + ' caractere');
-	 	        $('#count').addClass('text-center list-group-item list-group-item-action list-group-item-danger');
-	    	}
-	    });
-	});		
+// 	 	        $('#count').html('Mai sunt necesare ' + text_remaining + ' caractere');
+// 	 	        $('#count').addClass('text-center list-group-item list-group-item-action list-group-item-danger');
+// 	    	}
+// 	    });
+// 	});		
 </script>
 
 <script>

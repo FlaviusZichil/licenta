@@ -5,6 +5,18 @@
 		<div class="row" id="content">
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<div th:if="${wrongTitle} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Titlul trebuie sa aiba cel putin 2 caractere.</p> 									
+				</div>
+				<div th:if="${wrongDescription} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie sa aiba cel putin 200 caractere.</p> 									
+				</div>
+				<div th:if="${wrongSectionTitle} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Subtitlurile trebuie sa aiba minim 1 caracter.</p> 									
+				</div>
+				<div th:if="${wrongSectionContent} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Continutul sectiunilor trebuie sa aiba minim 50 de caractere.</p> 									
+				</div>
 				<div class="card">
 					<div class="card-body">
 						<div class="row" >
@@ -57,29 +69,27 @@
 													<tr>
 														<td align=center>
 															<h6 th:text="*{articleDTO.user.lastName} + ', ' + *{articleDTO.user.firstName}"></h6>
-														</td>
-														<td align=center>
 															<h6 th:text="*{articleDTO.date}"></h6>
 														</td>
 														<td align="center">
 										    				<div class="btn-group">
 										    					<div th:if="${alreadyLiked == false}">
-										    						<input type="submit" name="submit" class="btn btn-warning" value="Apreciaza"/>										    				
+										    						<input type="submit" name="submit" class="btn btn-warning btn-sm" value="Apreciaza"/>										    				
 										    					</div>
 										    					<div th:if="${alreadyLiked == true}">
-										    						<input type="submit" name="submit" class="btn btn-warning" value="Nu mai aprecia"/>										    				
+										    						<input type="submit" name="submit" class="btn btn-warning btn-sm" value="Nu mai aprecia"/>										    				
 										    					</div>
-														        <p class="btn btn-warning" th:text="*{#lists.size(articleDTO.likesDTO)}"></p>
+														        <p class="btn btn-warning btn-sm" th:text="*{#lists.size(articleDTO.likesDTO)}"></p>
 													        </div>
 										    			</td>
 														<td align=center>
-															<p id="addNewComment" class="btn btn-info">Adauga comentariu</p>
+															<p id="addNewComment" class="btn btn-info btn-sm">Adauga comentariu</p>
 														</td>
 														<td align=center th:if="${isUserAllowedToEdit} == true">							
-															<p id="addSection" class="btn btn-info" onclick="createNewSection();">Adauga sectiune</p>
+															<p id="addSection" class="btn btn-info btn-sm" onclick="createNewSection();">Adauga sectiune</p>
 														</td>
 														<td align=center th:if="${isUserAllowedToEdit} == true">
-															<input id="saveAfterEdit" class="btn btn-success" type="submit" name="submit" value="Salveaza modificarile"/>
+															<input id="saveAfterEdit" class="btn btn-success btn-sm" type="submit" name="submit" value="Salveaza modificarile"/>
 														</td>																																									
 													</tr>
 												</table>	    	

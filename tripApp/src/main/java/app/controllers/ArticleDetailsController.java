@@ -61,6 +61,26 @@ public class ArticleDetailsController {
 			model.addAttribute("alreadyLiked", false);
 		}
 		
+		if(session.getAttribute("wrongTitle") != null) {
+			model.addAttribute("wrongTitle", true);
+			session.setAttribute("wrongTitle", null);
+		}
+		
+		if(session.getAttribute("wrongDescription") != null) {
+			model.addAttribute("wrongDescription", true);
+			session.setAttribute("wrongDescription", null);
+		}
+		
+		if(session.getAttribute("wrongSectionTitle") != null) {
+			model.addAttribute("wrongSectionTitle", true);
+			session.setAttribute("wrongSectionTitle", null);
+		}
+		
+		if(session.getAttribute("wrongSectionContent") != null) {
+			model.addAttribute("wrongSectionContent", true);
+			session.setAttribute("wrongSectionContent", null);
+		}
+		
 		// pun pe sesiune in MyArticlesController
 		if(session.getAttribute("isUserAllowedToEdit") != null) {
 			if(((boolean)session.getAttribute("isUserAllowedToEdit")) == true) {
@@ -106,21 +126,36 @@ public class ArticleDetailsController {
 					break;
 				}
 				case "Salveaza modificarile":{
-//					Article articleToModify = this.getArticleById(Integer.parseInt((String) session.getAttribute("articleId")));
-
-//					selectedArticle.setArticleId(selectedArticle.getArticleId());
-//					selectedArticle.setUserId(selectedArticle.getUserId());
 					selectedArticle.setTitle(title);
-//					selectedArticle.setDate(selectedArticle.getDate());
-//					selectedArticle.setLikes(selectedArticle.getLikes());
 					selectedArticle.setDescription(description);
 					selectedArticle.setSections(this.getArticleSectionsToAdd(sectionsTitle, sectionsContent));
 					List<ArticleComment> comments = new ArrayList<ArticleComment>();
+					selectedArticle.setComments(comments);
 					
 					if(selectedArticle.getComments().size() > 0) {
 						comments = selectedArticle.getComments();
 					}
-					selectedArticle.setComments(comments);
+					
+					if(description.length() < 200) {
+						session.setAttribute("wrongDescription", true);
+						break;
+					}
+					
+					if(title.length() < 2) {
+						session.setAttribute("wrongTitle", true);
+						break;
+					}
+					
+					if(this.hasEmptyValues(sectionsTitle)) {
+						session.setAttribute("wrongSectionTitle", true);
+						break;
+					}
+					
+					if(this.hasEmptyValues(sectionsContent)) {
+						session.setAttribute("wrongSectionContent", true);
+						break;
+					}
+		
 					articleRepository.save(selectedArticle);
 					session.setAttribute("isUserAllowedToEdit", null);
 					break;
@@ -138,6 +173,16 @@ public class ArticleDetailsController {
 				
 		String redirectUrl = "article?a=" + session.getAttribute("articleId");
 		return "redirect:/" + redirectUrl;
+	}
+	
+	private boolean hasEmptyValues(String listAsString) {
+		List<String> elements = new ArrayList<>(Arrays.asList(listAsString.split(",")));
+		for(String element : elements) {
+			if(element.equals("")) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private boolean isArticleAlreadyLikedByUser(Article article, UserEntity user) {

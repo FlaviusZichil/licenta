@@ -61,9 +61,17 @@
 														<td align=center>
 															<h6 th:text="*{articleDTO.date}"></h6>
 														</td>
-														<td align=center>
-															<h6 th:text="*{articleDTO.likes}"></h6>
-														</td>
+														<td align="center">
+										    				<div class="btn-group">
+										    					<div th:if="${alreadyLiked == false}">
+										    						<input type="submit" name="submit" class="btn btn-warning" value="Apreciaza"/>										    				
+										    					</div>
+										    					<div th:if="${alreadyLiked == true}">
+										    						<input type="submit" name="submit" class="btn btn-warning" value="Nu mai aprecia"/>										    				
+										    					</div>
+														        <p class="btn btn-warning" th:text="*{#lists.size(articleDTO.likesDTO)}"></p>
+													        </div>
+										    			</td>
 														<td align=center>
 															<p id="addNewComment" class="btn btn-info">Adauga comentariu</p>
 														</td>

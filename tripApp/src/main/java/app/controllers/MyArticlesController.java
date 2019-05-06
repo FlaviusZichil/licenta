@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
 import app.documents.ArticleComment;
+import app.documents.ArticleLike;
 import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
+import app.dto.ArticleLikeDTO;
 import app.entities.UserEntity;
 import app.models.AllArticlesViewModel;
 import app.repositories.ArticleRepository;
@@ -93,14 +95,33 @@ public class MyArticlesController {
 	
 	private ArticleDTO convertFromArticleToArticleDTO(Article article) {
 		List<ArticleCommentDTO> commentsDTO = new ArrayList<>();
+		List<ArticleLikeDTO> likesDTO = new ArrayList<>();
 		
 		for(ArticleComment comment : article.getComments()) {
 			commentsDTO.add(this.convertFromArticleCommentToArticleCommentDTO(comment));
 		}
 		
-		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), article.getLikes(), 
+		for(ArticleLike like : article.getLikes()) {
+			likesDTO.add(this.convertFromArticleLikeToArticleLikeDTO(like));
+		}
+		
+		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), likesDTO, 
 											   article.getDescription(), article.getSections(), commentsDTO);
 		return articleDTO;
+	}
+	
+	private ArticleLikeDTO convertFromArticleLikeToArticleLikeDTO(ArticleLike like) {
+		ArticleLikeDTO articleLikeDTO = new ArticleLikeDTO(this.getUserById(like.getUserId()), this.getArticleById(like.getArticleId()));
+		return articleLikeDTO;
+	}
+	
+	private Article getArticleById(Integer articleId) {
+		for(Article article : articleRepository.findAll()) {
+			if(article.getArticleId() == articleId) {
+				return article;
+			}
+		}
+		return null;
 	}
 	
 	private ArticleCommentDTO convertFromArticleCommentToArticleCommentDTO(ArticleComment comment) {

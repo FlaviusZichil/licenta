@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
 import app.documents.ArticleComment;
+import app.documents.ArticleLike;
 import app.documents.ArticleSection;
 import app.entities.UserEntity;
 import app.repositories.ArticleRepository;
@@ -48,9 +49,10 @@ public class AddArticleController {
 		article.setUserId(user.getId());
 		article.setTitle(title);
 		article.setDate(LocalDate.now().toString());
-		article.setLikes(0);
 		article.setDescription(description);
 		article.setSections(this.getArticleSectionsToAdd(subtitles, sectionsContent));
+		List<ArticleLike> likes = new ArrayList<ArticleLike>();
+		article.setLikes(likes);
 		List<ArticleComment> comments = new ArrayList<ArticleComment>();
 		article.setComments(comments);
 		

@@ -13,14 +13,14 @@ public class Article {
 	private Integer userId;
 	private String date;
 	private String title;
-	private Integer likes;
 	private String description;
+	private List<ArticleLike> likes;
 	private List<ArticleSection> sections;
 	private List<ArticleComment> comments;
 	
 	public Article() {}
 
-	public Article(Integer articleId, Integer userId, String date, String title, Integer likes, String description, List<ArticleSection> sections, List<ArticleComment> comments) {
+	public Article(Integer articleId, Integer userId, String date, String title, List<ArticleLike> likes, String description, List<ArticleSection> sections, List<ArticleComment> comments) {
 		super();
 		this.articleId = articleId;
 		this.userId = userId;
@@ -48,14 +48,6 @@ public class Article {
 		this.userId = userId;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getDate() {
 		return date;
 	}
@@ -72,11 +64,19 @@ public class Article {
 		this.title = title;
 	}
 
-	public Integer getLikes() {
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public List<ArticleLike> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(Integer likes) {
+	public void setLikes(List<ArticleLike> likes) {
 		this.likes = likes;
 	}
 

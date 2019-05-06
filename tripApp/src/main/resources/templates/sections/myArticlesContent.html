@@ -62,15 +62,9 @@
 					    	<table style="width: 100%">
 					    		<tr>
 					    			<td align="center">
-					    				<div class="btn-group">
-						    				<p class="btn btn-outline">Like</p>
-									        <p class="btn btn-outline" th:text="${articleDTO.likes}"></p>
-								        </div>
-					    			</td>
-					    			<td align="right">
 					    				<input type="submit" th:name="${articleDTO.articleId}" class="btn btn-info" value="Modifica articolul">
 					    			</td>
-					    			<td align="right">
+					    			<td align="center">
 					    				<input type="submit" th:name="${articleDTO.articleId}" class="btn btn-danger" value="Sterge articolul">
 					    			</td>				    			
 					    		</tr>

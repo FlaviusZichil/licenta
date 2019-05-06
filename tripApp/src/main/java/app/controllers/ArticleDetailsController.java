@@ -21,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
 import app.documents.ArticleComment;
+import app.documents.ArticleLike;
 import app.documents.ArticleSection;
 import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
+import app.dto.ArticleLikeDTO;
 import app.entities.UserEntity;
 import app.models.ArticleDetailsViewModel;
 import app.repositories.ArticleRepository;
@@ -52,6 +54,13 @@ public class ArticleDetailsController {
 		model.addAttribute("loggedUserId", user.getId());
 		model.addAttribute("isUserAllowedToEdit", false);
 		
+		if(this.isArticleAlreadyLikedByUser(article, user)) {
+			model.addAttribute("alreadyLiked", true);
+		}
+		else {
+			model.addAttribute("alreadyLiked", false);
+		}
+		
 		// pun pe sesiune in MyArticlesController
 		if(session.getAttribute("isUserAllowedToEdit") != null) {
 			if(((boolean)session.getAttribute("isUserAllowedToEdit")) == true) {
@@ -75,6 +84,9 @@ public class ArticleDetailsController {
 								@RequestParam(name = "description", required = false) String description,
 								@RequestParam MultiValueMap<String, String> submitInputs) {
 			
+		Article selectedArticle = this.getArticleById(Integer.parseInt((String) session.getAttribute("articleId")));
+		UserEntity user = this.getUserByEmail(principal.getName());
+		
 		if(submitInputs != null) {
 			for(Map.Entry<String, List<String>> commentId : submitInputs.entrySet()){
 					if(commentId.getValue().contains("Sterge")){
@@ -94,23 +106,31 @@ public class ArticleDetailsController {
 					break;
 				}
 				case "Salveaza modificarile":{
-					Article articleToModify = this.getArticleById(Integer.parseInt((String) session.getAttribute("articleId")));
+//					Article articleToModify = this.getArticleById(Integer.parseInt((String) session.getAttribute("articleId")));
 
-					articleToModify.setArticleId(articleToModify.getArticleId());
-					articleToModify.setUserId(articleToModify.getUserId());
-					articleToModify.setTitle(title);
-					articleToModify.setDate(articleToModify.getDate());
-					articleToModify.setLikes(0);
-					articleToModify.setDescription(description);
-					articleToModify.setSections(this.getArticleSectionsToAdd(sectionsTitle, sectionsContent));
+//					selectedArticle.setArticleId(selectedArticle.getArticleId());
+//					selectedArticle.setUserId(selectedArticle.getUserId());
+					selectedArticle.setTitle(title);
+//					selectedArticle.setDate(selectedArticle.getDate());
+//					selectedArticle.setLikes(selectedArticle.getLikes());
+					selectedArticle.setDescription(description);
+					selectedArticle.setSections(this.getArticleSectionsToAdd(sectionsTitle, sectionsContent));
 					List<ArticleComment> comments = new ArrayList<ArticleComment>();
 					
-					if(articleToModify.getComments().size() > 0) {
-						comments = articleToModify.getComments();
+					if(selectedArticle.getComments().size() > 0) {
+						comments = selectedArticle.getComments();
 					}
-					articleToModify.setComments(comments);
-					articleRepository.save(articleToModify);
+					selectedArticle.setComments(comments);
+					articleRepository.save(selectedArticle);
 					session.setAttribute("isUserAllowedToEdit", null);
+					break;
+				}
+				case "Apreciaza":{					
+					addLikeForArticle(user, selectedArticle);
+					break;
+				}
+				case "Nu mai aprecia":{
+					removeLikeForArticle(user, selectedArticle);
 					break;
 				}
 			}
@@ -118,6 +138,38 @@ public class ArticleDetailsController {
 				
 		String redirectUrl = "article?a=" + session.getAttribute("articleId");
 		return "redirect:/" + redirectUrl;
+	}
+	
+	private boolean isArticleAlreadyLikedByUser(Article article, UserEntity user) {
+		for(Article articleObject : articleRepository.findAll()) {
+			for(ArticleLike like : articleObject.getLikes()) {
+				if(like.getArticleId() == article.getArticleId() && like.getUserId() == user.getId()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private void removeLikeForArticle(UserEntity user, Article article) {
+		List<ArticleLike> likes = article.getLikes();
+
+		for(ArticleLike like : likes) {
+			if(like.getUserId() == user.getId() && like.getArticleId() == article.getArticleId()) {
+				likes.remove(like);
+				break;
+			}
+		}
+		
+		article.setLikes(likes);
+		articleRepository.save(article);
+	}
+	
+	private void addLikeForArticle(UserEntity user, Article article) {
+		List<ArticleLike> likes = article.getLikes();
+		likes.add(new ArticleLike(user.getId(), article.getArticleId()));
+		article.setLikes(likes);
+		articleRepository.save(article);
 	}
 	
 	private List<ArticleSection> getArticleSectionsToAdd(String subtitle, String sectionsContent){
@@ -201,14 +253,19 @@ public class ArticleDetailsController {
 	
 	private ArticleDTO convertFromArticleToArticleDTO(Article article) {
 		List<ArticleCommentDTO> commentsDTO = new ArrayList<>();
+		List<ArticleLikeDTO> likesDTO = new ArrayList<>();
 		
 		for(ArticleComment comment : article.getComments()) {
 			commentsDTO.add(this.convertFromArticleCommentToArticleCommentDTO(comment));
 		}
 		
+		for(ArticleLike like : article.getLikes()) {
+			likesDTO.add(this.convertFromArticleLikeToArticleLikeDTO(like));
+		}
+		
 		Collections.reverse(commentsDTO);
 		
-		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), article.getLikes(), 
+		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), likesDTO, 
 											   article.getDescription(), article.getSections(), commentsDTO);
 		return articleDTO;
 	}
@@ -220,6 +277,11 @@ public class ArticleDetailsController {
 	    
 		ArticleCommentDTO commentDTO = new ArticleCommentDTO(comment.getCommentId(), this.getUserById(comment.getUserId()), comment.getDate(), comment.getContent(), days);
 		return commentDTO;
+	}
+	
+	private ArticleLikeDTO convertFromArticleLikeToArticleLikeDTO(ArticleLike like) {
+		ArticleLikeDTO articleLikeDTO = new ArticleLikeDTO(this.getUserById(like.getUserId()), this.getArticleById(like.getArticleId()));
+		return articleLikeDTO;
 	}
 	
 	private Integer getLastCommentId() {

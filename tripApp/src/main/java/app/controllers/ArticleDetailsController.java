@@ -94,9 +94,17 @@ public class ArticleDetailsController {
 		UserEntity user = this.getUserByEmail(principal.getName());
 		
 		if(submitInputs != null) {
-			for(Map.Entry<String, List<String>> commentId : submitInputs.entrySet()){
-					if(commentId.getValue().contains("Sterge")){
-						this.removeComment(Integer.parseInt(commentId.getKey()));
+			for(Map.Entry<String, List<String>> input : submitInputs.entrySet()){
+					if(input.getValue().contains("Sterge")){
+						this.removeComment(Integer.parseInt(input.getKey()));
+						break;
+					}
+					if(input.getValue().contains("Elimina sectiunea")) {
+						// key is like: sectionTitle, sectionContent
+						List<String> sectionComponents = new ArrayList<>(Arrays.asList(input.getKey().split(",")));
+						String sectionTitle = sectionComponents.get(0); 
+						String sectionContent = sectionComponents.get(1);
+						this.removeSection(sectionTitle, sectionContent);
 						break;
 					}
 			   }
@@ -132,6 +140,22 @@ public class ArticleDetailsController {
 		}				
 		String redirectUrl = "article?a=" + session.getAttribute("articleId");
 		return "redirect:/" + redirectUrl;
+	}
+	
+	private void removeSection(String sectionTitle, String sectionContent) {
+		for(Article article : articleRepository.findAll()) {
+			List<ArticleSection> sections = article.getSections();
+			
+			for(ArticleSection section : sections) {
+				if(section.getSectionTitle().equals(sectionTitle.trim()) && section.getSectionContent().equals(sectionContent.trim())) {
+					sections.remove(section);
+					System.out.println("a fost aici 2");
+					break;
+				}
+			}
+			article.setSections(sections);
+			articleRepository.save(article);
+		}
 	}
 	
 	private boolean isArticleValid(String title, String description, String sectionsTitle, String sectionsContent, HttpSession session) {
@@ -234,19 +258,6 @@ public class ArticleDetailsController {
 		}
 		return articleSections;
 	}
-	
-	private Integer getLastArticleId() {
-		List<Integer> articleIds = new ArrayList<>();
-		for(Article article : articleRepository.findAll()) {
-			articleIds.add(article.getArticleId());
-		}
-		
-		if(articleIds.size() > 0) {
-			return this.getMaxIdFromList(articleIds);
-		}
-		return 0;		
-	}
-	
 	
 	private Article getArticleThatContainsComment(Integer commentId) {
 		for(Article article : articleRepository.findAll()) {

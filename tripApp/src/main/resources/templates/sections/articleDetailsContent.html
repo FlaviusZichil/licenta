@@ -57,7 +57,10 @@
 													</div>	
 													<div th:if="${isUserAllowedToEdit} == false">	
 														<h6 class="text-justify" th:text="${section.sectionContent}"></h6>	    															
-													</div>												
+													</div>	
+													<div th:if="${isUserAllowedToEdit} == true">
+														<input type="submit" th:name="${section.sectionTitle} + ', ' + ${section.sectionContent}" class="btn btn-danger btn-block" value="Elimina sectiunea"/>
+													</div>											
 												</div>					    
 											</div>
 										</div>

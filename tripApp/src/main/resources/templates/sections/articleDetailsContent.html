@@ -88,7 +88,7 @@
 															<p id="addNewComment" class="btn btn-info btn-sm">Adauga comentariu</p>
 														</td>
 														<td align=center th:if="${isUserAllowedToEdit} == true">							
-															<p id="addSection" class="btn btn-info btn-sm" onclick="createNewSection();">Adauga sectiune</p>
+															<p id="addSection" class="btn btn-info btn-sm" onclick="createNewSection()">Adauga sectiune</p>
 														</td>
 														<td align=center th:if="${isUserAllowedToEdit} == true">
 															<input id="saveAfterEdit" class="btn btn-success btn-sm" type="submit" name="submit" value="Salveaza modificarile"/>
@@ -191,10 +191,7 @@
 		card.scrollIntoView();
 	}
 </script>
-	
-	
-	
-	
+		
 <script>	
 	var editComment = document.getElementById("editComment");
 	var postedCommentContent = document.getElementById("postedCommentContent");
@@ -217,29 +214,6 @@
 		postedCommentContent.focus();
 	}
 </script>	
-	
-	
-<script>	
-// 	$(document).ready(function() {
-// 	    var text_max = 200;
-// 	    $('#count').html('Mai sunt necesare ' + text_max + ' caractere');
-// 		console.log($('#description').val().length);
-// 	    $('#description').keyup(function() {
-// 	    	if($('#description').val().length >= text_max){
-// 	        	$('#count').html('A fost atinsa limita minima de caractere');
-// 	        	$('#count').removeClass('text-center list-group-item list-group-item-action list-group-item-danger');
-// 	        	$('#count').addClass('text-center list-group-item list-group-item-action list-group-item-success');
-// 	        }
-// 	    	else{
-// 	    		var text_length = $('#description').val().length;
-// 	 	        var text_remaining = text_max - text_length;
-	 	
-// 	 	        $('#count').html('Mai sunt necesare ' + text_remaining + ' caractere');
-// 	 	        $('#count').addClass('text-center list-group-item list-group-item-action list-group-item-danger');
-// 	    	}
-// 	    });
-// 	});		
-</script>
 
 <script>
 function createNewSection(){
@@ -253,7 +227,7 @@ function createNewSection(){
 	input.setAttribute("class", "form-control");
 	input.setAttribute("type", "text");
 	input.setAttribute("placeholder", "Subtitlu");
-	input.setAttribute("name", "subtitle");
+	input.setAttribute("name", "sectionTitles");
 	input.setAttribute("required", "required");
 	
 	var textarea = document.createElement("textarea");
@@ -279,34 +253,6 @@ function createNewSection(){
 	function deleteNewSection(e){
 		e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
 	}
-	
-	function focusInputIfEmpty(){
-		var inputs = document.forms["addArticleForm"].getElementsByTagName("input");
-		  for (var i = 0; i < inputs.length; i++) { 
-			  if(inputs[i].value == ""){
-				  inputs[i].focus();
-				  return false;
-			  }
-		  }
-		  return true;
-	}
-	
-	function focusTextAreaIfEmpty(){
-		var texts = document.forms["addArticleForm"].getElementsByTagName("textarea");
-		  for (var i = 0; i < texts.length; i++) { 
-			  if(texts[i].value == ""){
-				  texts[i].focus();
-				  return false;
-			  }
-		  }
-		  return true;
-	}
-	
-	function testEmpty(){
-		if(!focusInputIfEmpty() || !focusTextAreaIfEmpty()){
-			return false;
-	}
-
 </script>
 </body>
 </html>

@@ -44,6 +44,10 @@ public class MyArticlesController {
 		AllArticlesViewModel myArticlesViewModel = new AllArticlesViewModel();
 		myArticlesViewModel.setArticlesDTO(this.getArticlesDTOForUser(user));
 		model.addAttribute("myArticlesViewModel", myArticlesViewModel);
+		
+		model.addAttribute("allLikes", this.getAllLikesNumberForUser(user));
+		model.addAttribute("allComments", this.getAllCommentsNumberForUser(user));
+		
 		return "views/staff/myArticlesView";
 	}
 	
@@ -62,7 +66,6 @@ public class MyArticlesController {
 			
 			for(Map.Entry<String, List<String>> articleId : articleToRemove.entrySet()){
 				if(articleId.getValue().contains("Modifica articolul")){
-//					model.addAttribute("isUserAllowedToEdit", true);
 					session.setAttribute("isUserAllowedToEdit", true);
 					String redirectUrl = "article?a=" + articleId.getKey();
 					return "redirect:/" + redirectUrl;
@@ -71,6 +74,28 @@ public class MyArticlesController {
 		}
 		
 		return "views/staff/myArticlesView";
+	}
+	
+	private Integer getAllLikesNumberForUser(UserEntity user) {
+		Integer likes = 0;
+		
+		for(ArticleDTO article : this.getArticlesDTOForUser(user)) {
+			if(article.getUser().getId() == user.getId()) {
+				likes += article.getLikesDTO().size();
+			}
+		}
+		return likes;
+	}
+	
+	private Integer getAllCommentsNumberForUser(UserEntity user) {
+		Integer comments = 0;
+		
+		for(ArticleDTO article : this.getArticlesDTOForUser(user)) {
+			if(article.getUser().getId() == user.getId()) {
+				comments += article.getCommentsDTO().size();
+			}
+		}
+		return comments;
 	}
 	
 	private void removeArticleForUser(Integer articleId, UserEntity user) {

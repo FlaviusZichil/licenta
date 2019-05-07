@@ -69,7 +69,7 @@
 				</div>
 				<div th:if="*{#lists.size(articlesDTO)} > 0">
 					<div th:each="articleDTO : *{articlesDTO}">
-						<div class="card mt-3 mb-3" th:style="'background-image:url(' + @{images/article6.jpg} + ')'">
+						<div class="card mt-3 mb-3 bg-info">
 						    <div class="card-header color">
 						    	<h4 class="text-center" th:text="${articleDTO.title}"></h4>
 						    </div>				

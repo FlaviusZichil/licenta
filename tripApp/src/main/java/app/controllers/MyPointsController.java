@@ -34,11 +34,9 @@ public class MyPointsController {
 	}
 	
 	private List<Tombola> getAllTombolaRegistrationForUser(UserEntity user) {
-		Iterable<Tombola> registrationsToTombola = tombolaRepository.findAll();
-		List<Tombola> registrations = TripUtils.convertFromIterableToList(registrationsToTombola);
 		List<Tombola> userRegistrations = new ArrayList<>();
 		
-		for(Tombola registration : registrations) {
+		for(Tombola registration : tombolaRepository.findAll()) {
 			if(registration.getUser().equals(user)) {
 				userRegistrations.add(registration);
 			}

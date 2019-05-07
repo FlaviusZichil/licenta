@@ -192,11 +192,9 @@ public class AddTripController {
 	}
 	
 	private List<PeakDTO> getPeaksDTO(){
-		Iterable<Peak> allPeaks = peakRepository.findAll();
-		List<Peak> peaks = TripUtils.convertFromIterableToList(allPeaks);
 		List<PeakDTO> peaksDTO = new ArrayList<>();
 		
-		for(Peak peak : peaks) {
+		for(Peak peak : peakRepository.findAll()) {
 			PeakDTO peakDTO = TripUtils.convertFromPeakToPeakDTO(peak);
 			peaksDTO.add(peakDTO);
 		}		
@@ -204,11 +202,9 @@ public class AddTripController {
 	}
 	
 	private List<MountainDTO> getMountainsDTO(){
-		Iterable<Mountain> allMountains = mountainRepository.findAll();
-		List<Mountain> mountains = TripUtils.convertFromIterableToList(allMountains);
 		List<MountainDTO> mountainsDTO = new ArrayList<>();
 		
-		for(Mountain mountain : mountains) {
+		for(Mountain mountain : mountainRepository.findAll()) {
 			MountainDTO mountainDTO = new MountainDTO(mountain.getMountainName());
 			mountainsDTO.add(mountainDTO);
 		}		
@@ -216,11 +212,9 @@ public class AddTripController {
 	}
 	
 	private List<CityDTO> getCitiesDTO(){
-		Iterable<City> allCities = cityRepository.findAll();
-		List<City> cities = TripUtils.convertFromIterableToList(allCities);
 		List<CityDTO> citysDTO = new ArrayList<>();
 		
-		for(City city : cities) {
+		for(City city : cityRepository.findAll()) {
 			CityDTO cityDTO = new CityDTO(city.getName(), city.getLatitude(), city.getLongitude());
 			citysDTO.add(cityDTO);
 		}		
@@ -228,11 +222,9 @@ public class AddTripController {
 	}
 	
 	private List<PointDTO> getPointsDTO(){
-		Iterable<Point> allPoints = pointRepository.findAll();
-		List<Point> points = TripUtils.convertFromIterableToList(allPoints);
 		List<PointDTO> pointsDTO = new ArrayList<>();
 		
-		for(Point point : points) {
+		for(Point point : pointRepository.findAll()) {
 			PointDTO pointDTO = new PointDTO(point.getId(), point.getPointName());
 			pointsDTO.add(pointDTO);
 		}		

@@ -34,15 +34,6 @@ public class TripUtils {
 		return sortPointsByOrder(routePointsDTO);
 	}
 	
-	public static <T> List<T> convertFromIterableToList(Iterable<T> iterable){
-		List<T> list = new ArrayList<T>();
-		
-		for(T item : iterable) {
-			list.add(item);
-		}
-		return list;
-	}
-	
 	public static TripDTO convertFromTripToTripDTO(Trip trip) {
 		PeakDTO peakDTO = convertFromPeakToPeakDTO(trip.getPeak());
 		GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber());

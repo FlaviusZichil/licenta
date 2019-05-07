@@ -51,14 +51,10 @@
 		 </div>
 		 <div class="col-md-5 col-sm-5 col-xs-2 fla">
 		 	<div th:if="${successfulRegistrationToTombola}" style="margin-top: 2%">
-		 		<div class="alert alert-success" role="alert">
-				  	Inregistrare la tombola cu success!
-				</div>
+		 		<p class="text-center list-group-item list-group-item-action list-group-item-success mt-3 mb-3"> Inregistrare la tombola cu success!</p> 									
 		 	</div>
 		 	<div th:if="${failRegistrationToTombola}" style="margin-top: 2%">
-		 		<div class="alert alert-danger" role="alert">
-				  	Sunteti deja inregistrat pentru luna curenta sau insuficiente puncte!
-				</div>
+		 		<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Sunteti deja inregistrat pentru luna curenta sau insuficiente puncte!</p>
 		 	</div>
 		 	<div class="card trip-card" style="margin-top: 3%">
 				  <div class="card-header bg-info">

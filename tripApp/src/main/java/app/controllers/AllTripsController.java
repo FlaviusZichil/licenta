@@ -148,6 +148,8 @@ public class AllTripsController {
 			return 0.0;
 		}
 		else {
+			System.out.println(firstCity.toString());
+			System.out.println(secondCity.toString());
 			double theta = firstCity.getLongitude() - secondCity.getLongitude();
 			double distance = Math.sin(Math.toRadians(firstCity.getLatitude())) * Math.sin(Math.toRadians(secondCity.getLatitude())) + 
 							  Math.cos(Math.toRadians(firstCity.getLatitude())) * Math.cos(Math.toRadians(secondCity.getLatitude())) * 

@@ -51,11 +51,9 @@ public class IndexController {
 	
 	// gets 4 trips to display on guest main page
 	private List<TripDTO> getTop4TripsDTO(){
-		Iterable<Trip> allTrips = tripRepository.findAll();
-		List<Trip> trips = TripUtils.convertFromIterableToList(allTrips);
 		List<TripDTO> top4TripsDTO = new ArrayList<TripDTO>();
 		
-		for(Trip trip : trips) {
+		for(Trip trip : tripRepository.findAll()) {
 			if(trip.getStatus().equals("Active")) {			
 				TripDTO tripDTO = TripUtils.convertFromTripToTripDTO(trip);
 				top4TripsDTO.add(tripDTO);			

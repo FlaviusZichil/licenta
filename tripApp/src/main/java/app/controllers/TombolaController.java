@@ -50,7 +50,7 @@ public class TombolaController {
 		LocalDate date = LocalDate.now();
 		
 		if(registerToTombolaAction != null) {
-			if (!isUserAlreadyRegisteredForThisMonth(currentUser, date.getMonth().toString(), date.getYear())) {
+			if (!isUserAlreadyRegisteredForThisMonth(currentUser, date.getMonth().toString(), date.getYear()) && Integer.parseInt(currentUser.getPoints()) >= 25) {
 				this.registerUserToTombola(currentUser, date);
 				model.addAttribute("successfulRegistrationToTombola", true);
 			} else{
@@ -91,10 +91,8 @@ public class TombolaController {
 
 	private List<String> getAllDistinctMonths() {
 		List<String> distinctMonths = new ArrayList<>();
-		Iterable<Tombola> registrationsToTombola = tombolaRepository.findAll();
-		List<Tombola> registrations = TripUtils.convertFromIterableToList(registrationsToTombola);
 
-		for (Tombola registration : registrations) {
+		for (Tombola registration : tombolaRepository.findAll()) {
 			LocalDate date = LocalDate.parse(registration.getDate());
 			if (!distinctMonths.contains(date.getMonth().toString() + " " + date.getYear())) {
 				distinctMonths.add(date.getMonth().toString() + " " + date.getYear());
@@ -105,10 +103,8 @@ public class TombolaController {
 
 	private List<Tombola> getAllRegistrationsForDate(String date) {
 		List<Tombola> registrationsForDate = new ArrayList<>();
-		Iterable<Tombola> registrationsToTombola = tombolaRepository.findAll();
-		List<Tombola> registrations = TripUtils.convertFromIterableToList(registrationsToTombola);
 
-		for (Tombola registration : registrations) {
+		for (Tombola registration : tombolaRepository.findAll()) {
 			LocalDate dateOfRegistration = LocalDate.parse(registration.getDate());
 			String dateString = dateOfRegistration.getMonth().toString() + " " + dateOfRegistration.getYear();
 			if (dateString.equals(date)) {
@@ -161,13 +157,10 @@ public class TombolaController {
 	}
 
 	private boolean isUserAlreadyRegisteredForThisMonth(UserEntity user, String month, Integer year) {
-		Iterable<Tombola> registrations = tombolaRepository.findAll();
-		List<Tombola> registrationsToTombola = TripUtils.convertFromIterableToList(registrations);
-
-		if (registrationsToTombola.size() != 0) {
-			for (Tombola registration : registrations) {
+		if (((List<Tombola>) tombolaRepository.findAll()).size() != 0) {
+			for (Tombola registration : tombolaRepository.findAll()) {
 				LocalDate date = LocalDate.parse(registration.getDate());
-				if (registration.getUser().equals(user) && date.getMonth().toString().equals(month)
+				if (registration.getUser().getId() == user.getId() && date.getMonth().toString().equals(month)
 						&& date.getYear() == year) {
 					return true;
 				}
@@ -177,12 +170,8 @@ public class TombolaController {
 	}
 	
 	private void registerUserToTombola(UserEntity user, LocalDate date) {
-		if (Integer.parseInt(user.getPoints()) >= 25) {
-			tombolaRepository.save(new Tombola(date.toString(), "not winner", user));
-			decreaseUserPoints(user);
-		} else {
-			System.out.println("not enough points");
-		}
+		tombolaRepository.save(new Tombola(date.toString(), "not winner", user));
+		decreaseUserPoints(user);
 	}
 	
 	private void decreaseUserPoints(UserEntity user) {

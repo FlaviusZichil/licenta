@@ -26,6 +26,9 @@ public class TombolaController {
 
 	@Autowired
 	private TombolaRepository tombolaRepository;
+	
+	@Autowired
+	private UserUtils userUtils;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -43,7 +46,7 @@ public class TombolaController {
 		
 		tombolaViewModel.setWinners(this.getAllWinners());
 		model.addAttribute("tombolaViewModel", tombolaViewModel);
-		UserEntity currentUser = this.getUserByEmail(principal.getName());
+		UserEntity currentUser = userUtils.getUserByEmail(principal.getName());
 		LocalDate date = LocalDate.now();
 		
 		if(registerToTombolaAction != null) {
@@ -68,15 +71,15 @@ public class TombolaController {
 			for (Tombola registrationForGivenDate : this.getAllRegistrationsForDate(date.toString())) {
 				UserEntity user = registrationForGivenDate.getUser();
 				if (registrationForGivenDate.getStatus().equals("first")) {
-					tombolaDTO.setFirstPlaceWinner(UserUtils.convertFromUserToUserDTO(user));
+					tombolaDTO.setFirstPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}
 
 				if (registrationForGivenDate.getStatus().equals("second")) {
-					tombolaDTO.setSecondPlaceWinner(UserUtils.convertFromUserToUserDTO(user));
+					tombolaDTO.setSecondPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}
 
 				if (registrationForGivenDate.getStatus().equals("third")) {
-					tombolaDTO.setThirdPlaceWinner(UserUtils.convertFromUserToUserDTO(user));
+					tombolaDTO.setThirdPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}
 			}
 			if(tombolaDTO.getFirstPlaceWinner() != null && tombolaDTO.getSecondPlaceWinner() != null && tombolaDTO.getThirdPlaceWinner() != null) {
@@ -186,16 +189,5 @@ public class TombolaController {
 		Integer userPoints = Integer.parseInt(user.getPoints()) - 25;
 		user.setPoints(userPoints.toString());
 		userRepository.save(user);
-	}
-
-	public UserEntity getUserByEmail(String email) {
-		Iterable<UserEntity> users = userRepository.findAll();
-
-		for (UserEntity user : users) {
-			if (user.getEmail().equals(email)) {
-				return user;
-			}
-		}
-		return null;
 	}
 }

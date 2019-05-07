@@ -1,7 +1,6 @@
 package app.controllers;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,15 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
-import app.documents.ArticleComment;
-import app.documents.ArticleLike;
-import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
-import app.dto.ArticleLikeDTO;
-import app.entities.UserEntity;
 import app.models.AllArticlesViewModel;
 import app.repositories.ArticleRepository;
-import app.repositories.UserRepository;
+import app.utils.Conversion;
 
 @Controller
 public class AllArticlesController {
@@ -32,7 +26,7 @@ public class AllArticlesController {
 	private ArticleRepository articleRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private Conversion conversion;
 
 	@GetMapping("/all-articles")
 	public String getAllArticles(Model model) {
@@ -125,57 +119,8 @@ public class AllArticlesController {
 	private List<ArticleDTO> getAllArticlesDTO(){
 		List<ArticleDTO> articlesDTO = new ArrayList<>();
 		for(Article article : articleRepository.findAll()) {
-			articlesDTO.add(this.convertFromArticleToArticleDTO(article));
+			articlesDTO.add(conversion.convertFromArticleToArticleDTO(article));
 		}
 		return articlesDTO;
-	}
-	
-	private UserEntity getUserById(Integer userId) {
-		for(UserEntity user : userRepository.findAll()) {
-			if(user.getId() == userId) {
-				return user;
-			}
-		}
-		return null;
-	}
-	
-	private ArticleDTO convertFromArticleToArticleDTO(Article article) {
-		List<ArticleCommentDTO> commentsDTO = new ArrayList<>();
-		List<ArticleLikeDTO> likesDTO = new ArrayList<>();
-		
-		for(ArticleComment comment : article.getComments()) {
-			commentsDTO.add(this.convertFromArticleCommentToArticleCommentDTO(comment));
-		}
-		
-		for(ArticleLike like : article.getLikes()) {
-			likesDTO.add(this.convertFromArticleLikeToArticleLikeDTO(like));
-		}
-		
-		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), likesDTO, 
-											   article.getDescription(), article.getSections(), commentsDTO);
-		return articleDTO;
-	}
-	
-	private Article getArticleById(Integer articleId) {
-		for(Article article : articleRepository.findAll()) {
-			if(article.getArticleId() == articleId) {
-				return article;
-			}
-		}
-		return null;
-	}
-	
-	private ArticleCommentDTO convertFromArticleCommentToArticleCommentDTO(ArticleComment comment) {
-		LocalDate articleDate = LocalDate.parse(comment.getDate());
-		Period period = Period.between(LocalDate.now(), articleDate);
-		int days = Math.abs(period.getDays());
-	    
-		ArticleCommentDTO commentDTO = new ArticleCommentDTO(comment.getCommentId(), this.getUserById(comment.getUserId()), comment.getDate(), comment.getContent(), days);
-		return commentDTO;
-	}
-	
-	private ArticleLikeDTO convertFromArticleLikeToArticleLikeDTO(ArticleLike like) {
-		ArticleLikeDTO articleLikeDTO = new ArticleLikeDTO(this.getUserById(like.getUserId()), this.getArticleById(like.getArticleId()));
-		return articleLikeDTO;
 	}
 }

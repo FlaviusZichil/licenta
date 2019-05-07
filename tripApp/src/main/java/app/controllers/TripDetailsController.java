@@ -20,6 +20,7 @@ import app.models.TripDetailsViewModel;
 import app.repositories.TripRepository;
 import app.repositories.UserRepository;
 import app.utils.TripUtils;
+import app.utils.UserUtils;
 
 @Controller
 public class TripDetailsController {
@@ -29,6 +30,9 @@ public class TripDetailsController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private UserUtils userUtils;
 
 	@SessionScope
 	@GetMapping("/trip-details")
@@ -38,7 +42,7 @@ public class TripDetailsController {
 		tripDetailsViewModel.setTripDTO(this.getTripDTOById(Integer.parseInt(tripId)));
 		model.addAttribute("tripDetailsViewModel", tripDetailsViewModel);
 
-		UserEntity user = this.getUserByEmail(principal.getName());
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		if (isUserRegisteredForTrip(user, Integer.parseInt(tripId))) {
 			model.addAttribute("isAlreadyRegisteredForTrip", true);
 		} else {
@@ -54,7 +58,7 @@ public class TripDetailsController {
 	public String postTripDetails(HttpSession session, Principal principal, Model model,
 									@RequestParam(name = "submit", required = false) String actionType) throws ParseException {
 		Integer tripId = Integer.parseInt((String) session.getAttribute("tripId"));
-		UserEntity user = this.getUserByEmail(principal.getName());
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		
 		switch(actionType) {
 			case "Inscrie-te la ascensiune": {
@@ -117,7 +121,7 @@ public class TripDetailsController {
 	}
 	
 	private void removeTripForUser(Principal principal, Integer tripId) {
-		UserEntity user = this.getUserByEmail(principal.getName());
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		List<Trip> userTrips = user.getTrips();
 		
 		if(!userTrips.isEmpty()) {
@@ -125,17 +129,6 @@ public class TripDetailsController {
 			user.setTrips(userTrips);
 			userRepository.save(user);
 		}
-	}
-
-	private UserEntity getUserByEmail(String email) {
-		Iterable<UserEntity> users = userRepository.findAll();
-
-		for (UserEntity user : users) {
-			if (user.getEmail().equals(email)) {
-				return user;
-			}
-		}
-		return null;
 	}
 
 	private boolean isUserRegisteredForTrip(UserEntity user, Integer tripId) {

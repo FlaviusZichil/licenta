@@ -2,10 +2,8 @@ package app.controllers;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +21,13 @@ import app.documents.Article;
 import app.documents.ArticleComment;
 import app.documents.ArticleLike;
 import app.documents.ArticleSection;
-import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
-import app.dto.ArticleLikeDTO;
 import app.entities.UserEntity;
 import app.models.ArticleDetailsViewModel;
 import app.repositories.ArticleRepository;
-import app.repositories.UserRepository;
+import app.utils.ArticleUtils;
+import app.utils.Conversion;
+import app.utils.UserUtils;
 import app.validators.ArticleValidator;
 
 @Controller
@@ -39,18 +37,24 @@ public class ArticleDetailsController {
 	private ArticleRepository articleRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserUtils userUtils;
+	
+	@Autowired
+	private ArticleUtils articleUtils;
+	
+	@Autowired
+	private Conversion conversion;
 
 	@GetMapping("/article")
 	public String getArticle(Model model, ArticleDetailsViewModel articleDetailsViewModel, HttpSession session, Principal principal,
 						    @RequestParam(value = "a", required = false) String articleId) {
-
-		Article article = this.getArticleById(Integer.parseInt(articleId));
-		ArticleDTO articleDTO = this.convertFromArticleToArticleDTO(article);
+		
+		Article article = articleUtils.getArticleById(Integer.parseInt(articleId));
+		ArticleDTO articleDTO = conversion.convertFromArticleToArticleDTO(article);
 		articleDetailsViewModel.setArticleDTO(articleDTO);		
 		model.addAttribute("articleDetailsViewModel", articleDetailsViewModel);
 		
-		UserEntity user = this.getUserByEmail(principal.getName());
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		model.addAttribute("userName", user.getLastName() + " " + user.getFirstName());	
 		model.addAttribute("loggedUserId", user.getId());
 		model.addAttribute("isUserAllowedToEdit", false);
@@ -89,9 +93,9 @@ public class ArticleDetailsController {
 								@RequestParam(name = "sectionContent", required = false) String sectionsContent,
 								@RequestParam(name = "description", required = false) String description,
 								@RequestParam MultiValueMap<String, String> submitInputs) {
-			
-		Article selectedArticle = this.getArticleById(Integer.parseInt((String) session.getAttribute("articleId")));
-		UserEntity user = this.getUserByEmail(principal.getName());
+		
+		Article selectedArticle = articleUtils.getArticleById(Integer.parseInt((String) session.getAttribute("articleId")));
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		
 		if(submitInputs != null) {
 			for(Map.Entry<String, List<String>> input : submitInputs.entrySet()){
@@ -120,7 +124,7 @@ public class ArticleDetailsController {
 					break;
 				}
 				case "Salveaza modificarile":{				
-					if(this.isArticleValid(title, description, sectionsTitle, sectionsContent, session)) {
+					if(ArticleValidator.isArticleValid(title, description, sectionsTitle, sectionsContent, session)) {
 						this.saveArticleAfterEdit(selectedArticle, title, description, sectionsTitle, sectionsContent, session);
 					}
 					else {
@@ -149,7 +153,6 @@ public class ArticleDetailsController {
 			for(ArticleSection section : sections) {
 				if(section.getSectionTitle().equals(sectionTitle.trim()) && section.getSectionContent().equals(sectionContent.trim())) {
 					sections.remove(section);
-					System.out.println("a fost aici 2");
 					break;
 				}
 			}
@@ -158,44 +161,10 @@ public class ArticleDetailsController {
 		}
 	}
 	
-	private boolean isArticleValid(String title, String description, String sectionsTitle, String sectionsContent, HttpSession session) {
-		ArticleValidator validator = new ArticleValidator();
-		
-		boolean isTitleValid = true;
-		boolean isDescriptionValid = true;
-		boolean areSubtitlesValid = true;		
-		boolean areSectionsValid = true;
-		
-		if(!validator.isTitleValid(title)) {
-			session.setAttribute("wrongTitle", true);
-			isTitleValid = false;
-		}
-		
-		if(!validator.isDescriptionValid(description)) {
-			session.setAttribute("wrongDescription", true);
-			isDescriptionValid = false;
-		}
-			
-		if(validator.hasEmptyValues(sectionsTitle, 1)) {
-			session.setAttribute("wrongSectionTitle", true);
-			areSubtitlesValid = false;
-		}
-		
-		if(validator.hasEmptyValues(sectionsContent, 50)) {
-			session.setAttribute("wrongSectionContent", true);
-			areSectionsValid = false;
-		}
-		
-		if(isTitleValid && isDescriptionValid && areSubtitlesValid && areSectionsValid) {
-			return true;
-		}
-		return false;
-	}
-	
 	private void saveArticleAfterEdit(Article selectedArticle, String title, String description, String sectionsTitle, String sectionsContent, HttpSession session) {
 		selectedArticle.setTitle(title);
 		selectedArticle.setDescription(description);
-		selectedArticle.setSections(this.getArticleSectionsToAdd(sectionsTitle, sectionsContent));
+		selectedArticle.setSections(articleUtils.getArticleSectionsToAdd(sectionsTitle, sectionsContent));
 		List<ArticleComment> comments = new ArrayList<ArticleComment>();
 		selectedArticle.setComments(comments);
 		
@@ -246,19 +215,6 @@ public class ArticleDetailsController {
 		articleRepository.save(article);
 	}
 	
-	private List<ArticleSection> getArticleSectionsToAdd(String subtitle, String sectionsContent){
-		List<ArticleSection> articleSections = new ArrayList<>();
-		
-		List<String> subtitles = new ArrayList<>(Arrays.asList(subtitle.split(",")));
-		List<String> sections = new ArrayList<>(Arrays.asList(sectionsContent.split(",")));
-		
-		for(int index = 0; index < subtitles.size(); index++) {
-			ArticleSection articleSection = new ArticleSection(subtitles.get(index), sections.get(index));
-			articleSections.add(articleSection);
-		}
-		return articleSections;
-	}
-	
 	private Article getArticleThatContainsComment(Integer commentId) {
 		for(Article article : articleRepository.findAll()) {
 			for(ArticleComment articleComment : article.getComments()) {
@@ -285,64 +241,13 @@ public class ArticleDetailsController {
 	}
 	
 	private void addCommentToArticle(String commentContent, Integer articleId, Principal principal) {
-		UserEntity user = this.getUserByEmail(principal.getName());
-		Article article = this.getArticleById(articleId);
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
+		Article article = articleUtils.getArticleById(articleId);
 		ArticleComment comment = new ArticleComment(this.getLastCommentId() + 1, user.getId(), LocalDate.now().toString(), commentContent);
 
 		List<ArticleComment> comments = article.getComments();		
 		comments.add(comment);	
 		articleRepository.save(article);	
-	}
-	
-	private UserEntity getUserByEmail(String email) {	
-		for(UserEntity user : userRepository.findAll()) {
-			if(user.getEmail().equals(email)) {
-				return user;
-			}
-		}
-		return null;
-	}
-	
-	private Article getArticleById(Integer articleId) {
-		for(Article article : articleRepository.findAll()) {
-			if(article.getArticleId() == articleId) {
-				return article;
-			}
-		}
-		return null;
-	}
-	
-	private ArticleDTO convertFromArticleToArticleDTO(Article article) {
-		List<ArticleCommentDTO> commentsDTO = new ArrayList<>();
-		List<ArticleLikeDTO> likesDTO = new ArrayList<>();
-		
-		for(ArticleComment comment : article.getComments()) {
-			commentsDTO.add(this.convertFromArticleCommentToArticleCommentDTO(comment));
-		}
-		
-		for(ArticleLike like : article.getLikes()) {
-			likesDTO.add(this.convertFromArticleLikeToArticleLikeDTO(like));
-		}
-		
-		Collections.reverse(commentsDTO);
-		
-		ArticleDTO articleDTO = new ArticleDTO(article.getArticleId(), this.getUserById(article.getUserId()), article.getDate(), article.getTitle(), likesDTO, 
-											   article.getDescription(), article.getSections(), commentsDTO);
-		return articleDTO;
-	}
-	
-	private ArticleCommentDTO convertFromArticleCommentToArticleCommentDTO(ArticleComment comment) {
-		LocalDate articleDate = LocalDate.parse(comment.getDate());
-		Period period = Period.between(LocalDate.now(), articleDate);
-	    int days = Math.abs(period.getDays());
-	    
-		ArticleCommentDTO commentDTO = new ArticleCommentDTO(comment.getCommentId(), this.getUserById(comment.getUserId()), comment.getDate(), comment.getContent(), days);
-		return commentDTO;
-	}
-	
-	private ArticleLikeDTO convertFromArticleLikeToArticleLikeDTO(ArticleLike like) {
-		ArticleLikeDTO articleLikeDTO = new ArticleLikeDTO(this.getUserById(like.getUserId()), this.getArticleById(like.getArticleId()));
-		return articleLikeDTO;
 	}
 	
 	private Integer getLastCommentId() {
@@ -371,14 +276,5 @@ public class ArticleDetailsController {
 			}
 		}
 		return max;
-	}
-	
-	private UserEntity getUserById(Integer userId) {
-		for(UserEntity user : userRepository.findAll()) {
-			if(user.getId() == userId) {
-				return user;
-			}
-		}
-		return null;
 	}
 }

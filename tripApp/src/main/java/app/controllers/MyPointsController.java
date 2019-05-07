@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import app.entities.Tombola;
 import app.entities.UserEntity;
 import app.repositories.TombolaRepository;
-import app.repositories.UserRepository;
 import app.utils.TripUtils;
+import app.utils.UserUtils;
 
 @Controller
 public class MyPointsController {
 	
 	@Autowired
-	private UserRepository userRepository;
+	private TombolaRepository tombolaRepository;
 	
 	@Autowired
-	private TombolaRepository tombolaRepository;
+	private UserUtils userUtils;
 
 	@GetMapping("/my-points")
 	public String getMyPoints(Model model, Principal principal) {
 		
-		UserEntity user = this.getUserByEmail(principal.getName());
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		model.addAttribute("userPoints", user.getPoints());
 		model.addAttribute("usedPoints", this.getAllTombolaRegistrationForUser(user));
 		return "views/all/myPoints";
@@ -44,14 +44,5 @@ public class MyPointsController {
 			}
 		}
 		return userRegistrations;
-	}
-	
-	private UserEntity getUserByEmail(String email) {		
-		for(UserEntity user : userRepository.findAll()) {
-			if(user.getEmail().equals(email)) {
-				return user;
-			}
-		}
-		return null;
 	}
 }

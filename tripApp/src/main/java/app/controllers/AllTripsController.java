@@ -26,8 +26,8 @@ import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
-import app.repositories.UserRepository;
 import app.utils.TripUtils;
+import app.utils.UserUtils;
 
 @Controller
 public class AllTripsController {
@@ -36,7 +36,7 @@ public class AllTripsController {
 	private TripRepository tripRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserUtils userUtils;
 
 	@SessionScope
 	@GetMapping("/all-trips")
@@ -130,7 +130,7 @@ public class AllTripsController {
 
 	private List<TripDTO> getAllTripsDTOAvailableForUser(Principal principal) {
 		Iterable<Trip> allTrips = tripRepository.findAll();
-		UserEntity currentUser = this.getUserByEmail(principal.getName());
+		UserEntity currentUser = userUtils.getUserByEmail(principal.getName());
 		List<Trip> currentUserTrips = currentUser.getTrips();
 		List<TripDTO> currentUserTripsDTO = new ArrayList<TripDTO>();
 
@@ -163,7 +163,7 @@ public class AllTripsController {
 	
 	private List<TripDTO> sortTripsByDistance(Principal principal, List<TripDTO> tripsDTO){
 		// trebuie luate doar cele active
-		final UserEntity user = this.getUserByEmail(principal.getName());	
+		final UserEntity user = userUtils.getUserByEmail(principal.getName());	
 		
 		Collections.sort(tripsDTO, new Comparator<TripDTO>(){
 			   @Override
@@ -191,16 +191,5 @@ public class AllTripsController {
 	private City convertFromCityDTOToCity(CityDTO cityDTO) {
 		City firstTripCity = new City(cityDTO.getName(), cityDTO.getLatitude(), cityDTO.getLongitude());
 		return firstTripCity;
-	}
-	
-	public UserEntity getUserByEmail(String email) {
-		Iterable<UserEntity> users = userRepository.findAll();
-
-		for (UserEntity user : users) {
-			if (user.getEmail().equals(email)) {
-				return user;
-			}
-		}
-		return null;
 	}
 }

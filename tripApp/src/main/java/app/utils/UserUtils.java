@@ -3,6 +3,9 @@ package app.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import app.dto.CityDTO;
 import app.dto.PromoCodeDTO;
 import app.dto.RoleDTO;
@@ -10,10 +13,15 @@ import app.dto.TripDTO;
 import app.dto.UserDTO;
 import app.entities.Trip;
 import app.entities.UserEntity;
+import app.repositories.UserRepository;
 
+@Component
 public class UserUtils {
+	
+	@Autowired
+	private UserRepository userRepository;
 
-	public static UserDTO convertFromUserToUserDTO(UserEntity user) {
+	public UserDTO convertFromUserToUserDTO(UserEntity user) {
 		CityDTO cityDTO = new CityDTO(user.getCity().getName(), 
 									  user.getCity().getLatitude(),
 									  user.getCity().getLongitude());
@@ -28,7 +36,7 @@ public class UserUtils {
 		return userDTO;
 	}
 	
-	public static List<TripDTO> getAllTripsDTOForUser(UserEntity currentUser){
+	public List<TripDTO> getAllTripsDTOForUser(UserEntity currentUser){
 		List<Trip> currentUserTrips = currentUser.getTrips();
 		List<TripDTO> currentUserTripsDTO = new ArrayList<TripDTO>();
 		
@@ -37,5 +45,23 @@ public class UserUtils {
 			currentUserTripsDTO.add(tripDTO);
 		}
 		return currentUserTripsDTO;
+	}
+	
+	public UserEntity getUserById(Integer userId) {
+		for(UserEntity user : userRepository.findAll()) {
+			if(user.getId() == userId) {
+				return user;
+			}
+		}
+		return null;
+	}
+	
+	public UserEntity getUserByEmail(String email) {	
+		for(UserEntity user : userRepository.findAll()) {
+			if(user.getEmail().equals(email)) {
+				return user;
+			}
+		}
+		return null;
 	}
 }

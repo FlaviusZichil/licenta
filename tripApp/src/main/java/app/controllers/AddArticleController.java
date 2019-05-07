@@ -3,8 +3,9 @@ package app.controllers;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import app.documents.Article;
 import app.documents.ArticleComment;
 import app.documents.ArticleLike;
-import app.documents.ArticleSection;
 import app.entities.UserEntity;
 import app.repositories.ArticleRepository;
-import app.repositories.UserRepository;
+import app.utils.ArticleUtils;
+import app.utils.UserUtils;
 
 @Controller
 public class AddArticleController {
@@ -28,43 +29,51 @@ public class AddArticleController {
 	private ArticleRepository articleRepository;
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserUtils userUtils;
+	
+	@Autowired
+	private ArticleUtils articleUtils;
 
 	@GetMapping("/add-article")
-	public String getAddArticlePage() {
+	public String getAddArticlePage(Model model, HttpSession session) {
 		return "views/staff/addArticleView";
 	}
 	
 	@PostMapping("/add-article")
-	public String addArticleActions(Model model, Principal principal, 
+	public String addArticleActions(Model model, Principal principal, HttpSession session,
 									@RequestParam(name = "title", required = false) String title,
 									@RequestParam(name = "subtitle", required = false) String subtitles,
 									@RequestParam(name = "sectionContent", required = false) String sectionsContent,
 									@RequestParam(name = "description", required = false) String description) {
 		
-		UserEntity user = this.getUserByEmail(principal.getName());
-		
-		Article article = new Article();
-		article.setArticleId(this.getLastArticleId() + 1);
-		article.setUserId(user.getId());
-		article.setTitle(title);
-		article.setDate(LocalDate.now().toString());
-		article.setDescription(description);
-		article.setSections(this.getArticleSectionsToAdd(subtitles, sectionsContent));
-		List<ArticleLike> likes = new ArrayList<ArticleLike>();
-		article.setLikes(likes);
-		List<ArticleComment> comments = new ArrayList<ArticleComment>();
-		article.setComments(comments);
+		UserEntity user = userUtils.getUserByEmail(principal.getName());	
+		Article article = this.createArticleForUser(user, title, description, subtitles, sectionsContent);
 		
 		if(!this.hasUserAlreadyPostedForCurrentDate(LocalDate.now().toString(), user)) {
-			articleRepository.save(article);
-			model.addAttribute("articleSuccessfullyAdded", true);		
+				articleRepository.save(article);
+				model.addAttribute("articleSuccessfullyAdded", true);			
 		}
 		else {
 			model.addAttribute("aleadyPostedForToday", true);
 		}
 					
 		return "views/staff/addArticleView";
+	}
+	
+	private Article createArticleForUser(UserEntity user, String title, String description, String subtitles, String sectionsContent) {
+		Article article = new Article();
+		article.setArticleId(this.getLastArticleId() + 1);
+		article.setUserId(user.getId());
+		article.setTitle(title);
+		article.setDate(LocalDate.now().toString());
+		article.setDescription(description);
+		article.setSections(articleUtils.getArticleSectionsToAdd(subtitles, sectionsContent));
+		List<ArticleLike> likes = new ArrayList<ArticleLike>();
+		article.setLikes(likes);
+		List<ArticleComment> comments = new ArrayList<ArticleComment>();
+		article.setComments(comments);
+		
+		return article;
 	}
 	
 	private boolean hasUserAlreadyPostedForCurrentDate(String date, UserEntity user) {
@@ -74,19 +83,6 @@ public class AddArticleController {
 			}
 		}
 		return false;
-	}
-	
-	private List<ArticleSection> getArticleSectionsToAdd(String subtitle, String sectionsContent){
-		List<ArticleSection> articleSections = new ArrayList<>();
-		
-		List<String> subtitles = new ArrayList<>(Arrays.asList(subtitle.split(",")));
-		List<String> sections = new ArrayList<>(Arrays.asList(sectionsContent.split(",")));
-		
-		for(int index = 0; index < subtitles.size(); index++) {
-			ArticleSection articleSection = new ArticleSection(subtitles.get(index), sections.get(index));
-			articleSections.add(articleSection);
-		}
-		return articleSections;
 	}
 	
 	private Integer getLastArticleId() {
@@ -109,16 +105,5 @@ public class AddArticleController {
 			}
 		}
 		return max;	
-	}
-	
-	private UserEntity getUserByEmail(String email) {
-		Iterable<UserEntity> users = userRepository.findAll();
-		
-		for(UserEntity user : users) {
-			if(user.getEmail().equals(email)) {
-				return user;
-			}
-		}
-		return null;
 	}
 }

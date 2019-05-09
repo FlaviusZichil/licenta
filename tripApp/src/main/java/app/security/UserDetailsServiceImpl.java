@@ -27,28 +27,19 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		UserEntity user = getUserByName(username);
 
 		if (user == null) {
-			System.out.println("User not found! " + username);
 			throw new UsernameNotFoundException("User " + username + " was not found in the database");
 		}
 
-		System.out.println("Found User: " + user);
 		Role role = this.getUserRole(user);
-		System.out.println("User Role: " + role);
 
 		List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
 		
 		if (role != null) {
 			GrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
-			grantList.add(authority);
-			
+			grantList.add(authority);	
 		}
 		
-		System.out.println("GrantList: " + grantList);
-
 		UserDetails userDetails = (UserDetails) new User(user.getEmail(),  EncrytedPasswordUtils.encrytePassword(user.getPassword()), grantList);
-
-		System.out.println("User Details: " + userDetails);
-
 		return userDetails;
 	}
 	

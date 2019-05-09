@@ -5,18 +5,6 @@
 		<div class="row" id="content">
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-3 col-sm-3 col-xs-2 fla">
-				<div th:if="${wrongSectionTitle} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Subtitlurile trebuie sa aiba minim 1 caracter.</p> 									
-				</div>
-				<div th:if="${wrongSectionContent} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Continutul sectiunilor trebuie sa aiba minim 50 de caractere.</p> 									
-				</div>
-				<div th:if="${wrongTitle} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3 alert-dismissable"> Titlul trebuie sa aiba cel putin 2 caractere.</p> 									
-				</div>
-				<div th:if="${wrongDescription} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie sa aiba cel putin 200 caractere.</p> 									
-				</div>
 				<div class="card trip-card text-center">
 				  <div class="card-header bg-info">
 				    <h5 class="trip-card-title" > Regulament </h5>
@@ -46,6 +34,18 @@
 				</div>
 			</div>
 			<div class="col-md-5 col-sm-5 col-xs-2 fla">
+				<div th:if="${wrongSectionTitle} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Subtitlurile trebuie sa aiba minim 1 caracter.</p> 									
+				</div>
+				<div th:if="${wrongSectionContent} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Continutul sectiunilor trebuie sa aiba minim 50 de caractere.</p> 									
+				</div>
+				<div th:if="${wrongTitle} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3 alert-dismissable"> Titlul trebuie sa aiba cel putin 2 caractere.</p> 									
+				</div>
+				<div th:if="${wrongDescription} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie sa aiba cel putin 200 caractere.</p> 									
+				</div>
 				<div th:if="${aleadyPostedForToday}" style="margin-top: 3%">
 					<p class="text-center list-group-item list-group-item-action list-group-item-danger">Deja ai postat un articol azi. Incearca din nou maine.</p>
 				</div>
@@ -54,20 +54,40 @@
 				</div>
 				<div class="card trip-card text-center">
 				  <div class="card-body">
-				  		<input class="form-control" type="text" name="title" placeholder="Titlul articolului"/>	
+				  		<div th:if="${isArticleValid} == false">
+				  			<input class="form-control text-center" type="text" name="title" th:value="${articleToAddDTO.title}" placeholder="Titlul articolului"/>					  		
+				  		</div>
+				  		<div th:if="${isArticleValid} != false">
+				  			<input class="form-control" type="text" name="title" placeholder="Titlul articolului"/>					  		
+				  		</div>
 				  		<div class="card trip-card text-center">
 					  		<div class="card-body">
 					  			<label> Descriere </label>
-					  			<textarea class="text-justify" id="description" name="description" style="width: 100%; height: 150px; resize: none" required></textarea>	 
+					  			<div th:if="${isArticleValid} == false">
+					  				<textarea class="text-justify" id="description" name="description" th:text="${articleToAddDTO.description}" style="width: 100%; height: 150px; resize: none" required></textarea>	 
+					  			</div>
+					  			<div th:if="${isArticleValid} != false">
+					  				<textarea class="text-justify" id="description" name="description" style="width: 100%; height: 150px; resize: none" required></textarea>	 
+					  			</div>
 					  			<div class="text-center list-group-item list-group-item-action list-group-item-danger" id="count"></div> 		
 					  		</div>
-						</div>	  			
-				  		<div class="card trip-card text-center">
-					  		<div class="card-body">
-					  			<input class="form-control" type="text" name="subtitle" placeholder="Subtitlu" />
-					  			<textarea class="text-justify" name="sectionContent" style="width: 100%; height: 150px; resize: none" required></textarea>	  		
-					  		</div>
-						</div>
+						</div>	 
+						<div th:if="${isArticleValid} == false">
+							<div class="card trip-card text-center">
+						  		<div class="card-body" th:each="section : ${articleToAddDTO.sections}">
+						  			<input class="form-control text-center" type="text" name="subtitle" th:value="${section.sectionTitle}" placeholder="Subtitlu"/>			
+						  			<textarea class="text-justify" name="sectionContent" th:text="${section.sectionContent}" style="width: 100%; height: 150px; resize: none" required></textarea>	  		
+						  		</div>
+							</div>
+						</div> 	
+						<div th:if="${isArticleValid} != false">
+							<div class="card trip-card text-center">
+						  		<div class="card-body">
+						  			<input class="form-control" type="text" name="subtitle" placeholder="Subtitlu"/>			
+						  			<textarea class="text-justify" name="sectionContent" style="width: 100%; height: 150px; resize: none" required></textarea>	  		
+						  		</div>
+							</div>
+						</div> 			
 						<div id="addedSections">
 						</div>
 						<p class="btn btn-info" onclick="createNewSection()">Adauga sectiune</p>

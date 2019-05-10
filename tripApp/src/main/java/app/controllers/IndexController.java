@@ -1,5 +1,6 @@
 package app.controllers;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import app.entities.Trip;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
 import app.utils.TripUtils;
+import app.utils.api.WeatherApi;
 
 @Controller
 public class IndexController {
@@ -24,7 +26,7 @@ public class IndexController {
 	private TripRepository tripRepository;
 	
 	@GetMapping("/")
-	public String getIndexPage(Model model, TripViewModel tripViewModel, HttpSession session) {
+	public String getIndexPage(Model model, TripViewModel tripViewModel, HttpSession session) throws UnknownHostException {
 		// loads the 4 active trips for guest main page
 		if(this.getTop4TripsDTO().size() > 0) {
 			tripViewModel.setTripsDTO(this.getTop4TripsDTO());
@@ -34,6 +36,11 @@ public class IndexController {
 		// loads most popular 4 trip locations (to do)
 		
 		// loads article (to do)
+		
+		
+		//test api
+		WeatherApi.getLocationByIpAddress();
+		WeatherApi.getWeatherData();
 
 		return "views/all/index.html";
 	}

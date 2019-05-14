@@ -3,6 +3,7 @@ package app.controllers;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import app.dto.TripDTO;
 import app.entities.Trip;
 import app.models.TripViewModel;
@@ -36,11 +38,14 @@ public class IndexController {
 		// loads most popular 4 trip locations (to do)
 		
 		// loads article (to do)
-		
-		
-		//test api
-		WeatherApi.getLocationByIpAddress();
-		WeatherApi.getWeatherData();
+			
+		Map<String, String> weatherData = WeatherApi.getWeatherData();
+		model.addAttribute("temperature", weatherData.get("temperature"));
+		model.addAttribute("humidity", weatherData.get("humidity"));
+		model.addAttribute("pressure", weatherData.get("pressure"));
+		model.addAttribute("windSpeed", weatherData.get("windSpeed"));
+		model.addAttribute("weather", weatherData.get("weather"));
+		model.addAttribute("clouds", weatherData.get("clouds"));
 
 		return "views/all/index.html";
 	}

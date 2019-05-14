@@ -22,6 +22,58 @@
 				</div>
 				<!-- Card Calatorii populare -->
 				
+				<!--  Vreme -->
+				<div class="card card-cascade wider left-card">			
+				  <div class="view view-cascade overlay"> 				 
+				    <h1 class="text-center" th:text="${temperature} + ' &#8451;'"></h1> 				  
+				  </div>				
+				  <div class="card-body card-body-cascade text-center">				
+					<table class="table table-dark w-100 ml-10">
+						<tr>
+							<td>
+								<h5 class="text-left">Umiditate: </h5>
+							</td>
+							<td>
+								<h5 th:text="${humidity} + '%'" class="text-left"></h5>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h5 class="text-left">Presiune: </h5>
+							</td>
+							<td>
+								<h5 th:text="${pressure} + ' mmHg'" class="text-left"></h5>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h5 class="text-left">Vant: </h5>
+							</td>
+							<td>
+								<h5 th:text="${windSpeed} + ' m/s'" class="text-left"></h5>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h5 class="text-left">Conditii: </h5>
+							</td>
+							<td>
+								<h5 th:text="${weather}" class="text-left"></h5>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h5 class="text-left">Nori: </h5>
+							</td>
+							<td>
+								<h5 th:text="${clouds} + ' %'" class="text-left"></h5>
+							</td>
+						</tr>
+					</table>				 			
+				  </div>				
+				</div>
+				<!-- Vreme -->
+				
 				<!-- Card Tombola -->
 				<div class="card card-cascade wider left-card">			
 				  <div class="view view-cascade overlay"> 				 

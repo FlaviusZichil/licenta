@@ -83,18 +83,19 @@ public class WeatherApi {
 		return map;
 	}
 	
-	private static Double kelvinToCelsius(Double kelvinTemperature) {
+	private static Integer kelvinToCelsius(Double kelvinTemperature) {
 		Double celsiusTemperature = kelvinTemperature - 273.15;
-		return celsiusTemperature; 
+		return celsiusTemperature.intValue(); 
 	}
 	
-	public static void getWeatherData() throws UnknownHostException {
+	public static Map<String, String> getWeatherData() throws UnknownHostException {
 		final String API_KEY = "91c82cc78c59bb61cac61da945ef9337";
 		final String URL_STRING = "https://api.openweathermap.org/data/2.5/weather?lat=";
 		String LATITUDE = "";
 		String LONGITUDE = "";
 		
 		Map<String, String> location = getLocationByIpAddress();
+		Map<String, String> weatherData = new HashMap<>();
 	
 		for (Map.Entry<String, String> entry : location.entrySet()) {
 			LATITUDE = entry.getKey();
@@ -117,29 +118,68 @@ public class WeatherApi {
 
 			String weather = responseMap.get("weather").toString();
 			weather = weather.substring(1, weather.length() - 1);
-			
+						
 			Map<String, String> main = parseJson(responseMap.get("main").toString());
 			Map<String, String> wind = parseJson(responseMap.get("wind").toString());
-			Map<String, String> rain = parseJson(responseMap.get("rain").toString());
 			Map<String, String> clouds = parseJson(responseMap.get("clouds").toString());
 			Map<String, String> weatherMap = parseJson(weather);
 			
-			System.out.println(main.toString());
-			System.out.println("===================");
-			System.out.println(wind.toString());
-			System.out.println("===================");
-			System.out.println(rain.toString());
-			System.out.println("===================");
-			System.out.println(clouds.toString());
-			System.out.println("===================");
-			System.out.println(weatherMap.toString());
+			weatherData.put("temperature", Double.toString(kelvinToCelsius(Double.parseDouble(main.get("temp")))));
+			weatherData.put("humidity", main.get("humidity"));
+			weatherData.put("pressure", main.get("pressure"));
+			weatherData.put("windSpeed", wind.get("speed"));
+			weatherData.put("weather", weatherMap.get("main"));
+			weatherData.put("clouds", clouds.get("all"));
 						
-			System.out.println("TEMPERATURE: " + kelvinToCelsius(Double.parseDouble(main.get("temp"))));
-			System.out.println("HUMIDITY: " + main.get("humidity"));
-			System.out.println("PRESSURE: " + main.get("pressure"));			
-			System.out.println("WIND SPEED: " + wind.get("speed"));		
-			System.out.println("WEATHER: " + weatherMap.get("main"));		
-			System.out.println("CLOUDS: " + clouds.get("all"));
+//			System.out.println("TEMPERATURE: " + kelvinToCelsius(Double.parseDouble(main.get("temp"))));
+//			System.out.println("HUMIDITY: " + main.get("humidity"));
+//			System.out.println("PRESSURE: " + main.get("pressure"));			
+//			System.out.println("WIND SPEED: " + wind.get("speed"));		
+//			System.out.println("WEATHER: " + weatherMap.get("main"));		
+//			System.out.println("CLOUDS: " + clouds.get("all"));
+		}
+		catch(IOException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return weatherData;
+	}
+	
+	public static void getWeatherForecast() throws UnknownHostException {
+		final String API_KEY = "91c82cc78c59bb61cac61da945ef9337";
+		final String URL_STRING = "https://api.openweathermap.org/data/2.5/forecast?lat=";
+		String LATITUDE = "";
+		String LONGITUDE = "";
+		
+		Map<String, String> location = getLocationByIpAddress();
+	
+		for (Map.Entry<String, String> entry : location.entrySet()) {
+			LATITUDE = entry.getKey();
+			LONGITUDE = entry.getValue();
+		}
+
+		try {
+			StringBuilder result = new StringBuilder();
+			URL url = new URL(URL_STRING + LATITUDE + "&lon=" + LONGITUDE + "&&appid=" + API_KEY);
+			URLConnection connection = url.openConnection();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			String line;
+			
+			while((line = reader.readLine()) != null) {
+				result.append(line);
+			}
+			reader.close();
+			
+//			Map<String, Object> responseMap = jsonToMap(result.toString());
+//			Map<String, String> list = parseJson(responseMap.get("list").toString());
+//
+//			System.out.println(responseMap.toString());
+//			System.out.println(list.toString());
+			List<String> JSONelements = Arrays.asList(result.toString().split("dt_txt"));
+			for(String s : JSONelements) {
+				System.out.println(s);
+			}
+
 		}
 		catch(IOException e) {
 			System.out.println(e.getMessage());

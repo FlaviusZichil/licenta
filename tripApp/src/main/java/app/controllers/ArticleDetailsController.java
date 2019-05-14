@@ -151,7 +151,7 @@ public class ArticleDetailsController {
 			List<ArticleSection> sections = article.getSections();
 			
 			for(ArticleSection section : sections) {
-				if(section.getSectionTitle().equals(sectionTitle.trim()) && section.getSectionContent().equals(sectionContent.trim())) {
+				if(section.getSectionTitle().trim().equals(sectionTitle.trim()) && section.getSectionContent().trim().equals(sectionContent.trim())) {
 					sections.remove(section);
 					break;
 				}

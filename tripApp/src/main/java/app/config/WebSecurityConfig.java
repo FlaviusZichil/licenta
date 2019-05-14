@@ -43,15 +43,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/staffHome").access("hasRole('ROLE_STAFF')");
 		
 		http.authorizeRequests().antMatchers("/add-article").access("hasRole('ROLE_STAFF') or hasRole('ROLE_GUIDE')");
+		http.authorizeRequests().antMatchers("/achievements").access("hasRole('ROLE_STAFF') or hasRole('ROLE_USER')");
+		http.authorizeRequests().antMatchers("/add-trip").access("hasRole('ROLE_USER') or hasRole('ROLE_GUIDE')");
+		http.authorizeRequests().antMatchers("/my-articles").access("hasRole('ROLE_STAFF')");
+
 		
 		http.authorizeRequests().antMatchers("/trip-details").authenticated();
 		http.authorizeRequests().antMatchers("/all-trips").authenticated();
 		http.authorizeRequests().antMatchers("/my-trips").authenticated();
 		http.authorizeRequests().antMatchers("/closest-trips").authenticated();
-		http.authorizeRequests().antMatchers("/add-trip").authenticated();
+//		http.authorizeRequests().antMatchers("/add-trip").authenticated();
 		http.authorizeRequests().antMatchers("/tombola").authenticated();
 		http.authorizeRequests().antMatchers("/my-points").authenticated();
-		http.authorizeRequests().antMatchers("/my-articles").authenticated();
+//		http.authorizeRequests().antMatchers("/my-articles").authenticated();
 		http.authorizeRequests().antMatchers("/all-articles").authenticated();
 		http.authorizeRequests().antMatchers("/article").authenticated();
 

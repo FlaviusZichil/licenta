@@ -30,8 +30,7 @@ public class WeatherApi {
         } 
         return ipAddress;
 	}
-	
-	
+		
 	public static Map<String, String> getLocationByIpAddress() throws UnknownHostException {
 		final String API_KEY = "df96e8e0e38606dd7d6533b50b2fe929f864079c2b66a5d9ecccfa93accda0f7";
 		final String URL_STRING = "https://api.ipinfodb.com/v3/ip-city/?key=";

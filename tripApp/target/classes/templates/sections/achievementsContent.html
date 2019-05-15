@@ -4,15 +4,31 @@
 	<form action="#" th:action="@{/achievements}" th:object="${allMedalsViewModel}" method="POST">
 		<div class="row">
 		  <div class="col-sm-2"></div>
-		  <div class="col-sm-2">
-		    <div class="card mt-3 mb-3 bg-warning text-center" th:each="medalDTO : *{medalsDTO}">
-		      <div class="card-body">
-		        <h5 class="card-title" th:text="${medalDTO.peakDTO.peakName}"></h5>
-		        <hr>
-		        <p class="card-text text-white" th:text="${medalDTO.peakDTO.altitude}"></p>
-		        <p class="card-text text-white" th:text="${medalDTO.peakDTO.mountainDTO.name}"></p>
-		      </div>
-		    </div>
+		  <div class="col-sm-8">
+		  		<div class="row">
+		  			<div class="col-sm-4" th:each="medalDTO : *{medalsDTO}">
+		  				<div th:if="${medalDTO.owned} == true">
+				  			<div class="card mt-3 mb-3 bg-warning text-center">
+						      <div class="card-body">
+						        <h5 class="card-title" th:text="${medalDTO.peakDTO.peakName}"></h5>
+						        <hr>
+						        <p class="card-text text-white" th:text="${medalDTO.peakDTO.altitude} + 'm'"></p>
+						        <p class="card-text text-white" th:text="${medalDTO.peakDTO.mountainDTO.name}"></p>
+						      </div>
+						    </div>
+				  		</div>
+				  		<div th:if="${medalDTO.owned} == false">
+				  			<div class="card mt-3 mb-3 text-center" style="background-color: #D3D3D3">
+						      <div class="card-body">
+						        <h5 class="card-title" th:text="${medalDTO.peakDTO.peakName}"></h5>
+						        <hr>
+						        <p class="card-text" th:text="${medalDTO.peakDTO.altitude} + 'm'"></p>
+						        <p class="card-text" th:text="${medalDTO.peakDTO.mountainDTO.name}"></p>
+						      </div>
+						    </div>
+				  		</div>
+		  			</div>
+		  		</div>
 		  </div>
 		  <div class="col-sm-2"></div>
 		</div>

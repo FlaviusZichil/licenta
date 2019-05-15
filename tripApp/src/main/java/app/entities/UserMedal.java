@@ -24,7 +24,7 @@ public class UserMedal {
 	@ManyToOne
     @JoinColumn
     private UserEntity user;
-
+	
 	public Integer getUser_medal_id() {
 		return user_medal_id;
 	}
@@ -51,6 +51,6 @@ public class UserMedal {
 
 	@Override
 	public String toString() {
-		return "UserMedal [user_medal_id=" + user_medal_id + ", medal=" + medal + ", user=" + user + "]";
+		return "UserMedal [user_medal_id=" + user_medal_id + ", medal=" + medal + "]";
 	}
 }

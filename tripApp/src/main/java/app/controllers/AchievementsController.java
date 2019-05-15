@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import app.dto.MedalDTO;
 import app.entities.Medal;
+import app.entities.Trip;
 import app.entities.UserEntity;
 import app.entities.UserMedal;
 import app.models.AllMedalsViewModel;
@@ -29,16 +30,19 @@ public class AchievementsController {
 	private UserUtils userUtils;
 	
 	@GetMapping("/achievements")
-	public String getAchievements(Model model, AllMedalsViewModel allMedalViewModel, Principal principal) {
-//		List<MedalDTO> medalsDTO = this.getAllMedalsDTO();
-			
+	public String getAchievements(Model model, AllMedalsViewModel allMedalViewModel, Principal principal) {			
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		allMedalViewModel.setMedalsDTO(this.getAllMedalsForUser(user));
 		model.addAttribute("allMedalViewModel", allMedalViewModel);
 		
-		for(MedalDTO medal : this.getAllMedalsForUser(user)) {
-			System.out.println(medal.toString());
-		}
+		Integer numberOfMedals = this.getNumberOfMedalsForUser(user);
+		model.addAttribute("medalsNumber", numberOfMedals);
+		
+		Integer highestAltitude = this.getHighestAltitudeForUser(user);
+		model.addAttribute("highestAltitude", highestAltitude);
+		
+		Integer numberOfFinishedTrips = this.getNumberOFAllFinishedTripsForUser(user);
+		model.addAttribute("numberOfFinishedTrips", numberOfFinishedTrips);
 		
 		return "views/all/achievementsView";
 	}
@@ -72,5 +76,35 @@ public class AchievementsController {
 			}
 		}
 		return medalsForUser;
+	}
+	
+	private Integer getNumberOfMedalsForUser(UserEntity user) {
+		Integer numberOfMedals = 0;
+		for(MedalDTO medalDTO : this.getAllMedalsForUser(user)) {
+			if(medalDTO.isOwned()) {
+				numberOfMedals++;
+			}
+		}
+		return numberOfMedals;
+	}
+	
+	private Integer getHighestAltitudeForUser(UserEntity user) {
+		Integer highestAltitude = 0;
+		for(MedalDTO medalDTO : this.getAllMedalsForUser(user)) {
+			if(medalDTO.getPeakDTO().getAltitude() > highestAltitude && medalDTO.isOwned()) {
+				highestAltitude = medalDTO.getPeakDTO().getAltitude();
+			}
+		}
+		return highestAltitude;
+	}
+	
+	private Integer getNumberOFAllFinishedTripsForUser(UserEntity user) {
+		Integer numberOfFinishedTrips = 0;
+		for(Trip trip : user.getTrips()) {
+			if(trip.getStatus().equals("Finished")) {
+				numberOfFinishedTrips++;
+			}
+		}
+		return numberOfFinishedTrips;
 	}
 }

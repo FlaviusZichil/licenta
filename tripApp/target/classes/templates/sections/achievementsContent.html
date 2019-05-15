@@ -6,6 +6,46 @@
 		  <div class="col-sm-2"></div>
 		  <div class="col-sm-8">
 		  		<div class="row">
+		  			<div class="col-md-6 col-sm-6 col-xs-2 fla">
+		  				<div class="card trip-card mt-3 mb-3">
+						  <div class="card-header bg-info">
+						    <h5 class="trip-card-title text-center color"> Informatii </h5>
+						  </div>
+						  <div class="card-body">
+						    	<div class="list-group mt-2">													  
+									  <p class="text-center list-group-item list-group-item-action list-group-item-info" >Obtine toate medaliile pentru a otine titlul de membru Staff.</p> 
+								</div>
+								<div class="list-group-item list-group-item-action list-group-item-info mt-2">													  
+									  <p>Beneficii ale membrilor Staff: </p> 
+									  <ul>
+									  		<li> Poate adauga articole. </li>
+									  		<li> Pentru fiecare ascensiune primeste cu 50% mai multe puncte HaiSus. </li>
+									  </ul>
+								</div>
+						  </div>
+						</div>
+		  			</div>
+		  			<div class="col-md-6 col-sm-6 col-xs-2 fla">
+		  				<div class="card trip-card mt-3 mb-3">
+						  <div class="card-header bg-info">
+						    <h5 class="trip-card-title text-center color"> Statistici </h5>
+						  </div>
+						  <div class="card-body">
+						    	<div class="list-group mt-1">													  
+									  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'Medalii obtinute ' + ${medalsNumber} + '/9'"></p> 
+								</div>
+								<div class="list-group mt-1">													  
+									  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'Inaltimea maxima atinsa: ' + ${highestAltitude} + 'm'"></p> 
+								</div>
+								<div class="list-group mt-1">													  
+									  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'Ascensiuni finalizate: ' + ${numberOfFinishedTrips}"></p> 
+								</div>
+						  </div>
+						</div>
+		  			</div>
+		  		</div>
+		  		<hr>
+		  		<div class="row">
 		  			<div class="col-sm-4" th:each="medalDTO : *{medalsDTO}">
 		  				<div th:if="${medalDTO.owned} == true">
 				  			<div class="card mt-3 mb-3 bg-warning text-center">
@@ -22,8 +62,9 @@
 						      <div class="card-body">
 						        <h5 class="card-title" th:text="${medalDTO.peakDTO.peakName}"></h5>
 						        <hr>
-						        <p class="card-text" th:text="${medalDTO.peakDTO.altitude} + 'm'"></p>
-						        <p class="card-text" th:text="${medalDTO.peakDTO.mountainDTO.name}"></p>
+						        <p class="card-text" th:text="${medalDTO.peakDTO.mountainDTO.name} + ', ' + ${medalDTO.peakDTO.altitude} + 'm'"></p>
+<!-- 						        <p class="card-text" th:text="${medalDTO.peakDTO.mountainDTO.name}"></p> -->
+						        <p class="btn btn-light btn-block btn-sm">Obtine medalia</p>
 						      </div>
 						    </div>
 				  		</div>

@@ -100,10 +100,6 @@ public class TripDetailsController {
 
 	private TripDTO getTripDTOById(Integer tripId) {
 		TripDTO tripDTO = null;
-
-//		Iterable<Trip> allTrips = tripRepository.findAll();
-//		List<Trip> trips = TripUtils.convertFromIterableToList(allTrips);
-
 		for (Trip trip : tripRepository.findAll()) {
 			if (trip.getId() == tripId) {
 				tripDTO = TripUtils.convertFromTripToTripDTO(trip);

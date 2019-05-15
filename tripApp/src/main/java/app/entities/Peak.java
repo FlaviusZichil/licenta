@@ -31,6 +31,9 @@ public class Peak {
 	@OneToMany(mappedBy = "peak", cascade = CascadeType.ALL)
     private List<Trip> trips;
 	
+	@OneToMany(mappedBy = "peak", cascade = CascadeType.ALL)
+    private List<Medal> medals;
+	
 	@ManyToOne
     @JoinColumn
     private City city;
@@ -71,6 +74,14 @@ public class Peak {
 
 	public void setAltitude(Integer altitude) {
 		this.altitude = altitude;
+	}
+
+	public List<Medal> getMedals() {
+		return medals;
+	}
+
+	public void setMedals(List<Medal> medals) {
+		this.medals = medals;
 	}
 
 	public List<Trip> getTrips() {

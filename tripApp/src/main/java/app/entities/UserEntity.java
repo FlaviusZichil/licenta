@@ -65,6 +65,9 @@ public class UserEntity {
     @JoinColumn(name = "promo_code_id", referencedColumnName = "promo_code_id")
     private PromoCode promoCode;
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserMedal> medals;
+	
     @OneToOne(mappedBy = "user")
     private Guide guide;
     
@@ -88,6 +91,14 @@ public class UserEntity {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public List<UserMedal> getMedals() {
+		return medals;
+	}
+
+	public void setMedals(List<UserMedal> medals) {
+		this.medals = medals;
 	}
 
 	public String getFirstName() {

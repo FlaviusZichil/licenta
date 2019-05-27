@@ -165,12 +165,6 @@ public class ArticleDetailsController {
 		selectedArticle.setTitle(title);
 		selectedArticle.setDescription(description);
 		selectedArticle.setSections(articleUtils.getArticleSectionsToAdd(sectionsTitle, sectionsContent));
-		List<ArticleComment> comments = new ArrayList<ArticleComment>();
-		selectedArticle.setComments(comments);
-		
-		if(selectedArticle.getComments().size() > 0) {
-			comments = selectedArticle.getComments();
-		}
 		
 		articleRepository.save(selectedArticle);
 		session.setAttribute("isUserAllowedToEdit", null);

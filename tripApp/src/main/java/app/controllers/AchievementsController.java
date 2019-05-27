@@ -55,6 +55,10 @@ public class AchievementsController {
 		Integer numberOfFinishedTrips = this.getNumberOFAllFinishedTripsForUser(user);
 		model.addAttribute("numberOfFinishedTrips", numberOfFinishedTrips);
 		
+		List<String> tripsWhereUserIsRegistered = this.tripsWhereUserIsRegistered(user);
+		model.addAttribute("tripsWhereUserIsRegistered", tripsWhereUserIsRegistered);
+		System.out.println(tripsWhereUserIsRegistered.toString());
+		
 		if(session.getAttribute("noAvailableTripsForThatMedal") != null) {
 			if((boolean)session.getAttribute("noAvailableTripsForThatMedal")) {
 				model.addAttribute("noAvailableTripsForThatMedal", true);
@@ -64,6 +68,16 @@ public class AchievementsController {
 		return "views/all/achievementsView";
 	}
 	
+	private List<String> tripsWhereUserIsRegistered(UserEntity user) {
+		List<String> tripsLocation = new ArrayList<>();
+		for(Trip trip : user.getTrips()) {
+			if(trip.getStatus().equals("Active")) {
+				tripsLocation.add(trip.getPeak().getPeakName());
+			}
+		}
+		return tripsLocation;
+	}
+
 	@PostMapping("/achievements")
 	public String achievementsActions(Model model, TripViewModel tripViewModel, HttpSession session, Principal principal,
 									  @RequestParam MultiValueMap<String, String> selectedMedal) {

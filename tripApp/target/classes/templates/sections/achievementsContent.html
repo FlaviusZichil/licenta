@@ -65,12 +65,14 @@
 				  			<div class="card mt-3 mb-3 text-center" style="background-color: #D3D3D3">
 						      <div class="card-body">
 						        <h5 class="card-title" th:text="${medalDTO.peakDTO.peakName}"></h5>
-<!-- 						        <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top"> -->
-<!-- 								  Tooltip on top -->
-<!-- 								</button> -->
 						        <hr>
 						        <p class="card-text" th:text="${medalDTO.peakDTO.mountainDTO.name} + ', ' + ${medalDTO.peakDTO.altitude} + 'm'"></p>
-						        <input type="submit" th:name="${medalDTO.peakDTO.id}" data-toggle="tooltip" data-placement="top" title="Sunteti inscris la o ascensiune in aceasta locatie" value="Obtine medalia" class="btn btn-light btn-block btn-sm"/>
+						        <div th:if="${#lists.contains(tripsWhereUserIsRegistered, medalDTO.peakDTO.peakName)}">
+						        	<input type="submit" th:name="${medalDTO.peakDTO.id}" data-toggle="tooltip" data-placement="top" title="Sunteti inscris la o ascensiune in aceasta locatie" value="Obtine medalia" class="btn btn-light btn-block btn-sm"/>
+						        </div>
+						        <div th:if="${!#lists.contains(tripsWhereUserIsRegistered, medalDTO.peakDTO.peakName)}">
+						        	<input type="submit" th:name="${medalDTO.peakDTO.id}" value="Obtine medalia" class="btn btn-light btn-block btn-sm"/>
+						        </div>
 						      </div>
 						    </div>
 				  		</div>

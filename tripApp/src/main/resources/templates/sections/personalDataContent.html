@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form action="#" th:action="@{/personal-data}" th:object="${personalDataViewModel}" method="POST">
+		<div class="row" id="content">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<div class="row">
+					<div class="col-md-7 col-sm-7 col-xs-2 fla">
+						<div class="card mt-2 mr-2 mb-3 w-100">
+							<div class="card-header bg-info">
+								<h6 class="text-center color"> Date personale </h6>
+							</div>
+							<div class="card-body">
+								<table class="mt-2 mr-2 ml-2 mb-2">
+									<tr>
+										<td>
+											<label for="name" class="form-control"> Nume </label>
+										</td>
+										<td class="w-100">
+											<input type="text" id="name" class="form-control" placeholder="Nume">
+										</td>
+										<td>
+											<input type="submit" class="btn btn-info" value="Modifica">
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-5 col-sm-5 col-xs-2 fla">
+						<div class="card mt-2 mr-2 mb-3 w-100">
+							<div class="card-header bg-info">
+								<h6 class="text-center color"> Parola </h6>
+							</div>
+							<div class="card-body">
+								<table class="mt-2 mr-2 mb-2">
+									<tr>
+										<td>
+											<label for="name" class="form-control"> Nume </label>
+										</td>
+										<td class="w-100">
+											<input type="text" id="name" class="form-control" placeholder="Nume">
+										</td>
+										<td>
+											<input type="submit" class="btn btn-info" value="Modifica">
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<div class="card mr-2 mb-2 w-100">
+							<div class="card-header bg-info">
+								<h6 class="text-center color"> Alte informatii </h6>
+							</div>
+							<div class="card-body">
+								<table class="mt-2 mr-2 ml-2 mb-2">
+									<tr>
+										<td>
+											<label for="name" class="sr-only"> Nume </label>
+										</td>
+										<td class="w-100">
+											<input type="text" id="name" class="form-control" placeholder="Nume">
+										</td>
+										<td>
+											<input type="submit" class="btn btn-info" value="Modifica">
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+</html>

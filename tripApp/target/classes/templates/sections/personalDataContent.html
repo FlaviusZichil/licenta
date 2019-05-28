@@ -12,16 +12,59 @@
 								<h6 class="text-center color"> Date personale </h6>
 							</div>
 							<div class="card-body">
-								<table class="mt-2 mr-2 ml-2 mb-2">
+								<table class="mt-2 mr-2 ml-2 mb-2 w-100">
 									<tr>
-										<td>
-											<label for="name" class="form-control"> Nume </label>
-										</td>
 										<td class="w-100">
-											<input type="text" id="name" class="form-control" placeholder="Nume">
+											<input type="text" id="name" class="form-control" placeholder="Nume" readonly="readonly">
 										</td>
-										<td>
-											<input type="submit" class="btn btn-info" value="Modifica">
+										<td class="w-100" align="center">
+											<p class="btn btn-info" onclick="createSaveButton('saveName', 'name', this)"> Editeaza </p>
+											<div id="saveName"></div>
+										</td>
+									</tr>
+	 								<tr>
+										<td class="w-100">
+											<input type="text" id="prename" class="form-control" placeholder="Prenume" readonly="readonly">
+										</td>
+										<td class="w-100" align="center">
+											<p class="btn btn-info" onclick="createSaveButton('savePrename', 'prename', this)"> Editeaza </p>
+											<div id="savePrename"></div>
+										</td>
+									</tr>
+									<tr>
+										<td class="w-100">
+											<input type="text" id="email" class="form-control" placeholder="Email" readonly="readonly">
+										</td>
+										<td class="w-100" align="center">
+											<p class="btn btn-info" onclick="createSaveButton('saveEmail', 'email', this)"> Editeaza </p>
+											<div id="saveEmail"></div>
+										</td>
+									</tr>
+									<tr>
+										<td class="w-100">
+											<input type="text" id="birthDate" class="form-control" placeholder="Data nasterii" readonly="readonly">
+										</td>
+										<td class="w-100" align="center">
+											<p class="btn btn-info" onclick="createSaveButton('saveBirthDate', 'birthDate', this)"> Editeaza </p>
+											<div id="saveBirthDate"></div>
+										</td>
+									</tr>
+									<tr>
+										<td class="w-100">
+											<input type="text" id="city" class="form-control" placeholder="Judet" readonly="readonly">
+										</td>
+										<td class="w-100" align="center">
+											<p class="btn btn-info" onclick="createSaveButton('saveCity', 'city', this)"> Editeaza </p>
+											<div id="saveCity"></div>
+										</td>
+									</tr>
+									<tr>
+										<td class="w-100">
+											<input type="text" id="experience" class="form-control" placeholder="Experienta" readonly="readonly">
+										</td>
+										<td class="w-100" align="center">
+											<p class="btn btn-info" onclick="createSaveButton('saveExperience', 'experience', this)"> Editeaza </p>
+											<div id="saveExperience"></div>
 										</td>
 									</tr>
 								</table>
@@ -34,16 +77,20 @@
 								<h6 class="text-center color"> Parola </h6>
 							</div>
 							<div class="card-body">
-								<table class="mt-2 mr-2 mb-2">
+								<table class="mt-2 mr-2 mb-2 w-100">
 									<tr>
-										<td>
-											<label for="name" class="form-control"> Nume </label>
-										</td>
 										<td class="w-100">
-											<input type="text" id="name" class="form-control" placeholder="Nume">
+											<input type="password" id="currentPassword" class="form-control mb-2" placeholder="Parola curenta">
 										</td>
-										<td>
-											<input type="submit" class="btn btn-info" value="Modifica">
+									</tr>
+									<tr>
+										<td class="w-100">
+											<input type="password" id="newPassword" class="form-control mb-2" placeholder="Parola noua">
+										</td>
+									</tr>
+									<tr>
+										<td class="w-100" align=center>
+											<input type="submit" class="btn btn-info btn-block" value="Schimba parola">
 										</td>
 									</tr>
 								</table>
@@ -57,13 +104,18 @@
 								<table class="mt-2 mr-2 ml-2 mb-2">
 									<tr>
 										<td>
-											<label for="name" class="sr-only"> Nume </label>
+											<label for="title"> Nume </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="name" class="form-control" placeholder="Nume">
+											<input type="text" id="title" class="form-control text-center ml-3" placeholder="Titlu" value="User" readonly="readonly">
 										</td>
+									</tr>
+									<tr>
 										<td>
-											<input type="submit" class="btn btn-info" value="Modifica">
+											<label for="joinDate"> Data inscrierii </label>
+										</td>
+										<td class="w-100">
+											<input type="text" id="joinDate" class="form-control text-center ml-3" placeholder="Data inscrierii" value="2019-05-04" readonly="readonly">
 										</td>
 									</tr>
 								</table>
@@ -75,5 +127,29 @@
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		</div>
 	</form>
+<script>
+	function createSaveButton(div, inputId, currentElement){
+		var saveButton = document.createElement("input");
+		saveButton.setAttribute("class", "btn btn-success");
+		saveButton.setAttribute("onclick", "removeAction(this)");
+		saveButton.setAttribute("type", "submit");
+		saveButton.setAttribute("value", "Salveaza");
+		
+		var parentDiv = document.getElementById(div);
+		parentDiv.appendChild(saveButton);
+		
+		removeReadOnly(inputId);
+		removeButton(currentElement);
+	}
+	
+	function removeButton(e){
+		e.parentNode.removeChild(e);	
+	}
+	
+	function removeReadOnly(inputId){
+		var input = document.getElementById(inputId);
+		input.removeAttribute("readonly");
+	}
+</script>
 </body>
 </html>

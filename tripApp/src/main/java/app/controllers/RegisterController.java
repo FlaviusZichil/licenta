@@ -1,5 +1,6 @@
 package app.controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import app.entities.City;
 import app.entities.PromoCode;
+import app.entities.Register;
 import app.entities.Role;
 import app.entities.UserEntity;
 import app.repositories.CityRepository;
+import app.repositories.RegisterRepository;
 import app.repositories.RoleRepository;
 import app.repositories.UserRepository;
+import app.utils.UserUtils;
 import app.validators.RegisterValidator;
 
 @Controller
@@ -32,6 +36,12 @@ public class RegisterController {
 	
 	@Autowired
 	private CityRepository cityRepository;
+	
+	@Autowired
+	private RegisterRepository registerRepository;
+	
+	@Autowired
+	private UserUtils userUtils;
 
 	@GetMapping("/register")
 	public String register(Model model) {
@@ -51,23 +61,27 @@ public class RegisterController {
 		model.addAttribute("allCities", this.getAllCities());
 
 		if (this.isFormValid(firstName, lastName, email, password, birthDate, model)) {
-			UserEntity user = new UserEntity(validator.formatNameProperly(firstName), validator.formatNameProperly(lastName), birthDate, email, password);
-			
+			UserEntity user = new UserEntity(validator.formatNameProperly(firstName), validator.formatNameProperly(lastName), birthDate, email, password);		
 			Role role = this.getRoleByName("ROLE_USER");
-			PromoCode promoCode = new PromoCode(this.generatePromoCode(), "Active");
-			
-			System.out.println("City: " + city);
+			PromoCode promoCode = new PromoCode(this.generatePromoCode(), "Active");		
 			City cityForUser = this.getCityByName(city);
-			System.out.println("CITY: " + cityForUser);
 			
 			user.setPromoCode(promoCode);
 			user.setRole(role);
 			user.setCity(cityForUser);
-
+			user.setPoints("25");
 			userRepository.save(user);
+			
+			addRegisterDataForUser(user.getEmail());
 			return "views/all/login";
 		}
 		return "views/all/register";
+	}
+	
+	private void addRegisterDataForUser(String email) {
+		UserEntity user = userUtils.getUserByEmail(email);
+		Register registerData = new Register(user, LocalDate.now().toString());
+		registerRepository.save(registerData);
 	}
 
 	private City getCityByName(String cityName) {

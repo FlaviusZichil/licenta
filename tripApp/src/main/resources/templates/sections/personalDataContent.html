@@ -12,10 +12,16 @@
 								<h6 class="text-center color"> Date personale </h6>
 							</div>
 							<div class="card-body">
+								<div th:if="*{userDTO.experience} == null">
+									<p class="text-center list-group-item list-group-item-action list-group-item-warning"> Campul Experienta nu este completat! </p> 
+								</div>
 								<table class="mt-2 mr-2 ml-2 mb-2 w-100">
 									<tr>
+										<td>
+											<label for="name"> Nume </label>
+										</td>
 										<td class="w-100">
-											<input type="text" id="name" class="form-control" placeholder="Nume" readonly="readonly">
+											<input type="text" id="name" class="form-control ml-1" placeholder="Nume" th:value="*{userDTO.lastName}" readonly="readonly">
 										</td>
 										<td class="w-100" align="center">
 											<p class="btn btn-info" onclick="createSaveButton('saveName', 'name', this)"> Editeaza </p>
@@ -23,8 +29,11 @@
 										</td>
 									</tr>
 	 								<tr>
+	 									<td>
+											<label for="prename"> Prenume </label>
+										</td>
 										<td class="w-100">
-											<input type="text" id="prename" class="form-control" placeholder="Prenume" readonly="readonly">
+											<input type="text" id="prename" class="form-control ml-1" placeholder="Prenume" th:value="*{userDTO.firstName}" readonly="readonly">
 										</td>
 										<td class="w-100" align="center">
 											<p class="btn btn-info" onclick="createSaveButton('savePrename', 'prename', this)"> Editeaza </p>
@@ -32,8 +41,11 @@
 										</td>
 									</tr>
 									<tr>
+										<td>
+											<label for="email"> Email </label>
+										</td>
 										<td class="w-100">
-											<input type="text" id="email" class="form-control" placeholder="Email" readonly="readonly">
+											<input type="text" id="email" class="form-control ml-1" placeholder="Email" th:value="*{userDTO.email}" readonly="readonly">
 										</td>
 										<td class="w-100" align="center">
 											<p class="btn btn-info" onclick="createSaveButton('saveEmail', 'email', this)"> Editeaza </p>
@@ -41,8 +53,11 @@
 										</td>
 									</tr>
 									<tr>
+										<td>
+											<label for="date"> Data nasterii </label>
+										</td>
 										<td class="w-100">
-											<input type="text" id="birthDate" class="form-control" placeholder="Data nasterii" readonly="readonly">
+											<input type="date" id="birthDate" class="form-control ml-1" placeholder="Data nasterii" th:value="*{userDTO.birthDate}" readonly="readonly">
 										</td>
 										<td class="w-100" align="center">
 											<p class="btn btn-info" onclick="createSaveButton('saveBirthDate', 'birthDate', this)"> Editeaza </p>
@@ -50,8 +65,11 @@
 										</td>
 									</tr>
 									<tr>
+										<td>
+											<label for="city"> Judetul </label>
+										</td>
 										<td class="w-100">
-											<input type="text" id="city" class="form-control" placeholder="Judet" readonly="readonly">
+											<input type="text" id="city" class="form-control ml-1" placeholder="Judet" th:value="*{userDTO.cityDTO.name}" readonly="readonly">
 										</td>
 										<td class="w-100" align="center">
 											<p class="btn btn-info" onclick="createSaveButton('saveCity', 'city', this)"> Editeaza </p>
@@ -59,8 +77,11 @@
 										</td>
 									</tr>
 									<tr>
+										<td>
+											<label for="experience"> Experienta </label>
+										</td>
 										<td class="w-100">
-											<input type="text" id="experience" class="form-control" placeholder="Experienta" readonly="readonly">
+											<input type="text" id="experience" class="form-control ml-1" readonly="readonly">
 										</td>
 										<td class="w-100" align="center">
 											<p class="btn btn-info" onclick="createSaveButton('saveExperience', 'experience', this)"> Editeaza </p>
@@ -104,10 +125,18 @@
 								<table class="mt-2 mr-2 ml-2 mb-2">
 									<tr>
 										<td>
-											<label for="title"> Nume </label>
+											<label for="title"> Statut </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="title" class="form-control text-center ml-3" placeholder="Titlu" value="User" readonly="readonly">
+											<div th:if="*{userDTO.roleDTO.roleName} == 'ROLE_USER'">
+												<input type="text" id="title" class="form-control text-center ml-3" placeholder="Titlu" value="Utilizator" readonly="readonly">										
+											</div>
+											<div th:if="*{userDTO.roleDTO.roleName} == 'ROLE_STAFF'">
+												<input type="text" id="title" class="form-control text-center ml-3" placeholder="Titlu" value="Staff" readonly="readonly">										
+											</div>
+											<div th:if="*{userDTO.roleDTO.roleName} == 'ROLE_GUIDE'">
+												<input type="text" id="title" class="form-control text-center ml-3" placeholder="Titlu" value="Ghid" readonly="readonly">										
+											</div>
 										</td>
 									</tr>
 									<tr>
@@ -115,7 +144,15 @@
 											<label for="joinDate"> Data inscrierii </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="joinDate" class="form-control text-center ml-3" placeholder="Data inscrierii" value="2019-05-04" readonly="readonly">
+											<input type="text" id="joinDate" class="form-control text-center ml-3" placeholder="Data inscrierii" th:value="*{userDTO.register.registerDate}" readonly="readonly">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<label for="promoCode"> Cod </label>
+										</td>
+										<td class="w-100">
+											<input type="text" id="promoCode" class="form-control text-center ml-3" th:value="*{userDTO.promoCodeDTO.value}" readonly="readonly">
 										</td>
 									</tr>
 								</table>

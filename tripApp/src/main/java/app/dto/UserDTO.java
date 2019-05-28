@@ -2,6 +2,8 @@ package app.dto;
 
 import java.util.List;
 
+import app.entities.Register;
+
 public class UserDTO {
 	
 	private Integer id;
@@ -15,11 +17,12 @@ public class UserDTO {
 	private List<TripDTO> tripsDTO;
 	private RoleDTO roleDTO;
 	private PromoCodeDTO promoCodeDTO;
+	private Register register;
 	
 	public UserDTO() {}
 	
 	public UserDTO(Integer id, String firstName, String lastName, String birthDate, String points, CityDTO cityDTO,
-			String email, String experience, List<TripDTO> tripsDTO, RoleDTO roleDTO, PromoCodeDTO promoCodeDTO) {
+			String email, String experience, List<TripDTO> tripsDTO, RoleDTO roleDTO, PromoCodeDTO promoCodeDTO, Register register) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -32,6 +35,7 @@ public class UserDTO {
 		this.tripsDTO = tripsDTO;
 		this.roleDTO = roleDTO;
 		this.promoCodeDTO = promoCodeDTO;
+		this.register = register;
 	}
 	
 	public Integer getId() {
@@ -70,6 +74,14 @@ public class UserDTO {
 	public void setCityDTO(CityDTO cityDTO) {
 		this.cityDTO = cityDTO;
 	}
+	public Register getRegister() {
+		return register;
+	}
+
+	public void setRegister(Register register) {
+		this.register = register;
+	}
+
 	public String getEmail() {
 		return email;
 	}

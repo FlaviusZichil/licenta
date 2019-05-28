@@ -32,7 +32,7 @@ public class UserUtils {
 		UserDTO userDTO = new UserDTO(user.getId(), user.getFirstName(), user.getLastName(),
 									  user.getBirthDate(), user.getPoints(), cityDTO, 
 									  user.getEmail(), user.getExperience(), getAllTripsDTOForUser(user),
-									  roleDTO, promoCodeDTO);
+									  roleDTO, promoCodeDTO, user.getRegister());
 		return userDTO;
 	}
 	

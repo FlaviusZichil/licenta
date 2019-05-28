@@ -65,6 +65,9 @@ public class UserEntity {
     @JoinColumn(name = "promo_code_id", referencedColumnName = "promo_code_id")
     private PromoCode promoCode;
 	
+	@OneToOne(mappedBy = "user")
+    private Register register;
+	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserMedal> medals;
 	
@@ -91,14 +94,6 @@ public class UserEntity {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public List<UserMedal> getMedals() {
-		return medals;
-	}
-
-	public void setMedals(List<UserMedal> medals) {
-		this.medals = medals;
 	}
 
 	public String getFirstName() {
@@ -187,6 +182,22 @@ public class UserEntity {
 
 	public void setPromoCode(PromoCode promoCode) {
 		this.promoCode = promoCode;
+	}
+
+	public Register getRegister() {
+		return register;
+	}
+
+	public void setRegister(Register register) {
+		this.register = register;
+	}
+
+	public List<UserMedal> getMedals() {
+		return medals;
+	}
+
+	public void setMedals(List<UserMedal> medals) {
+		this.medals = medals;
 	}
 
 	public Guide getGuide() {

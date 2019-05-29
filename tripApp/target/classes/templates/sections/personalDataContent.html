@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<style>
+	td { 
+    padding: 7px;
+}
+</style>
 <body class="body">
 	<form action="#" th:action="@{/personal-data}" th:object="${personalDataViewModel}" method="POST">
 		<div class="row" id="content">
@@ -15,17 +20,13 @@
 								<div th:if="*{userDTO.experience} == null">
 									<p class="text-center list-group-item list-group-item-action list-group-item-warning"> Campul Experienta nu este completat! </p> 
 								</div>
-								<table class="mt-2 mr-2 ml-2 mb-2 w-100">
+								<table class="mt-2 mr-2 ml-2 mb-2 w-95">
 									<tr>
 										<td>
 											<label for="name"> Nume </label>
 										</td>
-										<td class="w-100">
-											<input type="text" id="name" class="form-control ml-1" placeholder="Nume" th:value="*{userDTO.lastName}" readonly="readonly">
-										</td>
-										<td class="w-100" align="center">
-											<p class="btn btn-info" onclick="createSaveButton('saveName', 'name', this)"> Editeaza </p>
-											<div id="saveName"></div>
+										<td>
+											<input type="text" id="name" name="personalDataInput" class="form-control ml-1" placeholder="Nume" th:value="*{userDTO.lastName}" disabled="disabled">
 										</td>
 									</tr>
 	 								<tr>
@@ -33,11 +34,7 @@
 											<label for="prename"> Prenume </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="prename" class="form-control ml-1" placeholder="Prenume" th:value="*{userDTO.firstName}" readonly="readonly">
-										</td>
-										<td class="w-100" align="center">
-											<p class="btn btn-info" onclick="createSaveButton('savePrename', 'prename', this)"> Editeaza </p>
-											<div id="savePrename"></div>
+											<input type="text" id="prename"  name="personalDataInput" class="form-control ml-1" placeholder="Prenume" th:value="*{userDTO.firstName}" disabled="disabled">
 										</td>
 									</tr>
 									<tr>
@@ -45,11 +42,7 @@
 											<label for="email"> Email </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="email" class="form-control ml-1" placeholder="Email" th:value="*{userDTO.email}" readonly="readonly">
-										</td>
-										<td class="w-100" align="center">
-											<p class="btn btn-info" onclick="createSaveButton('saveEmail', 'email', this)"> Editeaza </p>
-											<div id="saveEmail"></div>
+											<input type="text" id="email" name="personalDataInput" class="form-control ml-1" placeholder="Email" th:value="*{userDTO.email}" disabled="disabled">
 										</td>
 									</tr>
 									<tr>
@@ -57,11 +50,7 @@
 											<label for="date"> Data nasterii </label>
 										</td>
 										<td class="w-100">
-											<input type="date" id="birthDate" class="form-control ml-1" placeholder="Data nasterii" th:value="*{userDTO.birthDate}" readonly="readonly">
-										</td>
-										<td class="w-100" align="center">
-											<p class="btn btn-info" onclick="createSaveButton('saveBirthDate', 'birthDate', this)"> Editeaza </p>
-											<div id="saveBirthDate"></div>
+											<input type="date" id="birthDate" name="personalDataInput" class="form-control ml-1" placeholder="Data nasterii" th:value="*{userDTO.birthDate}" disabled="disabled">
 										</td>
 									</tr>
 									<tr>
@@ -69,11 +58,7 @@
 											<label for="city"> Judetul </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="city" class="form-control ml-1" placeholder="Judet" th:value="*{userDTO.cityDTO.name}" readonly="readonly">
-										</td>
-										<td class="w-100" align="center">
-											<p class="btn btn-info" onclick="createSaveButton('saveCity', 'city', this)"> Editeaza </p>
-											<div id="saveCity"></div>
+											<input type="text" id="city" name="personalDataInput" class="form-control ml-1" placeholder="Judet" th:value="*{userDTO.cityDTO.name}" disabled="disabled">
 										</td>
 									</tr>
 									<tr>
@@ -81,11 +66,16 @@
 											<label for="experience"> Experienta </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="experience" class="form-control ml-1" readonly="readonly">
+											<input type="text" id="experience" name="personalDataInput" class="form-control ml-1" disabled="disabled">
 										</td>
-										<td class="w-100" align="center">
-											<p class="btn btn-info" onclick="createSaveButton('saveExperience', 'experience', this)"> Editeaza </p>
-											<div id="saveExperience"></div>
+									</tr>
+									<tr>
+										<td>
+											
+										</td>
+										<td class="w-100" align="center" colspan="2">
+											<p class="btn btn-info btn-block" onclick="enableEdit(this)"> Editeaza datele</p>
+											<div id="actions"></div>
 										</td>
 									</tr>
 								</table>
@@ -98,20 +88,31 @@
 								<h6 class="text-center color"> Parola </h6>
 							</div>
 							<div class="card-body">
+								<div th:if="${wrongCurrentPassword} == true">
+									<p class="text-center list-group-item list-group-item-action list-group-item-danger"> Parola curenta este gresita! </p> 
+								</div>
+								<div th:if="${wrongNewPassword} == true">
+									<p class="text-center list-group-item list-group-item-action list-group-item-danger"> Parola noua nu indeplineste criteriile! </p> 
+								</div>
+								<div th:if="${passwordChangedSuccessfully} == true">
+									<p class="text-center list-group-item list-group-item-action list-group-item-success"> Parola schimbata cu succes! </p> 
+								</div>
 								<table class="mt-2 mr-2 mb-2 w-100">
 									<tr>
 										<td class="w-100">
-											<input type="password" id="currentPassword" class="form-control mb-2" placeholder="Parola curenta">
+											<input type="password" id="currentPassword" name="currentPassword" class="form-control mb-2" placeholder="Parola curenta">
+											<div id="currentPasswordStrength"></div>
 										</td>
 									</tr>
 									<tr>
 										<td class="w-100">
-											<input type="password" id="newPassword" class="form-control mb-2" placeholder="Parola noua">
+											<input type="password" id="newPassword" name="newPassword" class="form-control mb-2" placeholder="Parola noua">
+											<div id="newPasswordStrength"></div>
 										</td>
 									</tr>
 									<tr>
 										<td class="w-100" align=center>
-											<input type="submit" class="btn btn-info btn-block" value="Schimba parola">
+											<input type="submit" name="submit" class="btn btn-info btn-block" value="Schimba parola">
 										</td>
 									</tr>
 								</table>
@@ -165,28 +166,74 @@
 		</div>
 	</form>
 <script>
-	function createSaveButton(div, inputId, currentElement){
+	function createSaveAndCancelButtons(){
 		var saveButton = document.createElement("input");
-		saveButton.setAttribute("class", "btn btn-success");
-		saveButton.setAttribute("onclick", "removeAction(this)");
+		saveButton.setAttribute("class", "btn btn-success btn-block");
 		saveButton.setAttribute("type", "submit");
 		saveButton.setAttribute("value", "Salveaza");
+		saveButton.setAttribute("name", "submit");
 		
-		var parentDiv = document.getElementById(div);
+		var cancelButton = document.createElement("input");
+		cancelButton.setAttribute("class", "btn btn-danger btn-block");
+		cancelButton.setAttribute("onclick", "removeButtons()");
+		cancelButton.setAttribute("type", "submit");
+		cancelButton.setAttribute("value", "Anuleaza");
+		cancelButton.setAttribute("name", "submit");
+		
+		var parentDiv = document.getElementById("actions");
 		parentDiv.appendChild(saveButton);
-		
-		removeReadOnly(inputId);
-		removeButton(currentElement);
+		parentDiv.appendChild(cancelButton);
 	}
 	
-	function removeButton(e){
-		e.parentNode.removeChild(e);	
+	function enableEdit(e){
+		var inputs = document.getElementsByName("personalDataInput");
+		for(var i = 0; i < inputs.length; i++){
+			inputs[i].removeAttribute("disabled");
+		}
+		e.parentNode.removeChild(e);
+		createSaveAndCancelButtons()
 	}
 	
-	function removeReadOnly(inputId){
+	function removeButtons(){
+		var parentDiv = document.getElementById("actions");
+		while (parentDiv.firstChild) {
+		    myNode.removeChild(parentDiv.firstChild);
+		}
+	}
+	
+	function removeDisabled(inputId){
 		var input = document.getElementById(inputId);
-		input.removeAttribute("readonly");
+		input.removeAttribute("disabled");
 	}
+</script>
+
+<script>
+
+function passwordStrength(inputId, statusId) {
+	    $('#' + inputId).keyup(function() {
+	    	if($('#' + inputId).val().length >= 0 && $('#' + inputId).val().length <= 5){
+	        	$('#' + statusId).addClass('list-group-item list-group-item-action list-group-item-danger');
+	        }
+	    	if($('#' + inputId).val().length >= 6 && $('#' + inputId).val().length <= 9){
+	        	$('#' + statusId).removeClass('list-group-item list-group-item-action list-group-item-danger');
+	        	$('#' + statusId).addClass('list-group-item list-group-item-action list-group-item-warning');
+	        }
+	    	if($('#' + inputId).val().length >= 10 ){
+	        	$('#' + statusId).removeClass('list-group-item list-group-item-action list-group-item-warning');
+	        	$('#' + statusId).addClass('list-group-item list-group-item-action list-group-item-success');
+	        }
+	    	if($('#' + inputId).val().length == 0 ){
+	        	$('#' + statusId).removeClass('list-group-item list-group-item-action list-group-item-danger');
+	        }
+	    });
+	}
+
+$(document).ready(function(){
+	passwordStrength('currentPassword', 'currentPasswordStrength');
+	passwordStrength('newPassword', 'newPasswordStrength');
+	} 
+);
+
 </script>
 </body>
 </html>

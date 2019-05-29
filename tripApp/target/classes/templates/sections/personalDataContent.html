@@ -58,7 +58,12 @@
 											<label for="city"> Judetul </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="city" name="personalDataInput" class="form-control ml-1" placeholder="Judet" th:value="*{userDTO.cityDTO.name}" disabled="disabled">
+											<div class="form-group">                   
+											    <select class="form-control ml-1" id="city" name="personalDataInput" disabled="disabled">
+											    	<option class="form-control" th:text="*{userDTO.cityDTO.name}" th:value="*{userDTO.cityDTO.name}">
+													<option class="form-control" th:each="city : ${allCities}" th:text="${city}" th:value="${city}"/>
+												</select>
+							                </div>
 										</td>
 									</tr>
 									<tr>
@@ -66,7 +71,35 @@
 											<label for="experience"> Experienta </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="experience" name="personalDataInput" class="form-control ml-1" disabled="disabled">
+											<div class="form-group" th:if="*{userDTO.experience} == null">                   
+											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
+													<option class="form-control" value="Empty">  </option>
+													<option class="form-control" value="Incepator"> Incepator </option>
+													<option class="form-control" value="Mediu"> Mediu </option>
+													<option class="form-control" value="Avansat"> Avansat </option>
+												</select>
+							                </div>
+							                <div class="form-group" th:if="*{userDTO.experience} == 'Incepator'">                   
+											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
+													<option class="form-control" value="Incepator" selected> Incepator </option>
+													<option class="form-control" value="Mediu"> Mediu </option>
+													<option class="form-control" value="Avansat"> Avansat </option>
+												</select>
+							                </div>
+							                <div class="form-group" th:if="*{userDTO.experience} == 'Mediu'">                   
+											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
+													<option class="form-control" value="Incepator"> Incepator </option>
+													<option class="form-control" value="Mediu" selected> Mediu </option>
+													<option class="form-control" value="Avansat"> Avansat </option>
+												</select>
+							                </div>
+							                <div class="form-group" th:if="*{userDTO.experience} == 'Avansat'">                   
+											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
+													<option class="form-control" value="Incepator"> Incepator </option>
+													<option class="form-control" value="Mediu"> Mediu </option>
+													<option class="form-control" value="Avansat" selected> Avansat </option>
+												</select>
+							                </div>
 										</td>
 									</tr>
 									<tr>

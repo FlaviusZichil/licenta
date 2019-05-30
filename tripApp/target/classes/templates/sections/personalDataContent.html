@@ -17,8 +17,8 @@
 								<h6 class="text-center color"> Date personale </h6>
 							</div>
 							<div class="card-body">
-								<div th:if="*{userDTO.experience} == null">
-									<p class="text-center list-group-item list-group-item-action list-group-item-warning"> Campul Experienta nu este completat! </p> 
+								<div th:if="*{userDTO.experience} == 'Empty' or *{userDTO.experience} == null">
+									<p class="text-center list-group-item list-group-item-action list-group-item-warning mb-1"> Campul Experienta nu este completat! </p> 
 								</div>
 								<table class="mt-2 mr-2 ml-2 mb-2 w-95">
 									<tr>
@@ -26,6 +26,9 @@
 											<label for="name"> Nume </label>
 										</td>
 										<td>
+											<div th:if="${wrongLastName} == true">
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Numele nu respecta conditiile! </p> 
+											</div>
 											<input type="text" id="name" name="personalDataInput" class="form-control ml-1" placeholder="Nume" th:value="*{userDTO.lastName}" disabled="disabled">
 										</td>
 									</tr>
@@ -34,6 +37,9 @@
 											<label for="prename"> Prenume </label>
 										</td>
 										<td class="w-100">
+											<div th:if="${wrongFirstName} == true">
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Prenumele nu respecta conditiile! </p> 
+											</div>
 											<input type="text" id="prename"  name="personalDataInput" class="form-control ml-1" placeholder="Prenume" th:value="*{userDTO.firstName}" disabled="disabled">
 										</td>
 									</tr>
@@ -42,6 +48,9 @@
 											<label for="email"> Email </label>
 										</td>
 										<td class="w-100">
+											<div th:if="${wrongEmail} == true">
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Email-ul nu respecta conditiile! </p> 
+											</div>
 											<input type="text" id="email" name="personalDataInput" class="form-control ml-1" placeholder="Email" th:value="*{userDTO.email}" disabled="disabled">
 										</td>
 									</tr>
@@ -50,6 +59,9 @@
 											<label for="date"> Data nasterii </label>
 										</td>
 										<td class="w-100">
+											<div th:if="${wrongEmail} == true">
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Varsta minima este de 16 ani! </p> 
+											</div>
 											<input type="date" id="birthDate" name="personalDataInput" class="form-control ml-1" placeholder="Data nasterii" th:value="*{userDTO.birthDate}" disabled="disabled">
 										</td>
 									</tr>
@@ -71,7 +83,7 @@
 											<label for="experience"> Experienta </label>
 										</td>
 										<td class="w-100">
-											<div class="form-group" th:if="*{userDTO.experience} == null">                   
+											<div class="form-group" th:if="*{userDTO.experience} == 'Empty' or *{userDTO.experience} == null">                   
 											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
 													<option class="form-control" value="Empty">  </option>
 													<option class="form-control" value="Incepator"> Incepator </option>

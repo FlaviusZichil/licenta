@@ -2,6 +2,7 @@ package app.controllers;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class PersonalDataController {
 				break;
 			}
 			case "Salveaza":{
+				savePersonalData(personalDataInput, user, model);
 				loadPersonalDataPage(principal, model, personalDataViewModel);
 				break;
 			}
@@ -100,5 +102,71 @@ public class PersonalDataController {
 			return false;
 		}
 		return true;
+	}
+	
+	private void savePersonalData(String personalDataInput, UserEntity user, Model model) {
+		List<String> personalDates = new ArrayList<>(Arrays.asList(personalDataInput.split(",")));
+		verifyPersonalData(personalDates, user, model);
+		user.setCity(getCityByName(personalDates.get(4)));
+		userRepository.save(user);
+	}
+	
+	private City getCityByName(String cityName) {
+		for(City city : cityRepository.findAll()) {
+			if(city.getName().equals(cityName)) {
+				return city;
+			}
+		}
+		return null;
+	}
+	
+	private void verifyPersonalData(List<String> personalDates, UserEntity user, Model model) {		
+		verifyFirstName(model, personalDates, user);
+		verifyLastName(model, personalDates, user);
+		verifyEmail(model, personalDates, user);
+		verifyBirthDate(model, personalDates, user);
+		verifyExperience(model, personalDates, user);
+	}
+	
+	private void verifyLastName(Model model, List<String> personalDates, UserEntity user) {
+		if(RegisterValidator.isNameValid(personalDates.get(0))) {
+			user.setLastName(RegisterValidator.formatNameProperly(personalDates.get(0)));
+		}
+		else {
+			model.addAttribute("wrongLastName", true);
+		}
+	}
+	
+	private void verifyFirstName(Model model, List<String> personalDates, UserEntity user) {
+		if(RegisterValidator.isNameValid(personalDates.get(1))) {
+			user.setFirstName(RegisterValidator.formatNameProperly(personalDates.get(1)));
+		}
+		else {
+			model.addAttribute("wrongFirstName", true);
+		}
+	}
+	
+	private void verifyEmail(Model model, List<String> personalDates, UserEntity user) {
+		if(RegisterValidator.isEmailValid(personalDates.get(2))) {
+			user.setEmail(personalDates.get(2));
+		}
+		else {
+			model.addAttribute("wrongEmail", true);
+		}
+	}
+	
+	private void verifyBirthDate(Model model, List<String> personalDates, UserEntity user) {
+		if(RegisterValidator.isDateValid(personalDates.get(3))) {
+			user.setBirthDate(personalDates.get(3));
+		}
+		else {
+			model.addAttribute("wrongBirthDate", true);
+		}
+	}
+	
+	private void verifyExperience(Model model, List<String> personalDates, UserEntity user) {
+		if(personalDates.size() > 5) {
+			user.setExperience(personalDates.get(5));
+		}
 	}
 }

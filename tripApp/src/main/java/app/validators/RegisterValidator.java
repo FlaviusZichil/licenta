@@ -3,6 +3,8 @@ package app.validators;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import antlr.StringUtils;
+
 public class RegisterValidator {
 		
 	public static boolean isNameValid(String name) {
@@ -35,15 +37,18 @@ public class RegisterValidator {
 	}
 	
 	public static String formatNameProperly(String name) {
-		String allLowerCase = name.toLowerCase();
-		// transform first letter to upper case 
-		allLowerCase = allLowerCase.replace(allLowerCase.charAt(0), Character.toUpperCase(allLowerCase.charAt(0)));
-		for(int i = 0; i < allLowerCase.length() - 1; i++) {
-			if(allLowerCase.charAt(i) == ' ' || allLowerCase.charAt(i) == '-') {
-				allLowerCase = allLowerCase.replace(allLowerCase.charAt(i + 1), Character.toUpperCase(allLowerCase.charAt(i + 1)));
-			}
-		}
-		return allLowerCase.trim();
+//		String allLowerCase = name.toLowerCase();
+//		// transform first letter to upper case 
+//		allLowerCase = allLowerCase.replace(allLowerCase.charAt(0), Character.toUpperCase(allLowerCase.charAt(0)));
+//		for(int i = 0; i < allLowerCase.length() - 1; i++) {
+//			if(allLowerCase.charAt(i) == ' ' || allLowerCase.charAt(i) == '-') {
+//				allLowerCase = allLowerCase.replace(allLowerCase.charAt(i + 1), Character.toUpperCase(allLowerCase.charAt(i + 1)));
+//			}
+//		}
+//		return allLowerCase.trim();
+		String formatedName = name.toLowerCase().trim();
+		formatedName = formatedName.substring(0,1).toUpperCase() + formatedName.substring(1).toLowerCase();
+		return formatedName;
 	}
 	
 	private static boolean containsCapitalLetter(String text) {

@@ -59,7 +59,7 @@
 											<label for="date"> Data nasterii </label>
 										</td>
 										<td class="w-100">
-											<div th:if="${wrongEmail} == true">
+											<div th:if="${wrongBirthDate} == true">
 												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Varsta minima este de 16 ani! </p> 
 											</div>
 											<input type="date" id="birthDate" name="personalDataInput" class="form-control ml-1" placeholder="Data nasterii" th:value="*{userDTO.birthDate}" disabled="disabled">

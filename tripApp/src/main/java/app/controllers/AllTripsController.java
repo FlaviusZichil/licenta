@@ -26,6 +26,7 @@ import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
+import app.utils.Conversion;
 import app.utils.TripUtils;
 import app.utils.UserUtils;
 
@@ -37,6 +38,9 @@ public class AllTripsController {
 	
 	@Autowired
 	private UserUtils userUtils;
+	
+	@Autowired
+	private Conversion conversion;
 
 	@SessionScope
 	@GetMapping("/all-trips")
@@ -136,7 +140,7 @@ public class AllTripsController {
 
 		for (Trip trip : allTrips) {
 			if (trip.getStatus().equals("Active") && !currentUserTrips.contains(trip)) {				
-				TripDTO tripDTO = TripUtils.convertFromTripToTripDTO(trip);
+				TripDTO tripDTO = conversion.convertFromTripToTripDTO(trip);
 				currentUserTripsDTO.add(tripDTO);
 			}
 		}

@@ -41,6 +41,7 @@ import app.repositories.RoutePointRepository;
 import app.repositories.RouteRepository;
 import app.repositories.TripRepository;
 import app.repositories.UserRepository;
+import app.utils.Conversion;
 import app.utils.TripUtils;
 
 @Controller
@@ -72,6 +73,9 @@ public class AddTripController {
 	
 	@Autowired
 	private RoutePointRepository routePointRepository;
+	
+	@Autowired
+	private Conversion conversion;
 	
 	@GetMapping("/add-trip")
 	public String addTrip(Model model, AddTripViewModel addTripViewModel) {
@@ -195,7 +199,7 @@ public class AddTripController {
 		List<PeakDTO> peaksDTO = new ArrayList<>();
 		
 		for(Peak peak : peakRepository.findAll()) {
-			PeakDTO peakDTO = TripUtils.convertFromPeakToPeakDTO(peak);
+			PeakDTO peakDTO = conversion.convertFromPeakToPeakDTO(peak);
 			peaksDTO.add(peakDTO);
 		}		
 		return peaksDTO;

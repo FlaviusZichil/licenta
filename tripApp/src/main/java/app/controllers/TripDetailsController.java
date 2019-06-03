@@ -19,6 +19,7 @@ import app.entities.UserEntity;
 import app.models.TripDetailsViewModel;
 import app.repositories.TripRepository;
 import app.repositories.UserRepository;
+import app.utils.Conversion;
 import app.utils.TripUtils;
 import app.utils.UserUtils;
 
@@ -34,6 +35,9 @@ public class TripDetailsController {
 	@Autowired
 	private UserUtils userUtils;
 
+	@Autowired
+	private Conversion conversion;
+	
 	@SessionScope
 	@GetMapping("/trip-details")
 	public String getTripDetails(Model model, Principal principal, TripDetailsViewModel tripDetailsViewModel,
@@ -102,7 +106,7 @@ public class TripDetailsController {
 		TripDTO tripDTO = null;
 		for (Trip trip : tripRepository.findAll()) {
 			if (trip.getId() == tripId) {
-				tripDTO = TripUtils.convertFromTripToTripDTO(trip);
+				tripDTO = conversion.convertFromTripToTripDTO(trip);
 			}
 		}
 		return tripDTO;

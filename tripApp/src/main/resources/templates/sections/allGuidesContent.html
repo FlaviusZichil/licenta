@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+	td { 
+    padding: 7px;
+}
+</style>
+<body class="body">
+	<form action="#" name="guidesForm" th:action="@{/guides}" th:object="${allGuidesViewModel}" method="POST">
+		<div class="row" id="content">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<div th:if="${noActiveTripForguide} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> In acest moment nu exista ascesiuni propuse de acest ghid.</p> 									
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-sm-6 col-xs-2 fla"  th:each="guideDTO : *{guidesDTO}">
+						<div class="card mt-2 w-100">
+							<div class="card-header text-center bg-info color">
+								<h5 th:text="${guideDTO.user.lastName} + ' ' + ${guideDTO.user.firstName}"></h5>
+							</div>
+							<div class="card-body">
+								<table class="w-100 table-striped">
+									<tr>
+										<td class="w-50">
+											<h6> Data nasterii: </h6>
+										</td>
+										<td>
+											<h6 th:text="${guideDTO.user.birthDate}"></h6>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h6> Experienta: </h6>
+										</td>
+										<td>
+											<h6 th:text="${guideDTO.yearsOfExperience} + ' ani'"></h6>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h6> Ascensiuni finalizate: </h6>
+										</td>
+										<td>
+											<h6 th:text="${guideDTO.finishedTrips}"></h6>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h6> Email: </h6>
+										</td>
+										<td>
+											<h6 th:text="${guideDTO.user.email}"></h6>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h6> Telefon: </h6>
+										</td>
+										<td>
+											<h6 th:text="${guideDTO.phoneNumber}"></h6>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<h6> Prezentare: </h6>
+										</td>
+										<td>
+											<h6 class="text-justify" th:text="${guideDTO.description}"></h6>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="card-footer ml-35">
+								<input type="submit" class="btn btn-info" th:name="${guideDTO.guideId}" value="Vezi ascensiuni disponibile">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>			
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+</html>

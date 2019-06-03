@@ -25,6 +25,7 @@ import app.models.AllMedalsViewModel;
 import app.models.TripViewModel;
 import app.repositories.MedalRepository;
 import app.repositories.TripRepository;
+import app.utils.Conversion;
 import app.utils.TripUtils;
 import app.utils.UserUtils;
 
@@ -39,6 +40,9 @@ public class AchievementsController {
 	
 	@Autowired
 	private UserUtils userUtils;
+	
+	@Autowired
+	private Conversion conversion;
 	
 	@GetMapping("/achievements")
 	public String getAchievements(Model model, AllMedalsViewModel allMedalViewModel, Principal principal, HttpSession session) {			
@@ -89,7 +93,7 @@ public class AchievementsController {
 					List<TripDTO> tripsDTOForUser = new ArrayList<>();
 					for(Trip trip : tripRepository.findAll()) {
 						if(trip.getPeak().getId() == Integer.parseInt(entry.getKey()) && !this.isUserRegisteredForTrip(user, trip)) {
-							tripsDTOForUser.add(TripUtils.convertFromTripToTripDTO(trip));
+							tripsDTOForUser.add(conversion.convertFromTripToTripDTO(trip));
 						}
 					}
 					if(tripsDTOForUser.size() == 0) {
@@ -102,7 +106,6 @@ public class AchievementsController {
 				}
 			}
 		}
-		System.out.println("a intrat aici3");
 		return "views/all/achievementsView";
 	}
 	
@@ -124,7 +127,7 @@ public class AchievementsController {
 	}
 
 	private MedalDTO convertFromMedalToMedalDTO(Medal medal) {
-		MedalDTO medalDTO = new MedalDTO(medal.getMedal_id(), TripUtils.convertFromPeakToPeakDTO(medal.getPeak()));
+		MedalDTO medalDTO = new MedalDTO(medal.getMedal_id(), conversion.convertFromPeakToPeakDTO(medal.getPeak()));
 		return medalDTO;
 	}
 	

@@ -15,6 +15,15 @@ import app.documents.ArticleLike;
 import app.dto.ArticleCommentDTO;
 import app.dto.ArticleDTO;
 import app.dto.ArticleLikeDTO;
+import app.dto.CityDTO;
+import app.dto.GuideDTO;
+import app.dto.MountainDTO;
+import app.dto.PeakDTO;
+import app.dto.RouteDTO;
+import app.dto.TripDTO;
+import app.entities.Guide;
+import app.entities.Peak;
+import app.entities.Trip;
 
 @Component
 public class Conversion {
@@ -56,5 +65,28 @@ public class Conversion {
 	public ArticleLikeDTO convertFromArticleLikeToArticleLikeDTO(ArticleLike like) {
 		ArticleLikeDTO articleLikeDTO = new ArticleLikeDTO(userUtils.getUserById(like.getUserId()), articleUtils.getArticleById(like.getArticleId()));
 		return articleLikeDTO;
+	}
+	
+	public GuideDTO convertFromGuideToGuideDTO(Guide guide) {
+		GuideDTO guideDTO = new GuideDTO(guide.getId(), guide.getUser(), guide.getYearsOfExperience(), guide.getPhoneNumber(), guide.getDescription());
+		return guideDTO;
+	}
+	
+	public TripDTO convertFromTripToTripDTO(Trip trip) {
+		PeakDTO peakDTO = convertFromPeakToPeakDTO(trip.getPeak());
+		GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber(), trip.getGuide().getDescription());
+		RouteDTO routeDTO = new RouteDTO(trip.getRoute().getId(), trip.getRoute().getDifficulty(), TripUtils.getRoutePointsDTOForTrip(trip));
+		
+		TripDTO tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
+									  trip.getUsers(), routeDTO, peakDTO, guideDTO);
+		return tripDTO;
+	}
+	
+	public PeakDTO convertFromPeakToPeakDTO(Peak peak) {
+		CityDTO cityDTO = new CityDTO(peak.getCity().getName(), peak.getCity().getLatitude(), peak.getCity().getLongitude());
+		MountainDTO mountainDTO = new MountainDTO(peak.getMountain().getMountainName());
+		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), cityDTO, mountainDTO, peak.getTrips());
+		
+		return peakDTO;
 	}
 }

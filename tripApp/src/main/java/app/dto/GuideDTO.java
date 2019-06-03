@@ -7,14 +7,17 @@ public class GuideDTO {
 	private Integer guideId;
 	private Integer yearsOfExperience;
 	private String phoneNumber;
+	private String description;
+	private Integer finishedTrips;
 	private UserEntity user;
 
-	public GuideDTO(Integer guideId, UserEntity user, Integer yearsOfExperience, String phoneNumber) {
+	public GuideDTO(Integer guideId, UserEntity user, Integer yearsOfExperience, String phoneNumber, String description) {
 		super();
 		this.guideId = guideId;
 		this.yearsOfExperience = yearsOfExperience;
 		this.phoneNumber = phoneNumber;
 		this.user = user;
+		this.description = description;
 	}
 
 	public Integer getGuideId() {
@@ -27,6 +30,14 @@ public class GuideDTO {
 
 	public UserEntity getUser() {
 		return user;
+	}
+
+	public Integer getFinishedTrips() {
+		return finishedTrips;
+	}
+
+	public void setFinishedTrips(Integer finishedTrips) {
+		this.finishedTrips = finishedTrips;
 	}
 
 	public void setUser(UserEntity user) {
@@ -43,6 +54,14 @@ public class GuideDTO {
 
 	public String getPhoneNumber() {
 		return phoneNumber;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {

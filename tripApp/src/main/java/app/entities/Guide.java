@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -31,6 +32,10 @@ public class Guide {
 
 	@Column(name = "phone_number")
 	private String phoneNumber;
+	
+	@Lob
+	@Column(name = "description")
+	private String description;
 
 	@OneToMany(mappedBy = "guide", cascade = CascadeType.ALL)
 	private List<Trip> trips;
@@ -69,6 +74,14 @@ public class Guide {
 
 	public List<Trip> getTrips() {
 		return trips;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setTrips(List<Trip> trips) {

@@ -2,6 +2,9 @@ package app.validators;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import antlr.StringUtils;
 
@@ -36,18 +39,31 @@ public class RegisterValidator {
 		return true;
 	}
 	
-	public static String formatNameProperly(String name) {
-//		String allLowerCase = name.toLowerCase();
-//		// transform first letter to upper case 
-//		allLowerCase = allLowerCase.replace(allLowerCase.charAt(0), Character.toUpperCase(allLowerCase.charAt(0)));
-//		for(int i = 0; i < allLowerCase.length() - 1; i++) {
-//			if(allLowerCase.charAt(i) == ' ' || allLowerCase.charAt(i) == '-') {
-//				allLowerCase = allLowerCase.replace(allLowerCase.charAt(i + 1), Character.toUpperCase(allLowerCase.charAt(i + 1)));
-//			}
-//		}
-//		return allLowerCase.trim();
+	public static String formatNameProperly(String name) {		
+		String formatedName = formatName(name);
+		String extraFormatedName = verify(formatedName, "-");
+		String finalName = verify(extraFormatedName, " ");
+		
+		return finalName;
+	}
+	
+	private static String formatName(String name) {
 		String formatedName = name.toLowerCase().trim();
-		formatedName = formatedName.substring(0,1).toUpperCase() + formatedName.substring(1).toLowerCase();
+		formatedName = formatedName.substring(0, 1).toUpperCase() + formatedName.substring(1).toLowerCase();
+		return formatedName;
+	}
+	
+	private static String verify(String formatedName, String element) {
+		if(formatedName.contains(element)) {
+			List<String> names = new ArrayList<>(Arrays.asList(formatedName.split(element)));
+			String newName = "";
+			
+			for(String nameObject : names) {
+				newName += formatName(nameObject);
+				newName += " ";
+			}
+			formatedName = newName.trim();
+		}
 		return formatedName;
 	}
 	

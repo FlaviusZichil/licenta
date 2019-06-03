@@ -21,6 +21,9 @@ public class UserUtils {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private Conversion conversion;
+	
 	public UserDTO convertFromUserToUserDTO(UserEntity user) {
 		CityDTO cityDTO = new CityDTO(user.getCity().getName(), 
 									  user.getCity().getLatitude(),
@@ -41,7 +44,7 @@ public class UserUtils {
 		List<TripDTO> currentUserTripsDTO = new ArrayList<TripDTO>();
 		
 		for(Trip trip : currentUserTrips) {
-			TripDTO tripDTO = TripUtils.convertFromTripToTripDTO(trip);
+			TripDTO tripDTO = conversion.convertFromTripToTripDTO(trip);
 			currentUserTripsDTO.add(tripDTO);
 		}
 		return currentUserTripsDTO;

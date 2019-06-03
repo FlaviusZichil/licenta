@@ -18,6 +18,7 @@ import app.dto.TripDTO;
 import app.entities.Trip;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
+import app.utils.Conversion;
 import app.utils.TripUtils;
 import app.utils.api.WeatherApi;
 
@@ -26,6 +27,9 @@ public class IndexController {
 	
 	@Autowired
 	private TripRepository tripRepository;
+	
+	@Autowired
+	private Conversion conversion;
 	
 	@GetMapping("/")
 	public String getIndexPage(Model model, TripViewModel tripViewModel, HttpSession session) throws UnknownHostException {
@@ -67,7 +71,7 @@ public class IndexController {
 		
 		for(Trip trip : tripRepository.findAll()) {
 			if(trip.getStatus().equals("Active")) {			
-				TripDTO tripDTO = TripUtils.convertFromTripToTripDTO(trip);
+				TripDTO tripDTO = conversion.convertFromTripToTripDTO(trip);
 				top4TripsDTO.add(tripDTO);			
 			}
 			if(top4TripsDTO.size() == 4) {

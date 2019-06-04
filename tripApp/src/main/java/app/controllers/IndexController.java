@@ -1,6 +1,7 @@
 package app.controllers;
 
 import java.net.UnknownHostException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import app.dto.TripDTO;
 import app.entities.Trip;
+import app.entities.UserEntity;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
 import app.utils.Conversion;
 import app.utils.TripUtils;
+import app.utils.UserUtils;
 import app.utils.api.WeatherApi;
 
 @Controller
@@ -31,8 +34,11 @@ public class IndexController {
 	@Autowired
 	private Conversion conversion;
 	
+	@Autowired
+	private UserUtils userUtils;
+	
 	@GetMapping("/")
-	public String getIndexPage(Model model, TripViewModel tripViewModel, HttpSession session) throws UnknownHostException {
+	public String getIndexPage(Model model, TripViewModel tripViewModel, HttpSession session, Principal principal) throws UnknownHostException {
 		// loads the 4 active trips for guest main page
 		if(this.getTop4TripsDTO().size() > 0) {
 			tripViewModel.setTripsDTO(this.getTop4TripsDTO());
@@ -43,14 +49,21 @@ public class IndexController {
 		
 		// loads article (to do)
 			
-		Map<String, String> weatherData = WeatherApi.getWeatherData();
-		model.addAttribute("temperature", weatherData.get("temperature"));
-		model.addAttribute("humidity", weatherData.get("humidity"));
-		model.addAttribute("pressure", weatherData.get("pressure"));
-		model.addAttribute("windSpeed", weatherData.get("windSpeed"));
-		model.addAttribute("weather", weatherData.get("weather"));
-		model.addAttribute("clouds", weatherData.get("clouds"));
+//		Map<String, String> weatherData = WeatherApi.getWeatherData();
+//		model.addAttribute("temperature", weatherData.get("temperature"));
+//		model.addAttribute("humidity", weatherData.get("humidity"));
+//		model.addAttribute("pressure", weatherData.get("pressure"));
+//		model.addAttribute("windSpeed", weatherData.get("windSpeed"));
+//		model.addAttribute("weather", weatherData.get("weather"));
+//		model.addAttribute("clouds", weatherData.get("clouds"));
+		
+		if(principal != null) {
+			UserEntity user = userUtils.getUserByEmail(principal.getName());
 
+			if(user.getRole().getName().equals("ROLE_GUIDE") && TripUtils.getNumberOfFinishedTripsWithActiveStatusForGuide(user.getGuide()) > 0) {
+				model.addAttribute("guideHasUnfinishedTrips", true);
+			}
+		}
 		return "views/all/index.html";
 	}
 	

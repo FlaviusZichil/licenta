@@ -42,13 +42,18 @@
 							<div th:if="*{tripDTO.capacity} > 0">
 								<div th:if="${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
 									<input type="submit" name="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
+									<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
 								</div>
 							</div>
-							<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
 						</div>
-						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == true">
+						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == true and ${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
 							<input type="submit" name="submit" class="btn btn-danger" value="Elimina ascensiunea">
 							<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
+						</div>
+						<div th:if="${#request.isUserInRole('ROLE_GUIDE')}">
+							<input type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
+							<input type="submit" name="submit" class="btn btn-info" value="Notifica utilizatorii"/>
+							<input type="submit" name="submit" class="btn btn-success" value="Finalizeaza ascensiunea"/>
 						</div>
 		 			</div>
 				  </div>

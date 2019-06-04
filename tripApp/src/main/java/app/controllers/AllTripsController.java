@@ -51,6 +51,14 @@ public class AllTripsController {
 			tripViewModel.setTripsDTO(this.getAllTripsDTOAvailableForUser(principal));
 			model.addAttribute("tripViewModel", tripViewModel);
 		}
+		
+		if(principal != null) {
+			UserEntity user = userUtils.getUserByEmail(principal.getName());
+
+			if(user.getRole().getName().equals("ROLE_GUIDE") && TripUtils.getNumberOfFinishedTripsWithActiveStatusForGuide(user.getGuide()) > 0) {
+				model.addAttribute("guideHasUnfinishedTrips", true);
+			}
+		}
 		return "views/all/allTrips";
 	}
 

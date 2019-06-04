@@ -43,6 +43,7 @@ import app.repositories.TripRepository;
 import app.repositories.UserRepository;
 import app.utils.Conversion;
 import app.utils.TripUtils;
+import app.utils.UserUtils;
 
 @Controller
 public class AddTripController {
@@ -77,8 +78,11 @@ public class AddTripController {
 	@Autowired
 	private Conversion conversion;
 	
+	@Autowired
+	private UserUtils userUtils;
+	
 	@GetMapping("/add-trip")
-	public String addTrip(Model model, AddTripViewModel addTripViewModel) {
+	public String addTrip(Model model, AddTripViewModel addTripViewModel, Principal principal) {
 		
 		addTripViewModel.setPeaksDTO(this.getPeaksDTO());
 		addTripViewModel.setMountainsDTO(this.getMountainsDTO());
@@ -86,6 +90,14 @@ public class AddTripController {
 		addTripViewModel.setPointsDTO(this.getPointsDTO());
 		model.addAttribute("pointsDTO", this.getPointsDTO());
 		model.addAttribute("addTripViewModel", addTripViewModel);
+		
+		if(principal != null) {
+			UserEntity user = userUtils.getUserByEmail(principal.getName());
+
+			if(user.getRole().getName().equals("ROLE_GUIDE") && TripUtils.getNumberOfFinishedTripsWithActiveStatusForGuide(user.getGuide()) > 0) {
+				model.addAttribute("guideHasUnfinishedTrips", true);
+			}
+		}
 		
 		return "views/guide/guideAddTrip";
 	}

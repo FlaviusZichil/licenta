@@ -1,5 +1,6 @@
 package app.utils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,6 +14,7 @@ import app.dto.PointDTO;
 import app.dto.RouteDTO;
 import app.dto.RoutePointDTO;
 import app.dto.TripDTO;
+import app.entities.Guide;
 import app.entities.Peak;
 import app.entities.Route;
 import app.entities.RoutePoint;
@@ -50,5 +52,17 @@ public class TripUtils {
 			 });
 		
 		return routePointsDTO;
+	}
+	
+	public static Integer getNumberOfFinishedTripsWithActiveStatusForGuide(Guide guide) {
+		Integer number = 0;
+		for(Trip trip : guide.getTrips()) {
+			LocalDate endDate = LocalDate.parse(trip.getEndDate());
+			if(endDate.isEqual(LocalDate.now()) || endDate.isBefore(LocalDate.now()) && trip.getStatus().equals("Active")) {
+				number++;
+			}
+		}
+		System.out.println(number);
+		return number;
 	}
 }

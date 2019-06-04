@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import app.dto.UserDTO;
 import app.entities.City;
 import app.entities.UserEntity;
 import app.models.PersonalDataViewModel;
@@ -68,7 +69,11 @@ public class PersonalDataController {
 	
 	private void loadPersonalDataPage(Principal principal, Model model, PersonalDataViewModel personalDataViewModel) {
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
-		personalDataViewModel.setUserDTO(userUtils.convertFromUserToUserDTO(user));
+		UserDTO userDTO = userUtils.convertFromUserToUserDTO(user);
+		if(user.getRole().getName().equals("ROLE_GUIDE")) {
+			userDTO.setDescription(user.getGuide().getDescription());
+		}
+		personalDataViewModel.setUserDTO(userDTO);
 		model.addAttribute("personalDataViewModel", personalDataViewModel);
 		model.addAttribute("allCities", getAllCitiesNames());
 	}
@@ -126,6 +131,17 @@ public class PersonalDataController {
 		verifyEmail(model, personalDates, user);
 		verifyBirthDate(model, personalDates, user);
 		verifyExperience(model, personalDates, user);
+		verifyDescription(model, personalDates, user);
+	}
+	
+	private void verifyDescription(Model model, List<String> personalDates, UserEntity user) {
+		System.out.println(personalDates.toString());
+		if(personalDates.size() > 6 && personalDates.get(6).length() > 10) {
+			user.getGuide().setDescription(personalDates.get(6));
+		}
+		else {
+			model.addAttribute("wrongDescription", true);
+		}
 	}
 	
 	private void verifyLastName(Model model, List<String> personalDates, UserEntity user) {

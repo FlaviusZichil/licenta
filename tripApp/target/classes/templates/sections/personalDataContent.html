@@ -20,6 +20,9 @@
 								<div th:if="*{userDTO.experience} == 'Empty' or *{userDTO.experience} == null">
 									<p class="text-center list-group-item list-group-item-action list-group-item-warning mb-1"> Campul Experienta nu este completat! </p> 
 								</div>
+								<div th:if="*{userDTO.description == null or #strings.length(userDTO.description) == 0} and ${#request.isUserInRole('ROLE_GUIDE')}">
+									<p class="text-center list-group-item list-group-item-action list-group-item-warning mb-1"> Campul Prezentare nu este completat! </p> 
+								</div>
 								<table class="mt-2 mr-2 ml-2 mb-2 w-95">
 									<tr>
 										<td>
@@ -112,6 +115,17 @@
 													<option class="form-control" value="Avansat" selected> Avansat </option>
 												</select>
 							                </div>
+										</td>
+									</tr>
+									<tr th:if="${#request.isUserInRole('ROLE_GUIDE')}">
+										<td>
+											<label for="description"> Prezentare </label>
+										</td>
+										<td>
+											<div th:if="${wrongDescription} == true">
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Lungimea minima este de 10 caractere! </p> 
+											</div>
+											<textarea id="description" class="text-justify w-100 h-50 ml-1" name="personalDataInput" th:text="*{userDTO.description}" disabled="disabled"></textarea>
 										</td>
 									</tr>
 									<tr>

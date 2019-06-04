@@ -18,6 +18,7 @@ public class UserDTO {
 	private RoleDTO roleDTO;
 	private PromoCodeDTO promoCodeDTO;
 	private Register register;
+	private String description;
 	
 	public UserDTO() {}
 	
@@ -41,6 +42,15 @@ public class UserDTO {
 	public Integer getId() {
 		return id;
 	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}

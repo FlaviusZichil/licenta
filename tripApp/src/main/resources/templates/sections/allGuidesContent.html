@@ -61,7 +61,7 @@
 											<h6 th:text="${guideDTO.phoneNumber}"></h6>
 										</td>
 									</tr>
-									<tr>
+									<tr th:if="${guideDTO.description} != null">
 										<td>
 											<h6> Prezentare: </h6>
 										</td>

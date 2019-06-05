@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -19,11 +20,15 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import app.dto.TripDTO;
 import app.dto.UserDTO;
+import app.entities.Medal;
 import app.entities.Trip;
 import app.entities.UserEntity;
+import app.entities.UserMedal;
 import app.entities.UserTrip;
 import app.models.TripDetailsViewModel;
+import app.repositories.MedalRepository;
 import app.repositories.TripRepository;
+import app.repositories.UserMedalRepository;
 import app.repositories.UserRepository;
 import app.repositories.UserTripRepository;
 import app.utils.Conversion;
@@ -34,18 +39,18 @@ public class TripDetailsController {
 
 	@Autowired
 	private TripRepository tripRepository;
-
 	@Autowired
 	private UserRepository userRepository;
-	
 	@Autowired
 	private UserUtils userUtils;
-
 	@Autowired
-	private Conversion conversion;
-	
+	private Conversion conversion;	
 	@Autowired
-	private UserTripRepository userTripRepository;
+	private UserTripRepository userTripRepository;	
+	@Autowired
+	private MedalRepository medalRepository;
+	@Autowired
+	private UserMedalRepository userMedalRepository;
 	
 	@SessionScope
 	@GetMapping("/trip-details")
@@ -75,10 +80,6 @@ public class TripDetailsController {
 		Integer tripId = Integer.parseInt((String) session.getAttribute("tripId"));
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		
-		if(userId != null) {
-			System.out.println("userID: " + userId);
-		}
-		
 		switch(actionType) {
 			case "Inscrie-te la ascensiune": {
 				if (isTripAvailableForUser(user, tripId)) {
@@ -99,16 +100,54 @@ public class TripDetailsController {
 				increaseTripCapacity(tripId);
 				return "redirect:/my-trips";
 			}
+			case "Sterge ascensiunea": {
+				return "redirect:/my-trips";
+			}
 			case "Finalizeaza":{
-				if(userId != null) {
-					System.out.println("userID: " + userId);
-				}
+				setStatusToFinishedForTrip(getTripById(tripId));
+				setUsersThatParticipated(userId, tripId);
+				addMedalsForUsers(userId, tripId);
 				return "redirect:/my-trips";
 			}
 		}	
 		return "views/all/tripDetails";
 	}
 	
+	private void addMedalsForUsers(String userId, Integer tripId) {
+		List<String> usersIds = new ArrayList<>(Arrays.asList(userId.split(",")));
+		for(String id : usersIds) {
+			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
+			Trip trip = getTripById(tripId);
+			Medal medal = getMedatByTrip(trip);
+			userMedalRepository.save(new UserMedal(medal, user));
+		}	
+	}
+	
+	private Medal getMedatByTrip(Trip trip) {
+		for(Medal medal : medalRepository.findAll()) {
+			if(medal.getPeak().equals(trip.getPeak())) {
+				return medal;
+			}
+		}
+		return null;
+	}
+
+	private void setUsersThatParticipated(String userId, Integer tripId) {
+		List<String> usersIds = new ArrayList<>(Arrays.asList(userId.split(",")));
+		for(String id : usersIds) {
+			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
+			Trip trip = getTripById(tripId);
+			UserTrip userTrip = getUserTrip(user, trip);
+			userTrip.setParticipated(true);
+			userTripRepository.save(userTrip);
+		}
+	}
+
+	private void setStatusToFinishedForTrip(Trip trip) {
+		trip.setStatus("Finished");
+		tripRepository.save(trip);
+	}
+
 	private List<UserDTO> getParticipantsForTrip(Trip trip){
 		List<UserDTO> participants = new ArrayList<>();
 		for(UserTrip userTrip : trip.getUserTrips()) {

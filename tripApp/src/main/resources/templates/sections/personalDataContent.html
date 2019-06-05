@@ -207,7 +207,7 @@
 											<input type="text" id="joinDate" class="form-control text-center ml-3" placeholder="Data inscrierii" th:value="*{userDTO.register.registerDate}" readonly="readonly">
 										</td>
 									</tr>
-									<tr>
+									<tr th:if="*{userDTO.promoCodeDTO.status} == 'Active'">
 										<td>
 											<label for="promoCode"> Cod </label>
 										</td>

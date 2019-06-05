@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import app.entities.City;
 import app.entities.PromoCode;
 import app.entities.Register;
 import app.entities.Role;
 import app.entities.UserEntity;
 import app.repositories.CityRepository;
+import app.repositories.PromoCodeRepository;
 import app.repositories.RegisterRepository;
 import app.repositories.RoleRepository;
 import app.repositories.UserRepository;
@@ -25,18 +28,16 @@ import app.validators.RegisterValidator;
 
 @Controller
 public class RegisterController {
-
 	@Autowired
 	private UserRepository userRepository;
-
 	@Autowired
-	private RoleRepository roleRepository;
-	
+	private RoleRepository roleRepository;	
 	@Autowired
-	private CityRepository cityRepository;
-	
+	private CityRepository cityRepository;	
 	@Autowired
 	private RegisterRepository registerRepository;
+	@Autowired
+	private PromoCodeRepository promoCodeRepository;
 	
 	@Autowired
 	private UserUtils userUtils;
@@ -53,26 +54,51 @@ public class RegisterController {
 			@RequestParam(value = "email", required = false) String email,
 			@RequestParam(value = "password", required = false) String password,
 			@RequestParam(value = "city", required = false) String city,
-			@RequestParam(value = "birthDate", required = false) String birthDate) {
+			@RequestParam(value = "birthDate", required = false) String birthDate,
+			@RequestParam(value = "promocode", required = false) String promoCode) {
 
 		model.addAttribute("allCities", this.getAllCities());
 
-		if (this.isFormValid(firstName, lastName, email, password, birthDate, model)) {
+		if (this.isFormValid(firstName, lastName, email, password, birthDate, model, promoCode)) {
 			UserEntity user = new UserEntity(RegisterValidator.formatNameProperly(firstName), RegisterValidator.formatNameProperly(lastName), birthDate, email, password);		
 			Role role = this.getRoleByName("ROLE_USER");
-			PromoCode promoCode = new PromoCode(this.generatePromoCode(), "Active");		
+			PromoCode promoCodeForUser = new PromoCode(this.generatePromoCode(), "Active");		
 			City cityForUser = this.getCityByName(city);
 			
-			user.setPromoCode(promoCode);
+			user.setPromoCode(promoCodeForUser);
 			user.setRole(role);
 			user.setCity(cityForUser);
 			user.setPoints("25");
 			userRepository.save(user);
-			
+
+			addPointsToUserForPromoCode(getUserByPromoCode(promoCode));
 			addRegisterDataForUser(user.getEmail());
 			return "views/all/login";
 		}
 		return "views/all/register";
+	}
+	
+	private void addPointsToUserForPromoCode(UserEntity user) {
+		Integer currentPoints = Integer.parseInt(user.getPoints());
+		Integer newPoints = currentPoints + 15;
+		user.setPoints(newPoints.toString());
+		userRepository.save(user);
+		updatePromoCodeForUser(user);	
+	}
+	
+	private void updatePromoCodeForUser(UserEntity user) {
+		PromoCode promoCode = user.getPromoCode();
+		promoCode.setStatus("Used");
+		promoCodeRepository.save(promoCode);
+	}
+
+	private UserEntity getUserByPromoCode(String promoCode) {
+		for(UserEntity user : userRepository.findAll()) {
+			if(user.getPromoCode().getValue().equals(promoCode)) {
+				return user;
+			}
+		}
+		return null;
 	}
 	
 	private void addRegisterDataForUser(String email) {
@@ -103,13 +129,23 @@ public class RegisterController {
 		Collections.sort(cities);		
 		return cities;
 	}
+	
+	private PromoCode getPromoCodeByValue(String value) {
+		for(PromoCode promoCode : promoCodeRepository.findAll()) {
+			if(promoCode.getValue().equals(value)) {
+				return promoCode;
+			}
+		}
+		return null;
+	}
 
-	private boolean isFormValid(String firstName, String lastName, String email, String password, String birthDate, Model model) {
+	private boolean isFormValid(String firstName, String lastName, String email, String password, String birthDate, Model model, String promoCode) {
 		boolean isFirstNameValid = true;
 		boolean isLastNameValid = true;
 		boolean isPasswordValid = true;
 		boolean isEmailValid = true;
 		boolean isDateValid = true;
+		boolean isPromoCodeValid = true;
 
 		if (!RegisterValidator.isNameValid(firstName)) {
 			isFirstNameValid = false;
@@ -135,8 +171,13 @@ public class RegisterController {
 			isDateValid = false;
 			model.addAttribute("isDateValid", isDateValid);
 		}
+		
+		if (promoCode != null && getPromoCodeByValue(promoCode).getStatus().equals("Used")) {
+			isPromoCodeValid = false;
+			model.addAttribute("isPromoCodeValid", isPromoCodeValid);
+		}
 
-		if (isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isDateValid) {
+		if (isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isDateValid && isPromoCodeValid) {
 			return true;
 		}
 		return false;

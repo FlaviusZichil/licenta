@@ -70,17 +70,6 @@ public class AchievementsController {
 		}	
 		return "views/all/achievementsView";
 	}
-	
-	private List<String> tripsWhereUserIsRegistered(UserEntity user) {
-		List<String> tripsLocation = new ArrayList<>();
-		for(UserTrip userTrip : user.getUserTrips()) {
-			Trip trip = userTrip.getTrip();
-			if(trip.getStatus().equals("Active")) {
-				tripsLocation.add(trip.getPeak().getPeakName());
-			}
-		}
-		return tripsLocation;
-	}
 
 	@PostMapping("/achievements")
 	public String achievementsActions(Model model, TripViewModel tripViewModel, HttpSession session, Principal principal,
@@ -92,7 +81,7 @@ public class AchievementsController {
 				if(entry.getValue().contains("Obtine medalia")){
 					List<TripDTO> tripsDTOForUser = new ArrayList<>();
 					for(Trip trip : tripRepository.findAll()) {
-						if(trip.getPeak().getId() == Integer.parseInt(entry.getKey()) && !isUserRegisteredForTrip(user, trip.getId())) {
+						if(trip.getPeak().getId() == Integer.parseInt(entry.getKey()) && !isUserRegisteredForTrip(user, trip.getId()) && trip.getStatus().equals("Active")) {
 							tripsDTOForUser.add(conversion.convertFromTripToTripDTO(trip));
 						}
 					}
@@ -107,6 +96,18 @@ public class AchievementsController {
 			}
 		}
 		return "views/all/achievementsView";
+	}
+	
+	
+	private List<String> tripsWhereUserIsRegistered(UserEntity user) {
+		List<String> tripsLocation = new ArrayList<>();
+		for(UserTrip userTrip : user.getUserTrips()) {
+			Trip trip = userTrip.getTrip();
+			if(trip.getStatus().equals("Active")) {
+				tripsLocation.add(trip.getPeak().getPeakName());
+			}
+		}
+		return tripsLocation;
 	}
 	
 	private boolean isUserRegisteredForTrip(UserEntity user, Integer tripId) {
@@ -165,7 +166,7 @@ public class AchievementsController {
 	
 	private Integer getHighestAltitudeForUser(UserEntity user) {
 		Integer highestAltitude = 0;
-		for(MedalDTO medalDTO : this.getAllMedalsForUser(user)) {
+		for(MedalDTO medalDTO : getAllMedalsForUser(user)) {
 			if(medalDTO.getPeakDTO().getAltitude() > highestAltitude && medalDTO.isOwned()) {
 				highestAltitude = medalDTO.getPeakDTO().getAltitude();
 			}

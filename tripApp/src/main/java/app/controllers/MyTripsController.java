@@ -89,7 +89,7 @@ public class MyTripsController {
 		for(Trip trip : guide.getTrips()) {
 			tripsDTOForGuide.add(conversion.convertFromTripToTripDTO(trip));
 		}
-		return tripsDTOForGuide;
+		return userUtils.sortTripsByStatus(tripsDTOForGuide);
 	}
 	
 	private void increaseTripCapacity(Integer tripId) {

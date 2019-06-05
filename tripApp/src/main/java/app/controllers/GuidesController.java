@@ -77,7 +77,9 @@ public class GuidesController {
 	private List<TripDTO> getTripsDTOForGuide(Guide guide){
 		List<TripDTO> tripsDTO = new ArrayList<>();
 		for(Trip trip : guide.getTrips()) {
-			tripsDTO.add(conversion.convertFromTripToTripDTO(trip));
+			if(trip.getStatus().equals("Active")) {
+				tripsDTO.add(conversion.convertFromTripToTripDTO(trip));
+			}
 		}
 		return tripsDTO;
 	}

@@ -1,11 +1,14 @@
 package app.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import app.dto.ArticleDTO;
 import app.dto.CityDTO;
 import app.dto.PromoCodeDTO;
 import app.dto.RoleDTO;
@@ -46,7 +49,24 @@ public class UserUtils {
 			TripDTO tripDTO = conversion.convertFromTripToTripDTO(userTrip.getTrip());
 			currentUserTripsDTO.add(tripDTO);
 		}
-		return currentUserTripsDTO;
+		
+		return sortTripsByStatus(currentUserTripsDTO);
+	}
+	
+	public List<TripDTO> sortTripsByStatus(List<TripDTO> tripsDTO){
+		Collections.sort(tripsDTO, new Comparator<TripDTO>(){
+			   @Override
+			   public int compare(TripDTO firstTripDTO, TripDTO secondTripDTO) {			   				   
+				   if(firstTripDTO.getStatus().equals("Active") && secondTripDTO.getStatus().equals("Finished")) {
+					   return -1;			   
+				   }				   
+				   if(firstTripDTO.getStatus().equals("Finished") && secondTripDTO.getStatus().equals("Active")) {
+					   return 1;
+				   }
+				   return 0;
+			     }
+			 });
+		return tripsDTO;
 	}
 	
 	public UserEntity getUserById(Integer userId) {

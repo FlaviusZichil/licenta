@@ -25,6 +25,14 @@ public class UserMedal {
     @JoinColumn
     private UserEntity user;
 	
+	public UserMedal() {}
+	
+	public UserMedal(Medal medal, UserEntity user) {
+		super();
+		this.medal = medal;
+		this.user = user;
+	}
+
 	public Integer getUser_medal_id() {
 		return user_medal_id;
 	}

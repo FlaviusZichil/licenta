@@ -1,15 +1,16 @@
 package app.entities;
 
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -35,9 +36,9 @@ public class Trip {
 
 	@Column(name = "points")
 	private Integer points;
-
-	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
-	private List<UserEntity> users;
+	
+	@OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    private List<UserTrip> userTrips;
 
 	@ManyToOne
 	@JoinColumn
@@ -114,12 +115,12 @@ public class Trip {
 		this.points = points;
 	}
 
-	public List<UserEntity> getUsers() {
-		return users;
+	public List<UserTrip> getUserTrips() {
+		return userTrips;
 	}
 
-	public void setUsers(List<UserEntity> users) {
-		this.users = users;
+	public void setUserTrips(List<UserTrip> userTrips) {
+		this.userTrips = userTrips;
 	}
 
 	public Guide getGuide() {

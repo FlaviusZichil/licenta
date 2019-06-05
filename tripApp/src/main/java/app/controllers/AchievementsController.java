@@ -21,12 +21,12 @@ import app.entities.Medal;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.entities.UserMedal;
+import app.entities.UserTrip;
 import app.models.AllMedalsViewModel;
 import app.models.TripViewModel;
 import app.repositories.MedalRepository;
 import app.repositories.TripRepository;
 import app.utils.Conversion;
-import app.utils.TripUtils;
 import app.utils.UserUtils;
 
 @Controller
@@ -61,7 +61,6 @@ public class AchievementsController {
 		
 		List<String> tripsWhereUserIsRegistered = this.tripsWhereUserIsRegistered(user);
 		model.addAttribute("tripsWhereUserIsRegistered", tripsWhereUserIsRegistered);
-		System.out.println(tripsWhereUserIsRegistered.toString());
 		
 		if(session.getAttribute("noAvailableTripsForThatMedal") != null) {
 			if((boolean)session.getAttribute("noAvailableTripsForThatMedal")) {
@@ -74,7 +73,8 @@ public class AchievementsController {
 	
 	private List<String> tripsWhereUserIsRegistered(UserEntity user) {
 		List<String> tripsLocation = new ArrayList<>();
-		for(Trip trip : user.getTrips()) {
+		for(UserTrip userTrip : user.getUserTrips()) {
+			Trip trip = userTrip.getTrip();
 			if(trip.getStatus().equals("Active")) {
 				tripsLocation.add(trip.getPeak().getPeakName());
 			}
@@ -92,7 +92,7 @@ public class AchievementsController {
 				if(entry.getValue().contains("Obtine medalia")){
 					List<TripDTO> tripsDTOForUser = new ArrayList<>();
 					for(Trip trip : tripRepository.findAll()) {
-						if(trip.getPeak().getId() == Integer.parseInt(entry.getKey()) && !this.isUserRegisteredForTrip(user, trip)) {
+						if(trip.getPeak().getId() == Integer.parseInt(entry.getKey()) && !isUserRegisteredForTrip(user, trip.getId())) {
 							tripsDTOForUser.add(conversion.convertFromTripToTripDTO(trip));
 						}
 					}
@@ -109,13 +109,22 @@ public class AchievementsController {
 		return "views/all/achievementsView";
 	}
 	
-	private boolean isUserRegisteredForTrip(UserEntity user, Trip trip) {
-		for (Trip tripObj : user.getTrips()) {
-			if (tripObj.getId() == trip.getId()) {
+	private boolean isUserRegisteredForTrip(UserEntity user, Integer tripId) {
+		for(UserTrip userTrip : user.getUserTrips()) {
+			if(userTrip.getTrip().equals(getTripById(tripId))) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	private Trip getTripById(Integer tripId) {
+		for(Trip trip : tripRepository.findAll()) {
+			if(trip.getId() == tripId) {
+				return trip;
+			}
+		}
+		return null;
 	}
 	
 	private List<MedalDTO> getAllMedalsDTO(){
@@ -166,8 +175,8 @@ public class AchievementsController {
 	
 	private Integer getNumberOFAllFinishedTripsForUser(UserEntity user) {
 		Integer numberOfFinishedTrips = 0;
-		for(Trip trip : user.getTrips()) {
-			if(trip.getStatus().equals("Finished")) {
+		for(UserTrip userTrip : user.getUserTrips()) {
+			if(userTrip.getTrip().getStatus().equals("Finished")) {
 				numberOfFinishedTrips++;
 			}
 		}

@@ -5,17 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import app.dto.CityDTO;
-import app.dto.GuideDTO;
-import app.dto.MountainDTO;
-import app.dto.PeakDTO;
 import app.dto.PointDTO;
-import app.dto.RouteDTO;
 import app.dto.RoutePointDTO;
-import app.dto.TripDTO;
 import app.entities.Guide;
-import app.entities.Peak;
 import app.entities.Route;
 import app.entities.RoutePoint;
 import app.entities.Trip;

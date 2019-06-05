@@ -5,13 +5,10 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -51,11 +48,8 @@ public class UserEntity {
 	@Column(name = "password")
 	private String password;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_trip",
-	     	   joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-	           inverseJoinColumns = @JoinColumn(name = "trip_id", referencedColumnName = "trip_id"))
-	private List<Trip> trips;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserTrip> userTrips;
 	
 	@ManyToOne
     @JoinColumn
@@ -160,12 +154,12 @@ public class UserEntity {
 		this.password = password;
 	}
 
-	public List<Trip> getTrips() {
-		return trips;
+	public List<UserTrip> getUserTrips() {
+		return userTrips;
 	}
 
-	public void setTrips(List<Trip> trips) {
-		this.trips = trips;
+	public void setUserTrips(List<UserTrip> userTrips) {
+		this.userTrips = userTrips;
 	}
 
 	public Role getRole() {
@@ -297,10 +291,10 @@ public class UserEntity {
 				return false;
 		} else if (!tombola.equals(other.tombola))
 			return false;
-		if (trips == null) {
-			if (other.trips != null)
+		if (userTrips == null) {
+			if (other.userTrips != null)
 				return false;
-		} else if (!trips.equals(other.trips))
+		} else if (!userTrips.equals(other.userTrips))
 			return false;
 		return true;
 	}

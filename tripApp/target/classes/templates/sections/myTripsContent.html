@@ -22,8 +22,15 @@
 					<a th:href="@{/all-trips}" class="btn btn-primary">Vezi toate ascensiunile</a>
 				</div>
 				<div class="card trip-card text-center" th:each="tripDTO : *{tripsDTO}">
-				  <div class="card-header bg-info">
-				    <h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
+				  <div th:if="${tripDTO.status} == 'Active'">
+					  <div class="card-header bg-info">
+					    <h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
+					  </div>
+				  </div>
+				   <div th:if="${tripDTO.status} == 'Finished'">
+					  <div class="card-header bg-secondary">
+					    <h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
+					  </div>
 				  </div>
 				  <div class="card-body">
 				    <h5 class="card-title" th:text="'Data plecare: ' + ${tripDTO.startDate}"></h5>
@@ -31,8 +38,10 @@
 				    <h5 class="card-title" th:text="'Locuri disponibile: ' + ${tripDTO.capacity}"></h5>
 				    <h5 class="card-title" th:text="'Dificultate: ' + ${tripDTO.routeDTO.difficulty}"></h5>
 				    <a th:href="@{/trip-details?trip=} + ${tripDTO.id}" class="btn btn-primary">Detalii</a>
-				    <div th:if="${#request.isUserInRole('ROLE_USER')}">
-				    	<input th:name="${tripDTO.id}" type="submit" class="btn btn-danger" value="Elimina ascensiunea">
+				    <div th:if="${#request.isUserInRole('ROLE_USER')} or ${#request.isUserInRole('ROLE_STAFF')}">
+				    	<div th:if="${tripDTO.status} == 'Active'">
+				    		<input th:name="${tripDTO.id}" type="submit" class="btn btn-danger" value="Elimina ascensiunea">
+				    	</div>
 				    </div>
 				  </div>
 				</div>

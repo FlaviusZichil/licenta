@@ -5,10 +5,8 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import app.documents.Article;
 import app.documents.ArticleComment;
 import app.documents.ArticleLike;
@@ -78,7 +76,7 @@ public class Conversion {
 		RouteDTO routeDTO = new RouteDTO(trip.getRoute().getId(), trip.getRoute().getDifficulty(), TripUtils.getRoutePointsDTOForTrip(trip));
 		
 		TripDTO tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),
-									  trip.getUsers(), routeDTO, peakDTO, guideDTO);
+									  trip.getUserTrips(), routeDTO, peakDTO, guideDTO);
 		return tripDTO;
 	}
 	

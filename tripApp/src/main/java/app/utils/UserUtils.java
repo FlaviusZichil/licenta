@@ -11,8 +11,8 @@ import app.dto.PromoCodeDTO;
 import app.dto.RoleDTO;
 import app.dto.TripDTO;
 import app.dto.UserDTO;
-import app.entities.Trip;
 import app.entities.UserEntity;
+import app.entities.UserTrip;
 import app.repositories.UserRepository;
 
 @Component
@@ -20,7 +20,7 @@ public class UserUtils {
 	
 	@Autowired
 	private UserRepository userRepository;
-
+	
 	@Autowired
 	private Conversion conversion;
 	
@@ -40,11 +40,10 @@ public class UserUtils {
 	}
 	
 	public List<TripDTO> getAllTripsDTOForUser(UserEntity currentUser){
-		List<Trip> currentUserTrips = currentUser.getTrips();
 		List<TripDTO> currentUserTripsDTO = new ArrayList<TripDTO>();
 		
-		for(Trip trip : currentUserTrips) {
-			TripDTO tripDTO = conversion.convertFromTripToTripDTO(trip);
+		for(UserTrip userTrip : currentUser.getUserTrips()) {
+			TripDTO tripDTO = conversion.convertFromTripToTripDTO(userTrip.getTrip());
 			currentUserTripsDTO.add(tripDTO);
 		}
 		return currentUserTripsDTO;

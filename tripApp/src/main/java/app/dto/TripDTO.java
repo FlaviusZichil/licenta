@@ -1,8 +1,7 @@
 package app.dto;
 
 import java.util.List;
-
-import app.entities.UserEntity;
+import app.entities.UserTrip;
 
 public class TripDTO {
 	
@@ -12,13 +11,13 @@ public class TripDTO {
 	private String endDate;
 	private String status;
 	private Integer points;
-	private List<UserEntity> users;
+	private List<UserTrip> users;
     private RouteDTO routeDTO;
     private PeakDTO peakDTO;
     private GuideDTO guideDTO;
     
 	public TripDTO(Integer id, Integer capacity, String startDate, String endDate, String status, Integer points,
-			List<UserEntity> users, RouteDTO routeDTO, PeakDTO peakDTO, GuideDTO guideDTO) {
+			List<UserTrip> users, RouteDTO routeDTO, PeakDTO peakDTO, GuideDTO guideDTO) {
 		super();
 		this.id = id;
 		this.capacity = capacity;
@@ -68,12 +67,14 @@ public class TripDTO {
 	public void setPoints(Integer points) {
 		this.points = points;
 	}
-	public List<UserEntity> getUsers() {
+	public List<UserTrip> getUsers() {
 		return users;
 	}
-	public void setUsers(List<UserEntity> users) {
+
+	public void setUsers(List<UserTrip> users) {
 		this.users = users;
 	}
+
 	public RouteDTO getRouteDTO() {
 		return routeDTO;
 	}

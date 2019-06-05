@@ -24,8 +24,10 @@ import app.dto.TripDTO;
 import app.entities.City;
 import app.entities.Trip;
 import app.entities.UserEntity;
+import app.entities.UserTrip;
 import app.models.TripViewModel;
 import app.repositories.TripRepository;
+import app.repositories.UserTripRepository;
 import app.utils.Conversion;
 import app.utils.TripUtils;
 import app.utils.UserUtils;
@@ -33,6 +35,9 @@ import app.utils.UserUtils;
 @Controller
 public class AllTripsController {
 
+	@Autowired
+	private UserTripRepository userTripRepository;
+	
 	@Autowired
 	private TripRepository tripRepository;
 	
@@ -141,18 +146,25 @@ public class AllTripsController {
 	}
 
 	private List<TripDTO> getAllTripsDTOAvailableForUser(Principal principal) {
-		Iterable<Trip> allTrips = tripRepository.findAll();
 		UserEntity currentUser = userUtils.getUserByEmail(principal.getName());
-		List<Trip> currentUserTrips = currentUser.getTrips();
 		List<TripDTO> currentUserTripsDTO = new ArrayList<TripDTO>();
 
-		for (Trip trip : allTrips) {
-			if (trip.getStatus().equals("Active") && !currentUserTrips.contains(trip)) {				
+		for (Trip trip : tripRepository.findAll()) {
+			if (trip.getStatus().equals("Active") && getUserTrip(currentUser, trip) == null) {				
 				TripDTO tripDTO = conversion.convertFromTripToTripDTO(trip);
 				currentUserTripsDTO.add(tripDTO);
 			}
 		}
 		return currentUserTripsDTO;
+	}
+	
+	private UserTrip getUserTrip(UserEntity user, Trip trip) {
+		for(UserTrip userTrip : userTripRepository.findAll()) {
+			if(userTrip.getTrip().equals(trip) && userTrip.getUser().equals(user)) {
+				return userTrip;
+			}
+		}
+		return null;
 	}
 	
 	private Double calculateDistanceBetweenTwoCities(City firstCity, City secondCity) {

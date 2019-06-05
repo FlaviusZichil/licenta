@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import app.entities.City;
 import app.entities.PromoCode;
 import app.entities.Register;
@@ -57,11 +55,10 @@ public class RegisterController {
 			@RequestParam(value = "city", required = false) String city,
 			@RequestParam(value = "birthDate", required = false) String birthDate) {
 
-		RegisterValidator validator = new RegisterValidator();
 		model.addAttribute("allCities", this.getAllCities());
 
 		if (this.isFormValid(firstName, lastName, email, password, birthDate, model)) {
-			UserEntity user = new UserEntity(validator.formatNameProperly(firstName), validator.formatNameProperly(lastName), birthDate, email, password);		
+			UserEntity user = new UserEntity(RegisterValidator.formatNameProperly(firstName), RegisterValidator.formatNameProperly(lastName), birthDate, email, password);		
 			Role role = this.getRoleByName("ROLE_USER");
 			PromoCode promoCode = new PromoCode(this.generatePromoCode(), "Active");		
 			City cityForUser = this.getCityByName(city);
@@ -108,35 +105,33 @@ public class RegisterController {
 	}
 
 	private boolean isFormValid(String firstName, String lastName, String email, String password, String birthDate, Model model) {
-		RegisterValidator validator = new RegisterValidator();
-
 		boolean isFirstNameValid = true;
 		boolean isLastNameValid = true;
 		boolean isPasswordValid = true;
 		boolean isEmailValid = true;
 		boolean isDateValid = true;
 
-		if (!validator.isNameValid(firstName)) {
+		if (!RegisterValidator.isNameValid(firstName)) {
 			isFirstNameValid = false;
 			model.addAttribute("isFirstNameValid", isFirstNameValid);
 		}
 
-		if (!validator.isNameValid(lastName)) {
+		if (!RegisterValidator.isNameValid(lastName)) {
 			isLastNameValid = false;
 			model.addAttribute("isLastNameValid", isLastNameValid);
 		}
 
-		if (!validator.isPasswordValid(password)) {
+		if (!RegisterValidator.isPasswordValid(password)) {
 			isPasswordValid = false;
 			model.addAttribute("isPasswordValid", isPasswordValid);
 		}
 
-		if (!validator.isEmailValid(email) || this.isEmailTaken(email)) {
+		if (!RegisterValidator.isEmailValid(email) || this.isEmailTaken(email)) {
 			isEmailValid = false;
 			model.addAttribute("isEmailValid", isEmailValid);
 		}
 
-		if (!validator.isDateValid(birthDate)) {
+		if (!RegisterValidator.isDateValid(birthDate)) {
 			isDateValid = false;
 			model.addAttribute("isDateValid", isDateValid);
 		}

@@ -1,15 +1,12 @@
 package app.controllers;
 
 import java.security.Principal;
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -148,8 +145,7 @@ public class AddTripController {
 		}
 		else {
 			System.out.println("eroare la adaugare");
-		}
-		
+		}	
 		return "redirect:/all-trips";
 	}
 	
@@ -195,16 +191,15 @@ public class AddTripController {
 	}
 	
 	private boolean areDatesValid(String startDate, String endDate) throws ParseException {
-		Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
-		Date secondDate = new SimpleDateFormat("yyyy-MM-dd").parse(endDate);
-
-		long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
-		long daysDifference = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-		
-		if(firstDate.after(secondDate) || firstDate.before(Timestamp.valueOf(LocalDateTime.now())) || daysDifference > 4) {
-			return false;
-		}
-		return true;
+		LocalDate firstDate = LocalDate.parse(startDate);
+		LocalDate secondDate = LocalDate.parse(endDate);		
+		Period period = Period.between(firstDate, secondDate);
+	    int days = period.getDays();
+	    
+	    if(firstDate.isBefore(LocalDate.now()) || secondDate.isBefore(LocalDate.now()) || days > 4 || days < 1) {
+	    	return false;
+	    }
+	    return true;
 	}
 	
 	private List<PeakDTO> getPeaksDTO(){

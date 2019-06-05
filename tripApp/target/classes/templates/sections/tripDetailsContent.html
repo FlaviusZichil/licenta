@@ -21,8 +21,15 @@
 				</div>
 		 		<!-- Extended card -->
 		 		<div th:if="${isUserAllowedToRegisterForTrip} != false" class="card trip-details-card text-center">
-				  <div class="card-header bg-info trip-card-title">
-				    <h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
+		 		  <div th:if="*{tripDTO.status} == 'Active'">
+					<div class="card-header bg-info trip-card-title">
+					    <h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
+					</div>
+				  </div>
+				   <div th:if="*{tripDTO.status} == 'Finished'">
+					<div class="card-header bg-secondary trip-card-title">
+					    <h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
+					</div>
 				  </div>
 				  <div class="card-body">
 				  <div class="row" id="article">
@@ -41,28 +48,73 @@
 						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == false">
 							<div th:if="*{tripDTO.capacity} > 0">
 								<div th:if="${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
-									<input type="submit" name="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
-									<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
+									<div th:if="*{tripDTO.status} == 'Active'">
+										<input type="submit" name="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
+										<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == true and ${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
-							<input type="submit" name="submit" class="btn btn-danger" value="Elimina ascensiunea">
-							<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
+							<div th:if="*{tripDTO.status} == 'Active'">
+								<input type="submit" name="submit" class="btn btn-danger" value="Elimina ascensiunea">
+								<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
+							</div>
 						</div>
-						<div th:if="${#request.isUserInRole('ROLE_GUIDE')}">
+						<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.status} == 'Active'">
 							<input type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
 							<input type="submit" name="submit" class="btn btn-info" value="Notifica utilizatorii"/>
-							<input type="submit" name="submit" class="btn btn-success" value="Finalizeaza ascensiunea"/>
+							<p class="btn btn-success" onclick="displayParticipants()">Finalizeaza ascensiunea</p>
 						</div>
 		 			</div>
 				  </div>
 				</div>
 				<!-- Extended card -->
-		 	</div>
+		 		</div>
+		 	
+		 		<div id="participants" class="card w-100 mb-4" style="display: none">
+		 			<div class="card-header bg-info text-center color">
+		 				<h5> Participanti </h5>
+		 			</div>
+		 			<div class="card-body">
+		 				<table class="w-100 table table-dark">
+		 					<tr>
+		 						<th class="text-center"> Nume </th>
+		 						<th class="text-center"> Email </th>
+		 						<th class="text-center"> Participare </th>
+		 					</tr>
+		 					<tr th:each="userDTO : ${participants}">
+		 						<td align=center> 
+		 							<h6 th:text="${userDTO.lastName} + ' ' + ${userDTO.firstName}"></h6> 
+		 						</td>
+		 						<td align=center>
+		 							<h6 th:text="${userDTO.email}"></h6> 
+		 						</td>
+		 						<td align=center>
+		 							<input type="checkbox" name="participated" th:value="${userDTO.id}"/>
+		 						</td>
+		 					</tr>
+		 				</table>
+		 			</div>
+		 			<div class="card-footer">
+		 				<input type="submit" name="submit" class="btn btn-success" value="Finalizeaza"/>
+		 			</div>
+		 		</div>
+		 	
 		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
 		 	</div>
 	</div>
 	</form>
+
+<script>
+function displayParticipants() {
+  var x = document.getElementById("participants");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 </body>
 </html>

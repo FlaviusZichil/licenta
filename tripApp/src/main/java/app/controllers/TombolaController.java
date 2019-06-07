@@ -167,7 +167,7 @@ public class TombolaController {
 	}
 	
 	private void registerUserToTombola(UserEntity user, LocalDate date) {
-		tombolaRepository.save(new Tombola(date.toString(), "not winner", user));
+		tombolaRepository.save(new Tombola(date.toString(), "new", user));
 		decreaseUserPoints(user);
 	}
 	

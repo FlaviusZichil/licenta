@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form id="tombolaResultsForm" action="#" th:action="@{/tombola-results}" th:object="${tombolaResultsViewModel}" method="POST">	
+		<div class="row">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<div id="participants" class="card mt-3">
+					<div class="card-header bg-info color">
+						<h5 class="text-center"> Participanti </h5>
+					</div>
+					<div class="card-body">
+						<table class="table w-100 table-dark">
+							<tr>
+								<th class="text-center"> NUME </th>
+								<th class="text-center"> EMAIL </th>
+								<th class="text-center"> JUDET </th>
+								<th class="text-center"> DATA INSCRIERII </th>
+
+							</tr>
+							<tr th:each="registration : *{tombolaResultsDTO}">
+								<td class="text-center"> <h6 th:text="${registration.userDTO.lastName} + ' ' + ${registration.userDTO.firstName}"></h6> </td>
+								<td class="text-center"> <h6 th:text="${registration.userDTO.email}"></h6> </td>
+								<td class="text-center"> <h6 th:text="${registration.userDTO.cityDTO.name}"></h6> </td>
+								<td class="text-center"> <h6 th:text="${registration.date}"></h6> </td>
+							</tr>
+						</table>
+					</div>
+					<div class="card-footer">
+						<p id="getTombolaResults" class="btn btn-success" onclick="getTombolaResults()"> Extrage castigatorii </p>
+					</div>
+				</div>
+				
+				<div id="results" class="card w-100 mb-4 mt-3" style="display: none">
+		 			<div class="card-header bg-info text-center color">
+		 				<h5> Rezultate </h5>
+		 			</div>
+		 			<div class="card-body">
+		 				<table class="w-100 table table-dark">
+		 					<tr>
+		 						<th class="text-center"> NUME </th>
+								<th class="text-center"> EMAIL </th>
+								<th class="text-center"> JUDET </th>
+								<th class="text-center"> DATA INSCRIERII </th>
+								<th class="text-center"> STATUS </th>
+		 					</tr>
+<!-- 		 					<tr th:each="result : ${results}"> -->
+<!-- 		 						<td align=center>  -->
+<!-- 		 							<h6 th:text="${result.userDTO.lastName} + ' ' + ${result.userDTO.firstName}"></h6>  -->
+<!-- 		 						</td> -->
+<!-- 		 						<td align=center> -->
+<!-- 		 							<h6 th:text="${result.userDTO.email}"></h6>  -->
+<!-- 		 						</td> -->
+<!-- 		 						<td align=center> -->
+<!-- 		 							<h6 th:text="${result.userDTO.cityDTO.name}"></h6>  -->
+<!-- 		 						</td> -->
+<!-- 		 						<td align=center> -->
+<!-- 		 							<h6 th:text="${result.date}"></h6>  -->
+<!-- 		 						</td> -->
+<!-- 		 						<td align=center> -->
+<!-- 		 							<h6 th:text="${result.status}"></h6>  -->
+<!-- 		 						</td> -->
+<!-- 		 					</tr> -->
+		 				</table>
+		 			</div>
+		 		</div>
+			</div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+<script>
+function getTombolaResults() {
+  var x = document.getElementById("results");
+  var participants = document.getElementById("participants");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    x.focus();
+  } else {
+    x.style.display = "none";
+    participants.focus();
+  }
+}
+</script>
+</html>

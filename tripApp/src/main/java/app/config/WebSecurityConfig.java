@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.authorizeRequests().antMatchers("/register", "/login").permitAll();
 		http.authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')");			
-		http.authorizeRequests().antMatchers("/adminHome").access("hasRole('ROLE_ADMIN')");
+		http.authorizeRequests().antMatchers("/tombola-results").access("hasRole('ROLE_ADMIN')");
 		http.authorizeRequests().antMatchers("/guideHome").access("hasRole('ROLE_GUIDE')");
 		http.authorizeRequests().antMatchers("/staffHome").access("hasRole('ROLE_STAFF')");
 		

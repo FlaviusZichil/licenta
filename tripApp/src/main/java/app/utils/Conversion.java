@@ -5,8 +5,10 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import app.documents.Article;
 import app.documents.ArticleComment;
 import app.documents.ArticleLike;
@@ -18,9 +20,11 @@ import app.dto.GuideDTO;
 import app.dto.MountainDTO;
 import app.dto.PeakDTO;
 import app.dto.RouteDTO;
+import app.dto.TombolaResultsDTO;
 import app.dto.TripDTO;
 import app.entities.Guide;
 import app.entities.Peak;
+import app.entities.Tombola;
 import app.entities.Trip;
 
 @Component
@@ -31,7 +35,7 @@ public class Conversion {
 	
 	@Autowired
 	private UserUtils userUtils;
-
+	
 	public ArticleDTO convertFromArticleToArticleDTO(Article article) {
 		List<ArticleCommentDTO> commentsDTO = new ArrayList<>();
 		List<ArticleLikeDTO> likesDTO = new ArrayList<>();

@@ -71,7 +71,9 @@ public class RegisterController {
 			user.setPoints("25");
 			userRepository.save(user);
 
-			addPointsToUserForPromoCode(getUserByPromoCode(promoCode));
+			if(promoCode != "") {
+				addPointsToUserForPromoCode(getUserByPromoCode(promoCode));
+			}
 			addRegisterDataForUser(user.getEmail());
 			return "views/all/login";
 		}
@@ -172,9 +174,12 @@ public class RegisterController {
 			model.addAttribute("isDateValid", isDateValid);
 		}
 		
-		if (promoCode != null && getPromoCodeByValue(promoCode).getStatus().equals("Used")) {
-			isPromoCodeValid = false;
-			model.addAttribute("isPromoCodeValid", isPromoCodeValid);
+		System.out.println(promoCode);
+		if (promoCode != "") {
+			if(getPromoCodeByValue(promoCode).getStatus().equals("Used")) {
+				isPromoCodeValid = false;
+				model.addAttribute("isPromoCodeValid", isPromoCodeValid);
+			}		
 		}
 
 		if (isFirstNameValid && isLastNameValid && isEmailValid && isPasswordValid && isDateValid && isPromoCodeValid) {

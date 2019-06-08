@@ -19,11 +19,12 @@ public class UserDTO {
 	private PromoCodeDTO promoCodeDTO;
 	private Register register;
 	private String description;
+	private Boolean blocked;
 	
 	public UserDTO() {}
 	
 	public UserDTO(Integer id, String firstName, String lastName, String birthDate, String points, CityDTO cityDTO,
-			String email, String experience, List<TripDTO> tripsDTO, RoleDTO roleDTO, PromoCodeDTO promoCodeDTO, Register register) {
+			String email, String experience, List<TripDTO> tripsDTO, RoleDTO roleDTO, PromoCodeDTO promoCodeDTO, Register register, Boolean blocked) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
@@ -37,6 +38,7 @@ public class UserDTO {
 		this.roleDTO = roleDTO;
 		this.promoCodeDTO = promoCodeDTO;
 		this.register = register;
+		this.blocked = blocked;
 	}
 	
 	public Integer getId() {
@@ -66,6 +68,14 @@ public class UserDTO {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	public Boolean getBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(Boolean blocked) {
+		this.blocked = blocked;
+	}
+
 	public String getBirthDate() {
 		return birthDate;
 	}
@@ -122,4 +132,13 @@ public class UserDTO {
 	public void setPromoCodeDTO(PromoCodeDTO promoCodeDTO) {
 		this.promoCodeDTO = promoCodeDTO;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDTO [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", birthDate=" + birthDate
+				+ ", points=" + points + ", cityDTO=" + cityDTO + ", email=" + email + ", experience=" + experience
+				+ ", tripsDTO=" + tripsDTO + ", roleDTO=" + roleDTO + ", promoCodeDTO=" + promoCodeDTO + ", register="
+				+ register + ", description=" + description + ", blocked=" + blocked + "]";
+	}
+	
 }

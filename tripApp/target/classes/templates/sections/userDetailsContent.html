@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form action="#" th:action="@{/user-details}" method="POST">
+		<div class="row" id="content">
+			 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			 <div class="col-md-8 col-sm-8 col-xs-2 fla">
+			 	<div class="card mb-3 mt-3">
+		 			<div class="card-header bg-info text-center color">
+		 				<h5> Detalii </h5>
+		 			</div>
+		 			<div class="card-body">
+		 				<table class="table table-dark table-bordered">
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> NUME </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.userDTO.lastName} + ' ' + ${userDetails.userDTO.firstName}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> EMAIL </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.userDTO.email}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> DATA NASTERII </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.userDTO.birthDate}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> JUDET </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.userDTO.cityDTO.name}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> EXPERIENTA </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:if="${userDetails.userDTO.experience} != null" th:text="${userDetails.userDTO.experience}"></h6>
+		 							<h6 th:if="${userDetails.userDTO.experience} == null"> Nu a completat acest camp. </h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> STATUT </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:if="${userDetails.userDTO.roleDTO.roleName} == 'ROLE_USER'"> Utilizator </h6>
+		 							<h6 th:if="${userDetails.userDTO.roleDTO.roleName} == 'ROLE_STAFF'"> Membru Staff </h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> COD PROMOTIONAL </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.userDTO.promoCodeDTO.value}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> PUNCTE </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.userDTO.points}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> BLOCAT </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:if="${userDetails.userDTO.blocked} == false"> Nu </h6>
+		 							<h6 th:if="${userDetails.userDTO.blocked} == true"> Da </h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> DATA INREGISTRARII </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.userDTO.register.registerDate}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> ASCENSIUNI FINALIZATE </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.finishedTrips}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center">
+		 							<h6> ABSENTE </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.absences}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr th:if="${userDetails.userDTO.roleDTO.roleName} == 'ROLE_STAFF'">
+		 						<td class="text-center">
+		 							<h6> ARTICOLE POSTATE </h6>
+		 						</td>
+		 						<td class="text-center">
+		 							<h6 th:text="${userDetails.articlesPosted}"></h6>
+		 						</td>
+		 					</tr>
+		 					<tr>
+		 						<td class="text-center" colspan="2">
+		 							<input type="submit" name="submit" class="btn btn-info" value="Notifica utilizatorul"/>
+		 						</td>
+		 					</tr>
+		 				</table>
+		 			</div>
+		 		</div>
+			 </div>	
+			 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+</html>

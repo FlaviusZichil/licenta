@@ -69,6 +69,7 @@ public class RegisterController {
 			user.setRole(role);
 			user.setCity(cityForUser);
 			user.setPoints("25");
+			user.setBlocked(false);
 			userRepository.save(user);
 
 			if(promoCode != "") {

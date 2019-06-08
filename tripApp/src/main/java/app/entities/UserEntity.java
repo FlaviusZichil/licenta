@@ -48,6 +48,9 @@ public class UserEntity {
 	@Column(name = "password")
 	private String password;
 	
+	@Column(name = "blocked")
+	private Boolean blocked;
+	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserTrip> userTrips;
 	
@@ -152,6 +155,14 @@ public class UserEntity {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public boolean isBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(Boolean blocked) {
+		this.blocked = blocked;
 	}
 
 	public List<UserTrip> getUserTrips() {

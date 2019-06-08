@@ -11,7 +11,7 @@
 		 				<h5> Utilizatori </h5>
 		 			</div>
 		 			<div class="card-body pre-scrollable">
-		 				<table class="table table-dark">
+		 				<table class="table table-dark table-bordered">
 		 					<tr>
 		 						<th class="text-center"> NUME </th>
 		 						<th class="text-center"> EMAIL </th>
@@ -27,8 +27,8 @@
 		 						<td class="text-center"> <h6 th:text="${user.finishedTrips}"></h6> </td>
 		 						<td class="text-center"> <h6 th:text="${user.absences}"></h6> </td>
 		 						<td class="text-center">
-		 							<input type="submit" name="submit" class="btn btn-danger" value="Blocheaza"/>
-		 							 <input type="submit" name="submit" class="btn btn-info" value="Detalii"/>
+		 							 <input th:if="${user.userDTO.blocked} == false" type="submit" th:name="${user.userDTO.id}" class="btn btn-danger" value="Blocheaza"/>
+		 							 <input type="submit" th:name="${user.userDTO.id}" class="btn btn-info" value="Detalii"/>
 		 						 </td>
 		 					</tr>
 		 				</table>
@@ -40,7 +40,7 @@
 		 				<h5> Membrii Staff </h5>
 		 			</div>
 		 			<div class="card-body pre-scrollable">
-		 				<table class="table table-dark">
+		 				<table class="table table-dark table-bordered">
 		 					<tr>
 		 						<th class="text-center"> NUME </th>
 		 						<th class="text-center"> EMAIL </th>
@@ -58,8 +58,8 @@
 		 						<td class="text-center"> <h6 th:text="${staff.absences}"></h6> </td>
 		 						<td class="text-center"> <h6 th:text="${staff.articlesPosted}"></h6> </td>
 		 						<td class="text-center">
-		 							<input type="submit" name="submit" class="btn btn-danger" value="Blocheaza"/>
-		 							 <input type="submit" name="submit" class="btn btn-info" value="Detalii"/>
+		 							 <input th:if="${staff.userDTO.blocked} == false" type="submit" th:name="${staff.userDTO.id}" class="btn btn-danger" value="Blocheaza"/>
+		 							 <input type="submit" th:name="${staff.userDTO.id}" class="btn btn-info" value="Detalii"/>
 		 						 </td>
 		 					</tr>
 		 				</table>

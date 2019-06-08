@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import app.dto.ArticleDTO;
+import app.documents.Article;
 import app.dto.CityDTO;
 import app.dto.PromoCodeDTO;
 import app.dto.RoleDTO;
@@ -16,14 +16,18 @@ import app.dto.TripDTO;
 import app.dto.UserDTO;
 import app.entities.UserEntity;
 import app.entities.UserTrip;
+import app.repositories.ArticleRepository;
 import app.repositories.UserRepository;
+import app.repositories.UserTripRepository;
 
 @Component
-public class UserUtils {
-	
+public class UserUtils {	
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private ArticleRepository articleRepository;
+	@Autowired
+	private UserTripRepository userTripRepository;
 	@Autowired
 	private Conversion conversion;
 	
@@ -38,7 +42,7 @@ public class UserUtils {
 		UserDTO userDTO = new UserDTO(user.getId(), user.getFirstName(), user.getLastName(),
 									  user.getBirthDate(), user.getPoints(), cityDTO, 
 									  user.getEmail(), user.getExperience(), getAllTripsDTOForUser(user),
-									  roleDTO, promoCodeDTO, user.getRegister());
+									  roleDTO, promoCodeDTO, user.getRegister(), user.isBlocked());
 		return userDTO;
 	}
 	
@@ -67,6 +71,36 @@ public class UserUtils {
 			     }
 			 });
 		return tripsDTO;
+	}
+	
+	public Integer getFinishedTripsForUser(UserEntity user) {
+		Integer finishedTrips = 0;
+		for(UserTrip userTrip : userTripRepository.findAll()) {
+			if(userTrip.getUser().equals(user) && userTrip.getTrip().getStatus().equals("Finished")) {
+				finishedTrips++;
+			}
+		}
+		return finishedTrips;
+	}
+	
+	public Integer getAbsencesForUser(UserEntity user) {
+		Integer absences = 0;
+		for(UserTrip userTrip : userTripRepository.findAll()) {
+			if(userTrip.getUser().equals(user) && !userTrip.isParticipated()) {
+				absences++;
+			}
+		}
+		return absences;
+	}
+	
+	public Integer getArticleForUser(UserEntity user) {
+		Integer articlesForUser = 0;
+		for(Article article : articleRepository.findAll()) {
+			if(article.getUserId() == user.getId()) {
+				articlesForUser++;
+			}
+		}
+		return articlesForUser;
 	}
 	
 	public UserEntity getUserById(Integer userId) {

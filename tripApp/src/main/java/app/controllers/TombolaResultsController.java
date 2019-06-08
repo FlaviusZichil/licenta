@@ -45,9 +45,6 @@ public class TombolaResultsController {
 			setWinnersOnModel(model);
 			setParticipantsOnModel(model, session);
 		}
-		else {
-			System.out.println("Prea putini participanti");
-		}
 		return "views/admin/tombolaResultsView";
 	}
 	

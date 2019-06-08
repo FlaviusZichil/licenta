@@ -67,15 +67,15 @@ public class TombolaController {
 			
 			for (Tombola registrationForGivenDate : this.getAllRegistrationsForDate(date.toString())) {
 				UserEntity user = registrationForGivenDate.getUser();
-				if (registrationForGivenDate.getStatus().equals("first")) {
+				if (registrationForGivenDate.getStatus().equals("Locul 1")) {
 					tombolaDTO.setFirstPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}
 
-				if (registrationForGivenDate.getStatus().equals("second")) {
+				if (registrationForGivenDate.getStatus().equals("Locul 2")) {
 					tombolaDTO.setSecondPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}
 
-				if (registrationForGivenDate.getStatus().equals("third")) {
+				if (registrationForGivenDate.getStatus().equals("Locul 3")) {
 					tombolaDTO.setThirdPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}
 			}

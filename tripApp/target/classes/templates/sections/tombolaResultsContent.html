@@ -5,6 +5,9 @@
 		<div class="row">
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<div th:if="${wereWinnersPicked} == true">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Extragerea a fost efectuata pentru luna curenta!</p> 	
+				</div>
 				<div id="participants" class="card mt-3">
 					<div class="card-header bg-info color">
 						<h5 class="text-center"> Participanti </h5>
@@ -26,12 +29,12 @@
 							</tr>
 						</table>
 					</div>
-					<div class="card-footer">
-						<p id="getTombolaResults" class="btn btn-success" onclick="getTombolaResults()"> Extrage castigatorii </p>
+					<div class="card-footer" th:if="${wereWinnersPicked} != true">
+						<input type="submit" name="submit" class="btn btn-success" value="Extrage castigatorii"/>
 					</div>
 				</div>
 				
-				<div id="results" class="card w-100 mb-4 mt-3" style="display: none">
+				<div id="results" class="card w-100 mb-4 mt-3">
 		 			<div class="card-header bg-info text-center color">
 		 				<h5> Rezultate </h5>
 		 			</div>
@@ -44,42 +47,29 @@
 								<th class="text-center"> DATA INSCRIERII </th>
 								<th class="text-center"> STATUS </th>
 		 					</tr>
-<!-- 		 					<tr th:each="result : ${results}"> -->
-<!-- 		 						<td align=center>  -->
-<!-- 		 							<h6 th:text="${result.userDTO.lastName} + ' ' + ${result.userDTO.firstName}"></h6>  -->
-<!-- 		 						</td> -->
-<!-- 		 						<td align=center> -->
-<!-- 		 							<h6 th:text="${result.userDTO.email}"></h6>  -->
-<!-- 		 						</td> -->
-<!-- 		 						<td align=center> -->
-<!-- 		 							<h6 th:text="${result.userDTO.cityDTO.name}"></h6>  -->
-<!-- 		 						</td> -->
-<!-- 		 						<td align=center> -->
-<!-- 		 							<h6 th:text="${result.date}"></h6>  -->
-<!-- 		 						</td> -->
-<!-- 		 						<td align=center> -->
-<!-- 		 							<h6 th:text="${result.status}"></h6>  -->
-<!-- 		 						</td> -->
-<!-- 		 					</tr> -->
+		 					<tr th:each="result : ${results}">
+		 						<td align=center> 
+		 							<h6 th:text="${result.userDTO.lastName} + ' ' + ${result.userDTO.firstName}"></h6> 
+		 						</td>
+		 						<td align=center>
+		 							<h6 th:text="${result.userDTO.email}"></h6> 
+		 						</td>
+		 						<td align=center>
+		 							<h6 th:text="${result.userDTO.cityDTO.name}"></h6> 
+		 						</td>
+		 						<td align=center>
+		 							<h6 th:text="${result.date}"></h6> 
+		 						</td>
+		 						<td align=center>
+		 							<h6 th:text="${result.status}"></h6> 
+		 						</td>
+		 					</tr>
 		 				</table>
 		 			</div>
 		 		</div>
 			</div>
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
-		</div>
+		</div>	
 	</form>
 </body>
-<script>
-function getTombolaResults() {
-  var x = document.getElementById("results");
-  var participants = document.getElementById("participants");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-    x.focus();
-  } else {
-    x.style.display = "none";
-    participants.focus();
-  }
-}
-</script>
 </html>

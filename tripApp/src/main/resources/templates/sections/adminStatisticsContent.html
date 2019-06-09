@@ -31,6 +31,92 @@
 			</div>
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		</div>
+		
+		<div class="row">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-4 col-sm-4 col-xs-2 fla">
+				<div class="card mb-2">
+					<div class="card-header text-center color bg-info">
+						<h5> Roluri </h5>
+					</div>
+					<div class="card-body">
+						<div>
+							<canvas id="barChart"></canvas>
+					    </div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-4 col-xs-2 fla">
+				<div class="card mb-2">
+					<div class="card-header text-center color bg-info">
+						<h5> Statusul utilizatorilor </h5>
+					</div>
+					<div class="card-body">
+						<div>
+							<canvas id="doughnutChartStatus"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+			<div class="row">
+				<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+				<div class="col-md-4 col-sm-4 col-xs-2 fla">
+					<div class="card mb-2">
+						<div class="card-header text-center color bg-info">
+							<h5> Ascensiuni </h5>
+						</div>
+						<div class="card-body">
+							<div>
+								<canvas id="pieChartAscensiuni"></canvas>
+						    </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-4 col-xs-2 fla">
+					<div class="card mb-2">
+						<div class="card-header text-center color bg-info">
+							<h5> Numarul de ascensiuni pe luni </h5>
+						</div>
+						<div class="card-body">
+							<div>
+								<canvas id="lineChart"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+				<div class="col-md-4 col-sm-4 col-xs-2 fla">
+					<div class="card mb-2">
+						<div class="card-header text-center color bg-info">
+							<h5> Utilizatori noi pe luni </h5>
+						</div>
+						<div class="card-body">
+							<div>
+								<canvas id="lineChartUsers"></canvas>
+						    </div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 col-sm-4 col-xs-2 fla">
+					<div class="card mb-2">
+						<div class="card-header text-center color bg-info">
+							<h5> Ascensiuni pentru ghizi </h5>
+						</div>
+						<div class="card-body">
+							<div>
+								<canvas id="barChartGuides"></canvas>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 	</form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
 <script th:inline="javascript">
@@ -43,6 +129,98 @@ var myLineChart = new Chart(ctxD, {
       data: [[${ages}]],
       backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1"],
       hoverBackgroundColor: ["#FF5A5E", "#5AD3D1", "#FFC870", "#A8B3C5"]
+    }]
+  },
+  options: {
+    responsive: true
+  }
+});
+
+</script>
+<script>
+  //line
+  var ctxL = document.getElementById("lineChart").getContext('2d');
+  var myLineChart = new Chart(ctxL, {
+    type: 'line',
+    data: {
+      labels: ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"],
+      datasets: [{
+          label: [[${lastYear}]],
+          data: [[${monthsForLastYear}]],
+          backgroundColor: [
+            'rgba(105, 0, 132, .2)',
+          ],
+          borderColor: [
+            'rgba(200, 99, 132, .7)',
+          ],
+          borderWidth: 2
+        },
+        {
+          label: [[${currentYear}]],
+          data: [[${monthsForCurrentYear}]],
+          backgroundColor: [
+            'rgba(0, 137, 132, .2)',
+          ],
+          borderColor: [
+            'rgba(0, 10, 130, .7)',
+          ],
+          borderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+</script>
+<script>
+  //line
+  var ctxL = document.getElementById("lineChartUsers").getContext('2d');
+  var myLineChart = new Chart(ctxL, {
+    type: 'line',
+    data: {
+      labels: ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"],
+      datasets: [{
+          label: [[${lastYear}]],
+          data: [[${newUsersForLastYear}]],
+          backgroundColor: [
+            'rgba(105, 0, 132, .2)',
+          ],
+          borderColor: [
+            'rgba(200, 99, 132, .7)',
+          ],
+          borderWidth: 2
+        },
+        {
+          label: [[${currentYear}]],
+          data: [[${newUsersForCurrentYear}]],
+          backgroundColor: [
+            'rgba(0, 137, 132, .2)',
+          ],
+          borderColor: [
+            'rgba(0, 10, 130, .7)',
+          ],
+          borderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+</script>
+<script th:inline="javascript">
+var ctxD = document.getElementById("doughnutChartStatus").getContext('2d');
+var myLineChart = new Chart(ctxD, {
+  type: 'doughnut',
+  data: {
+    labels: ["Activi", "Blocati"],
+    datasets: [{
+      data: [[${statuses}]],
+      backgroundColor: ["#F7464A", "#46BFBD"],
+      hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
     }]
   },
   options: {
@@ -66,6 +244,91 @@ var myLineChart = new Chart(ctxD, {
     },
     options: {
       responsive: true
+    }
+  });
+
+</script>
+<script th:inline="javascript">
+  //pie
+  var ctxP = document.getElementById("pieChartAscensiuni").getContext('2d');
+  var myPieChart = new Chart(ctxP, {
+    type: 'pie',
+    data: {
+      labels: ["Disponibile", "Finalizate"],
+      datasets: [{
+        data: [[${trips}]],
+        backgroundColor: ["#F7464A", "#46BFBD"],
+        hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+</script>
+<script th:inline="javascript">
+  //bar
+  var ctxB = document.getElementById("barChart").getContext('2d');
+  var myBarChart = new Chart(ctxB, {
+    type: 'bar',
+    data: {
+      labels: ["Utilizator", "Membru Staff", "Ghid"],
+      datasets: [{
+        label: 'Numar de utilizatori',
+        data: [[${roles}]],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255,99,132,1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+</script>
+<script th:inline="javascript">
+  //bar
+  var ctxB = document.getElementById("barChartGuides").getContext('2d');
+  var myBarChart = new Chart(ctxB, {
+    type: 'bar',
+    data: {
+      labels: [[${guidesNames}]],
+      datasets: [{
+        label: 'Numar total de ascensiuni',
+        data: [[${guidesTrips}]],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.2)'
+        ],
+        borderColor: [
+          'rgba(54, 162, 235, 0.2)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
     }
   });
 

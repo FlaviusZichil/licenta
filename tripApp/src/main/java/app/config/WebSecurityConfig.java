@@ -37,22 +37,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		
 		http.authorizeRequests().antMatchers("/register", "/login").permitAll();
-		http.authorizeRequests().antMatchers("/user").access("hasRole('ROLE_USER')");
 		
 		http.authorizeRequests().antMatchers("/tombola-results").access("hasRole('ROLE_ADMIN')");
 		http.authorizeRequests().antMatchers("/users-reports").access("hasRole('ROLE_ADMIN')");
 		http.authorizeRequests().antMatchers("/user-details").access("hasRole('ROLE_ADMIN')");
-		
-		http.authorizeRequests().antMatchers("/guideHome").access("hasRole('ROLE_GUIDE')");
-		http.authorizeRequests().antMatchers("/staffHome").access("hasRole('ROLE_STAFF')");
+		http.authorizeRequests().antMatchers("/statistics").access("hasRole('ROLE_ADMIN')");
+			
+		http.authorizeRequests().antMatchers("/my-articles").access("hasRole('ROLE_STAFF')");	
 		
 		http.authorizeRequests().antMatchers("/add-article").access("hasRole('ROLE_STAFF') or hasRole('ROLE_GUIDE')");
 		http.authorizeRequests().antMatchers("/achievements").access("hasRole('ROLE_STAFF') or hasRole('ROLE_USER')");
 		http.authorizeRequests().antMatchers("/add-trip").access("hasRole('ROLE_USER') or hasRole('ROLE_GUIDE') or hasRole('ROLE_STAFF')");
-		http.authorizeRequests().antMatchers("/personal-data").access("hasRole('ROLE_USER') or hasRole('ROLE_GUIDE') or hasRole('ROLE_STAFF')");
-		http.authorizeRequests().antMatchers("/my-articles").access("hasRole('ROLE_STAFF')");
-
-		
+		http.authorizeRequests().antMatchers("/personal-data").access("hasRole('ROLE_USER') or hasRole('ROLE_GUIDE') or hasRole('ROLE_STAFF')");	
+	
 		http.authorizeRequests().antMatchers("/trip-details").authenticated();
 		http.authorizeRequests().antMatchers("/all-trips").authenticated();
 		http.authorizeRequests().antMatchers("/my-trips").authenticated();

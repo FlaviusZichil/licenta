@@ -7,13 +7,11 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.repositories.TripRepository;
@@ -62,25 +60,26 @@ public class AdminStatisticsController {
 		return "views/admin/statisticsView";
 	}
 	
+	private void updateList(List<Integer> list, Integer index) {
+		Integer newValue = list.get(index) + 1;
+		list.set(index, newValue);
+	}
+	
 	private List<Integer> getAgesFromUsers(){
 		List<Integer> ages = Arrays.asList(0, 0, 0, 0);	
 		for(UserEntity user : userRepository.findAll()) {
 			if(user.getRole().getName().equals("ROLE_USER") || user.getRole().getName().equals("ROLE_STAFF")) {
 				if(getAgeFromBirthDate(user.getBirthDate()) < 20) {
-					Integer newValue = ages.get(0) + 1;
-					ages.set(0, newValue);
+					updateList(ages, 0);
 				}
 				if(getAgeFromBirthDate(user.getBirthDate()) >= 20 && getAgeFromBirthDate(user.getBirthDate()) < 30) {
-					Integer newValue = ages.get(1) + 1;
-					ages.set(1, newValue);
+					updateList(ages, 1);
 				}
 				if(getAgeFromBirthDate(user.getBirthDate()) >= 30 && getAgeFromBirthDate(user.getBirthDate()) < 50) {
-					Integer newValue = ages.get(2) + 1;
-					ages.set(2, newValue);
+					updateList(ages, 2);
 				}
 				if(getAgeFromBirthDate(user.getBirthDate()) > 50) {
-					Integer newValue = ages.get(3) + 1;
-					ages.set(3, newValue);
+					updateList(ages, 3);
 				}
 			}		
 		}
@@ -99,16 +98,13 @@ public class AdminStatisticsController {
 		for(UserEntity user : userRepository.findAll()) {
 			if(user.getRole().getName().equals("ROLE_USER") || user.getRole().getName().equals("ROLE_STAFF")) {
 				if(user.getExperience() != null && user.getExperience().equals("Incepator")) {
-					Integer newValue = experiences.get(0) + 1;
-					experiences.set(0, newValue);
+					updateList(experiences, 0);
 				}
 				if(user.getExperience() != null && user.getExperience().equals("Mediu")) {
-					Integer newValue = experiences.get(1) + 1;
-					experiences.set(1, newValue);
+					updateList(experiences, 1);
 				}
 				if(user.getExperience() != null && user.getExperience().equals("Avansat")) {
-					Integer newValue = experiences.get(2) + 1;
-					experiences.set(2, newValue);
+					updateList(experiences, 2);
 				}
 			}		
 		}
@@ -119,17 +115,19 @@ public class AdminStatisticsController {
 		List<Integer> roles = Arrays.asList(0, 0, 0);	
 		for(UserEntity user : userRepository.findAll()) {
 			if(!user.getRole().getName().equals("ROLE_ADMIN") && !user.isBlocked()) {
-				if(user.getRole().getName().equals("ROLE_USER")) {
-					Integer newValue = roles.get(0) + 1;
-					roles.set(0, newValue);
-				}
-				if(user.getRole().getName().equals("ROLE_STAFF")) {
-					Integer newValue = roles.get(1) + 1;
-					roles.set(1, newValue);
-				}
-				if(user.getRole().getName().equals("ROLE_GUIDE")) {
-					Integer newValue = roles.get(2) + 1;
-					roles.set(2, newValue);
+				switch(user.getRole().getName()) {
+					case "ROLE_USER": {
+						updateList(roles, 0);
+						break;
+					}
+					case "ROLE_STAFF": {
+						updateList(roles, 1);
+						break;
+					}
+					case "ROLE_GUIDE": {
+						updateList(roles, 2);
+						break;
+					}	
 				}
 			}		
 		}
@@ -141,12 +139,10 @@ public class AdminStatisticsController {
 		for(UserEntity user : userRepository.findAll()) {
 			if(user.getRole().getName().equals("ROLE_USER") || user.getRole().getName().equals("ROLE_STAFF")) {
 				if(!user.isBlocked()) {
-					Integer newValue = statuses.get(0) + 1;
-					statuses.set(0, newValue);
+					updateList(statuses, 0);
 				}
 				else {
-					Integer newValue = statuses.get(1) + 1;
-					statuses.set(1, newValue);
+					updateList(statuses, 1);
 				}
 			}		
 		}
@@ -157,12 +153,10 @@ public class AdminStatisticsController {
 		List<Integer> statuses = Arrays.asList(0, 0);	
 		for(Trip trip : tripRepository.findAll()) {
 			if(trip.getStatus().equals("Active")) {
-				Integer newValue = statuses.get(0) + 1;
-				statuses.set(0, newValue);
+				updateList(statuses, 0);
 			}
 			else {
-				Integer newValue = statuses.get(1) + 1;
-				statuses.set(1, newValue);
+				updateList(statuses, 1);
 			}			
 		}
 		return statuses;

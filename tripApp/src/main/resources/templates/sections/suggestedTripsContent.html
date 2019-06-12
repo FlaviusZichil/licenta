@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form th:action="@{/suggested-trips}" th:object="${tripViewModel}" method="post">	
+		<div class="row">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+				<div th:each="tripDTO : *{tripsDTO}">
+					<div class="card mt-2 mb-2">
+						<div class="card-header bg-info color text-center">
+							<h5 th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
+						</div>
+						<div class="card-body">
+							<table class="table table-dark table-bordered w-100">
+								<tr>
+									<td class="text-center">
+										<h6> Data plecarii </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="${tripDTO.startDate}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Data intoarcerii </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="${tripDTO.endDate}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Capacitate (editabil) </h6>
+									</td>
+									<td class="text-center">
+										<h6 contenteditable="true" th:text="${tripDTO.capacity}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Munte </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="${tripDTO.peakDTO.mountainDTO.name}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Judet </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="${tripDTO.peakDTO.cityDTO.name}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Dificultate (editabil)</h6>
+									</td>
+									<td class="text-center">
+										<h6 contenteditable="true" th:text="${tripDTO.routeDTO.difficulty}"></h6>
+									</td>
+								</tr>
+								<tr th:each="point : ${tripDTO.routeDTO.routePointsDTO}">
+									<td class="text-center">
+										<h6> Traseu </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="${point.pointDTO.pointName}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Puncte (editabil) </h6>
+									</td>
+									<td class="text-center">
+										<h6 contenteditable="true" th:text="${tripDTO.points}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Actiuni </h6>
+									</td>
+									<td class="text-center">
+										<input type="submit" class="btn btn-success" value="Organizeaza ascensiunea"/>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+
+</html>

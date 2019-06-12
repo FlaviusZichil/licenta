@@ -337,10 +337,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 									<tr>
 										<td colspan="2">
 											<div th:if="${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF') }">
-												<input class="btn btn-success btn-block" type="submit" value="Sugereaza ascensiunea"/>
+												<input class="btn btn-success btn-block" type="submit" name="suggestTrip" value="Sugereaza ascensiunea"/>
 											</div>
 											<div th:if="${#request.isUserInRole('ROLE_GUIDE')}">
-												<input class="btn btn-success btn-block" type="submit" value="Adauga ascensiunea"/>
+												<input class="btn btn-success btn-block" type="submit" name="addTrip" value="Adauga ascensiunea"/>
 											</div>
 										</td>
 									</tr>

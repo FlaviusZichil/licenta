@@ -101,6 +101,8 @@ public class AddTripController {
 	
 	@PostMapping("/add-trip")
 	public String postAddTrip(Model model, Principal principal,
+							  @RequestParam(name = "addTrip", required = false) String addTrip,
+							  @RequestParam(name = "suggestTrip", required = false) String suggestTrip,
 							  @RequestParam(name = "mountain", required = false) String mountain,
 							  @RequestParam(name = "city", required = false) String city,
 						      @RequestParam(name = "peak", required = false) String peak,
@@ -138,20 +140,25 @@ public class AddTripController {
 			model.addAttribute("invalidLocation", true);
 			isLocationValid = false;
 		}
-		
+
 		if(areDatesValid && isCapacityValid && arePointsValid && isLocationValid) {
-			addTripToDatabase(mountain, city, peak, Integer.parseInt(altitude), startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), principal);
-			System.out.println("calatorie adaugata");
+
+			if(addTrip != null) {
+				addTripToDatabase(mountain, city, peak, Integer.parseInt(altitude), startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), "Active", principal);
+				System.out.println("a adaugta un ghid");
+			}
+			if(suggestTrip != null) {
+				addTripToDatabase(mountain, city, peak, Integer.parseInt(altitude), startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), "Suggested", principal);
+				System.out.println("a adaugta un user");
+			}
 		}
-		else {
-			System.out.println("eroare la adaugare");
-		}	
+
 		return "redirect:/all-trips";
 	}
 	
 	private void addTripToDatabase(String mountain, String city, String peak, Integer altitude, String startDate, 
 								   String endDate, String initialPoint, String interemediatePoints, String finalPoint, 
-								   Integer capacity, String difficulty, Integer points, Principal principal) {
+								   Integer capacity, String difficulty, Integer points, String status, Principal principal) {
 		
 		Peak peakFortrip = this.getPeakByName(peak, altitude, city, mountain);
 		
@@ -160,7 +167,13 @@ public class AddTripController {
 		
 		Guide guide = this.getGuideByUserId(principal);
 		
-		Trip trip = new Trip(capacity, startDate, endDate, "Active", points, guide, route, peakFortrip);
+		Trip trip = null;
+		if(status.equals("Active")) {
+			trip = new Trip(capacity, startDate, endDate, status, points, guide, route, peakFortrip);
+		}
+		if(status.equals("Suggested")) {
+			trip = new Trip(capacity, startDate, endDate, status, points, null, route, peakFortrip);
+		}
 		tripRepository.save(trip);		
 	}
 	

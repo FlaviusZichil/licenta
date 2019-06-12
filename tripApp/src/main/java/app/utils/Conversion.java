@@ -76,7 +76,10 @@ public class Conversion {
 	
 	public TripDTO convertFromTripToTripDTO(Trip trip) {
 		PeakDTO peakDTO = convertFromPeakToPeakDTO(trip.getPeak());
-		GuideDTO guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber(), trip.getGuide().getDescription());
+		GuideDTO guideDTO = null;
+		if(!trip.getStatus().equals("Suggested")) {
+			guideDTO = new GuideDTO(trip.getGuide().getId(), trip.getGuide().getUser(), trip.getGuide().getYearsOfExperience(), trip.getGuide().getPhoneNumber(), trip.getGuide().getDescription());
+		}
 		RouteDTO routeDTO = new RouteDTO(trip.getRoute().getId(), trip.getRoute().getDifficulty(), TripUtils.getRoutePointsDTOForTrip(trip));
 		
 		TripDTO tripDTO = new TripDTO(trip.getId(), trip.getCapacity(), trip.getStartDate(), trip.getEndDate(), trip.getStatus(), trip.getPoints(),

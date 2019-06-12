@@ -135,7 +135,6 @@ public class PersonalDataController {
 	}
 	
 	private void verifyDescription(Model model, List<String> personalDates, UserEntity user) {
-		System.out.println(personalDates.toString());
 		if(personalDates.size() > 6 && personalDates.get(6).length() > 10) {
 			user.getGuide().setDescription(personalDates.get(6));
 		}

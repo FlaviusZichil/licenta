@@ -11,6 +11,15 @@ public class GuideDTO {
 	private Integer finishedTrips;
 	private UserEntity user;
 
+	public GuideDTO() {}
+	
+	public GuideDTO(Integer yearsOfExperience, String phoneNumber, UserEntity user) {
+		super();
+		this.yearsOfExperience = yearsOfExperience;
+		this.phoneNumber = phoneNumber;
+		this.user = user;
+	}
+
 	public GuideDTO(Integer guideId, UserEntity user, Integer yearsOfExperience, String phoneNumber, String description) {
 		super();
 		this.guideId = guideId;

@@ -39,6 +39,15 @@ public class Guide {
 
 	@OneToMany(mappedBy = "guide", cascade = CascadeType.ALL)
 	private List<Trip> trips;
+	
+	public Guide() {}
+
+	public Guide(UserEntity user, Integer yearsOfExperience, String phoneNumber) {
+		super();
+		this.user = user;
+		this.yearsOfExperience = yearsOfExperience;
+		this.phoneNumber = phoneNumber;
+	}
 
 	public Integer getId() {
 		return id;

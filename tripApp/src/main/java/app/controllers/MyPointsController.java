@@ -15,10 +15,8 @@ import app.utils.UserUtils;
 
 @Controller
 public class MyPointsController {
-
 	@Autowired
 	private TombolaRepository tombolaRepository;
-
 	@Autowired
 	private UserUtils userUtils;
 

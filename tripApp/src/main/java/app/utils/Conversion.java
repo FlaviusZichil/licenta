@@ -19,20 +19,19 @@ import app.dto.CityDTO;
 import app.dto.GuideDTO;
 import app.dto.MountainDTO;
 import app.dto.PeakDTO;
+import app.dto.PointDTO;
 import app.dto.RouteDTO;
-import app.dto.TombolaResultsDTO;
 import app.dto.TripDTO;
 import app.entities.Guide;
+import app.entities.Mountain;
 import app.entities.Peak;
-import app.entities.Tombola;
+import app.entities.Point;
 import app.entities.Trip;
 
 @Component
-public class Conversion {
-	
+public class Conversion {	
 	@Autowired
 	private ArticleUtils articleUtils;
-	
 	@Autowired
 	private UserUtils userUtils;
 	
@@ -93,5 +92,15 @@ public class Conversion {
 		PeakDTO peakDTO = new PeakDTO(peak.getId(), peak.getPeakName(), peak.getAltitude(), cityDTO, mountainDTO, peak.getTrips());
 		
 		return peakDTO;
+	}
+	
+	public MountainDTO convertFromMountainToMountainDTO(Mountain mountain) {
+		MountainDTO mountainDTO = new MountainDTO(mountain.getMountainName());
+		return mountainDTO;
+	}
+	
+	public PointDTO convertFromPointToPointDTO(Point point) {
+		PointDTO pointDTO = new PointDTO(point.getId(), point.getPointName(), convertFromMountainToMountainDTO(point.getMountain()));
+		return pointDTO;
 	}
 }

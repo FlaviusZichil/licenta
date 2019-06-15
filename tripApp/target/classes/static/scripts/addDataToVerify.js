@@ -2,18 +2,18 @@ function addSelectToVerify(select, resultParagraph){
 		var result = select.options[select.selectedIndex].text;
 		
 		switch(resultParagraph){
-			case verifyMountain:
-				resultParagraph.innerHTML = result;
-				break;
-			case verifyCity:
-				resultParagraph.innerHTML = result;
-				break;
+//			case verifyMountain:
+//				resultParagraph.innerHTML = result;
+//				break;
+//			case verifyCity:
+//				resultParagraph.innerHTML = result;
+//				break;
 			case verifyPeak:
 				resultParagraph.innerHTML = result;
 				break;
-			case verifyAltitude:
-				resultParagraph.innerHTML = result;
-				break;
+//			case verifyAltitude:
+//				resultParagraph.innerHTML = result;
+//				break;
 			case verifyInitialPoint:
 				resultParagraph.innerHTML = result;
 				break;

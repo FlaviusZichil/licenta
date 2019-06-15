@@ -16,6 +16,8 @@ public class TripDTO {
     private PeakDTO peakDTO;
     private GuideDTO guideDTO;
     
+    public TripDTO() {}
+    
 	public TripDTO(Integer id, Integer capacity, String startDate, String endDate, String status, Integer points,
 			List<UserTrip> users, RouteDTO routeDTO, PeakDTO peakDTO, GuideDTO guideDTO) {
 		super();

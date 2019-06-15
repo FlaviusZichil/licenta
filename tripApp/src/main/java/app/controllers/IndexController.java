@@ -21,14 +21,11 @@ import app.utils.TripUtils;
 import app.utils.UserUtils;
 
 @Controller
-public class IndexController {
-	
+public class IndexController {	
 	@Autowired
-	private TripRepository tripRepository;
-	
+	private TripRepository tripRepository;	
 	@Autowired
-	private Conversion conversion;
-	
+	private Conversion conversion;	
 	@Autowired
 	private UserUtils userUtils;
 	

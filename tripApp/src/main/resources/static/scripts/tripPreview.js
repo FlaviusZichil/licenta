@@ -24,8 +24,8 @@
 					var counterSelect = 0;
 					for(var i = 0; i < selects.length; i++){
 						var option = selects[i].options[selects[i].selectedIndex].text;
-						if(option == "Numele muntelui" || option == "Altitudinea" || option == "Numele varfului" || option == "Dificultate" || 
-						   option == "Judetul" || option == "Punctul initial" || option == "Punctul final" || option == "Punct intermediar"){
+						if(option == "Numele varfului" || option == "Dificultate" || 
+						   option == "Punctul initial" || option == "Punctul final" || option == "Punct intermediar"){
 							verifyIfDivContainsElement(collapseOne, selects[i], counterSelect++);
 							verifyIfDivContainsElement(collapseTwo, selects[i], counterSelect++);
 							verifyIfDivContainsElement(collapseThree, selects[i], counterSelect++);

@@ -34,16 +34,12 @@ import app.utils.UserUtils;
 
 @Controller
 public class AllTripsController {
-
 	@Autowired
 	private UserTripRepository userTripRepository;
-	
 	@Autowired
 	private TripRepository tripRepository;
-	
 	@Autowired
 	private UserUtils userUtils;
-	
 	@Autowired
 	private Conversion conversion;
 

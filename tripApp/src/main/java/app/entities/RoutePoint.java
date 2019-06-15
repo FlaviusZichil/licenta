@@ -69,4 +69,10 @@ public class RoutePoint {
 	public void setOrder(String order) {
 		this.orderOfPoint = order;
 	}
+
+	@Override
+	public String toString() {
+		return "RoutePoint [id=" + id + ", route=" + route + ", point=" + point + ", orderOfPoint=" + orderOfPoint
+				+ "]";
+	}
 }

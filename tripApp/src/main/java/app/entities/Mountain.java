@@ -26,6 +26,9 @@ public class Mountain {
 	@OneToMany(mappedBy = "mountain", cascade = CascadeType.ALL)
     private List<Peak> peaks;
 	
+	@OneToMany(mappedBy = "mountain", cascade = CascadeType.ALL)
+    private List<Point> points;
+	
 	public Mountain() {}
 	
 	public Mountain(String mountainName) {
@@ -50,6 +53,14 @@ public class Mountain {
 
 	public List<Peak> getPeaks() {
 		return peaks;
+	}
+
+	public List<Point> getPoints() {
+		return points;
+	}
+
+	public void setPoints(List<Point> points) {
+		this.points = points;
 	}
 
 	public void setPeaks(List<Peak> peaks) {

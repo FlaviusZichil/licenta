@@ -6,7 +6,9 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,13 +17,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import app.dto.CityDTO;
-import app.dto.MountainDTO;
 import app.dto.PeakDTO;
 import app.dto.PointDTO;
-import app.entities.City;
+import app.dto.TripDTO;
 import app.entities.Guide;
-import app.entities.Mountain;
 import app.entities.Peak;
 import app.entities.Point;
 import app.entities.Route;
@@ -29,9 +28,7 @@ import app.entities.RoutePoint;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.AddTripViewModel;
-import app.repositories.CityRepository;
 import app.repositories.GuideRepository;
-import app.repositories.MountainRepository;
 import app.repositories.PeakRepository;
 import app.repositories.PointRepository;
 import app.repositories.RoutePointRepository;
@@ -44,53 +41,31 @@ import app.utils.UserUtils;
 
 @Controller
 public class AddTripController {
-
 	@Autowired
-	private PeakRepository peakRepository;
-	
-	@Autowired
-	private MountainRepository mountainRepository;
-	
-	@Autowired
-	private CityRepository cityRepository;
-	
+	private PeakRepository peakRepository;	
 	@Autowired
 	private PointRepository pointRepository;
-	
 	@Autowired
 	private TripRepository tripRepository;
-	
 	@Autowired
 	private UserRepository userRepository;
-	
 	@Autowired
 	private GuideRepository guideRepository;
-	
 	@Autowired
 	private RouteRepository routeRepository;
-	
 	@Autowired
 	private RoutePointRepository routePointRepository;
-	
 	@Autowired
 	private Conversion conversion;
-	
 	@Autowired
 	private UserUtils userUtils;
 	
 	@GetMapping("/add-trip")
 	public String addTrip(Model model, AddTripViewModel addTripViewModel, Principal principal) {
-		
-		addTripViewModel.setPeaksDTO(this.getPeaksDTO());
-		addTripViewModel.setMountainsDTO(this.getMountainsDTO());
-		addTripViewModel.setCitiesDTO(this.getCitiesDTO());
-		addTripViewModel.setPointsDTO(this.getPointsDTO());
-		model.addAttribute("pointsDTO", this.getPointsDTO());
-		model.addAttribute("addTripViewModel", addTripViewModel);
+		setDataOnModel(addTripViewModel, model, null);
 		
 		if(principal != null) {
 			UserEntity user = userUtils.getUserByEmail(principal.getName());
-
 			if(user.getRole().getName().equals("ROLE_GUIDE") && TripUtils.getNumberOfFinishedTripsWithActiveStatusForGuide(user.getGuide()) > 0) {
 				model.addAttribute("guideHasUnfinishedTrips", true);
 			}
@@ -100,13 +75,10 @@ public class AddTripController {
 	}
 	
 	@PostMapping("/add-trip")
-	public String postAddTrip(Model model, Principal principal,
+	public String postAddTrip(Model model, Principal principal, AddTripViewModel addTripViewModel, TripDTO tripDTO,
 							  @RequestParam(name = "addTrip", required = false) String addTrip,
 							  @RequestParam(name = "suggestTrip", required = false) String suggestTrip,
-							  @RequestParam(name = "mountain", required = false) String mountain,
-							  @RequestParam(name = "city", required = false) String city,
 						      @RequestParam(name = "peak", required = false) String peak,
-							  @RequestParam(name = "altitude", required = false) String altitude,
 							  @RequestParam(name = "startDate", required = false) String startDate,
 							  @RequestParam(name = "endDate", required = false) String endDate,
 							  @RequestParam(name = "initialPoint", required = false) String initialPoint,
@@ -116,10 +88,16 @@ public class AddTripController {
 							  @RequestParam(name = "capacity", required = false) String capacity,
 							  @RequestParam(name = "points", required = false) String points) throws ParseException {
 		
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		boolean areDatesValid = true;
 		boolean isCapacityValid = true;
 		boolean arePointsValid = true;
 		boolean isLocationValid = true;
+		boolean areRoutePointsValid = true;
+		
+		System.out.println(initialPoint);
+		System.out.println(intermediatePoint);
+		System.out.println(finalPoint);
 		
 		if(!areDatesValid(startDate, endDate)) {
 			model.addAttribute("invalidDates", true);
@@ -130,64 +108,145 @@ public class AddTripController {
 			model.addAttribute("invalidCapacity", true);
 			isCapacityValid = false;
 		}
+		else {
+			tripDTO.setCapacity(Integer.parseInt(capacity));
+		}
 		
 		if(Integer.parseInt(points) < 50 && Integer.parseInt(points) > 75) {
 			model.addAttribute("invalidPoints", true);
 			arePointsValid = false;
 		}
+		else {
+			tripDTO.setPoints(Integer.parseInt(points));
+		}
 		
-		if(this.getPeakByName(peak, Integer.parseInt(altitude), city, mountain) == null) {
+		if(getPeakByName(peak) == null) {
 			model.addAttribute("invalidLocation", true);
 			isLocationValid = false;
 		}
-
-		if(areDatesValid && isCapacityValid && arePointsValid && isLocationValid) {
-
-			if(addTrip != null) {
-				addTripToDatabase(mountain, city, peak, Integer.parseInt(altitude), startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), "Active", principal);
-				System.out.println("a adaugta un ghid");
-			}
-			if(suggestTrip != null) {
-				addTripToDatabase(mountain, city, peak, Integer.parseInt(altitude), startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), "Suggested", principal);
-				System.out.println("a adaugta un user");
-			}
+		else {
+			tripDTO.setPeakDTO(conversion.convertFromPeakToPeakDTO(getPeakByName(peak)));
 		}
 
-		return "redirect:/all-trips";
+		if(!arePointsValid(createListOfPoints(initialPoint, intermediatePoint, finalPoint), peak)) {
+			model.addAttribute("invalidRoutePoints", true);
+			areRoutePointsValid = false;
+		}
+		
+		if(areDatesValid && isCapacityValid && arePointsValid && isLocationValid && areRoutePointsValid) {
+			if(addTrip != null) {
+				if(!hasTripsInPeriod(startDate, endDate, user.getGuide())) {
+					addTripToDatabase(peak, startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), "Active", principal);
+					model.addAttribute("tripAddedWithSuccess", true);
+				}
+				else {
+					model.addAttribute("hasTripsInThatPeriod", true);
+				}
+			}
+			if(suggestTrip != null) {
+				addTripToDatabase(peak, startDate, endDate, initialPoint, intermediatePoint, finalPoint, Integer.parseInt(capacity), difficulty, Integer.parseInt(points), "Suggested", principal);
+				model.addAttribute("tripAddedWithSuccess", true);
+			}
+			
+		}
+		setDataOnModel(addTripViewModel, model, tripDTO);
+		return "views/guide/guideAddTrip";
 	}
 	
-	private void addTripToDatabase(String mountain, String city, String peak, Integer altitude, String startDate, 
+	private void setDataOnModel(AddTripViewModel addTripViewModel, Model model, TripDTO tripDTO) {
+		addTripViewModel.setPeaksDTO(getPeaksDTO());
+		addTripViewModel.setPointsDTO(getPointsDTO());
+		model.addAttribute("pointsDTO", getPointsDTO());
+		model.addAttribute("addTripViewModel", addTripViewModel);
+		model.addAttribute("tripDTO", tripDTO);
+	}
+	
+	private List<PointDTO> createListOfPoints(String initialPoint, String intermediarePoints, String finalPoint){
+		List<PointDTO> pointsDTO = new ArrayList<>();
+		pointsDTO.add(conversion.convertFromPointToPointDTO(getPointByName(initialPoint.substring(0, initialPoint.indexOf(",")).trim())));
+		pointsDTO.add(conversion.convertFromPointToPointDTO(getPointByName(finalPoint.substring(0, finalPoint.indexOf(",")).trim())));
+		List<String> intermediatePoints = new ArrayList<>(Arrays.asList(intermediarePoints.split(",")));
+		for(String point : intermediatePoints) {
+			pointsDTO.add(conversion.convertFromPointToPointDTO(getPointByName(point)));
+		}
+		return pointsDTO;
+	}
+	
+	private void addTripToDatabase(String peakName, String startDate, 
 								   String endDate, String initialPoint, String interemediatePoints, String finalPoint, 
-								   Integer capacity, String difficulty, Integer points, String status, Principal principal) {
+								   Integer capacity, String difficulty, Integer points, String status, Principal principal) {		
+		Peak peak = getPeakByName(peakName);
 		
-		Peak peakFortrip = this.getPeakByName(peak, altitude, city, mountain);
-		
-		Route route = this.addRoute(difficulty);
-		this.addRoutePoints(route, interemediatePoints, initialPoint, finalPoint);
+		Route route = addRoute(difficulty);
+		addRoutePoints(route, interemediatePoints, initialPoint, finalPoint);
 		
 		Guide guide = this.getGuideByUserId(principal);
 		
 		Trip trip = null;
 		if(status.equals("Active")) {
-			trip = new Trip(capacity, startDate, endDate, status, points, guide, route, peakFortrip);
+			trip = new Trip(capacity, startDate, endDate, status, points, guide, route, peak);
 		}
 		if(status.equals("Suggested")) {
-			trip = new Trip(capacity, startDate, endDate, status, points, null, route, peakFortrip);
+			trip = new Trip(capacity, startDate, endDate, status, points, null, route, peak);
 		}
 		tripRepository.save(trip);		
 	}
 	
+	public <T> boolean hasDuplicates(Iterable<T> all) {
+	    Set<T> set = new HashSet<T>();
+	    for (T each: all) if (!set.add(each)) return true;
+	    return false;
+	}
+	
+	private boolean hasTripsInPeriod(String startDate, String endDate, Guide guide) {
+		for(Trip trip : guide.getTrips()) {
+			LocalDate tripStartDate = LocalDate.parse(trip.getStartDate());
+			LocalDate tripEndDate = LocalDate.parse(trip.getEndDate());
+			LocalDate givenStartDate = LocalDate.parse(startDate);
+			LocalDate givenEndDate = LocalDate.parse(endDate);
+			if(tripStartDate.isEqual(givenStartDate) || 
+					tripStartDate.isEqual(givenEndDate) || 
+					tripEndDate.isEqual(givenStartDate) || 
+					tripEndDate.isEqual(givenEndDate) || 
+					(
+					givenStartDate.isAfter(tripStartDate) &&
+					givenStartDate.isBefore(tripEndDate)
+					) ||
+					(
+					givenEndDate.isAfter(tripStartDate) &&
+					givenEndDate.isBefore(tripEndDate)
+					)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean arePointsValid(List<PointDTO> pointsDTO, String peak) {
+		Peak peakForPoints = getPeakByName(peak);
+
+		if(hasDuplicates(pointsDTO)) {
+			return false;
+		}
+		
+		for(PointDTO pointDTO : pointsDTO) {
+			if(!pointDTO.getMountainDTO().getName().equals(peakForPoints.getMountain().getMountainName())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	private Route addRoute(String difficulty) {
 		Route route = new Route();
-		route.setDifficulty(difficulty);
-		
+		route.setDifficulty(difficulty);	
 		routeRepository.save(route);
 		return route;
 	}
 	
 	private void addRoutePoints(Route route, String routePoints, String initialPoint, String finalPoint) {
 		Integer order = 1;
-		Point initialPointForTrip = getPointByName(initialPoint);
+		Point initialPointForTrip = getPointByName(initialPoint.substring(0, initialPoint.indexOf(",")).trim());
 		routePointRepository.save(new RoutePoint(route, initialPointForTrip, order.toString()));
 		
 		List<String> interemediatePointsForTrip = new ArrayList<>(Arrays.asList(routePoints.split(",")));
@@ -198,7 +257,7 @@ public class AddTripController {
 			routePointRepository.save(new RoutePoint(route, intermediatePointForTrip, order.toString()));
 		}
 				
-		Point finalPointForTrip = this.getPointByName(finalPoint);
+		Point finalPointForTrip = this.getPointByName(finalPoint.substring(0, finalPoint.indexOf(",")).trim());
 		order++;
 		routePointRepository.save(new RoutePoint(route, finalPointForTrip, order.toString()));
 	}
@@ -225,40 +284,16 @@ public class AddTripController {
 		return peaksDTO;
 	}
 	
-	private List<MountainDTO> getMountainsDTO(){
-		List<MountainDTO> mountainsDTO = new ArrayList<>();
-		
-		for(Mountain mountain : mountainRepository.findAll()) {
-			MountainDTO mountainDTO = new MountainDTO(mountain.getMountainName());
-			mountainsDTO.add(mountainDTO);
-		}		
-		return mountainsDTO;
-	}
-	
-	private List<CityDTO> getCitiesDTO(){
-		List<CityDTO> citysDTO = new ArrayList<>();
-		
-		for(City city : cityRepository.findAll()) {
-			CityDTO cityDTO = new CityDTO(city.getName(), city.getLatitude(), city.getLongitude());
-			citysDTO.add(cityDTO);
-		}		
-		return citysDTO;
-	}
-	
 	private List<PointDTO> getPointsDTO(){
-		List<PointDTO> pointsDTO = new ArrayList<>();
-		
+		List<PointDTO> pointsDTO = new ArrayList<>();	
 		for(Point point : pointRepository.findAll()) {
-			PointDTO pointDTO = new PointDTO(point.getId(), point.getPointName());
-			pointsDTO.add(pointDTO);
+			pointsDTO.add(new PointDTO(point.getId(), point.getPointName(), conversion.convertFromMountainToMountainDTO(point.getMountain())));
 		}		
-		return pointsDTO;
+		return TripUtils.sortPointsByMountain(pointsDTO);
 	}
 	
-	private UserEntity getUserByEmail(String email) {
-		Iterable<UserEntity> users = userRepository.findAll();
-		
-		for(UserEntity user : users) {
+	private UserEntity getUserByEmail(String email) {		
+		for(UserEntity user : userRepository.findAll()) {
 			if(user.getEmail().equals(email)) {
 				return user;
 			}
@@ -266,12 +301,8 @@ public class AddTripController {
 		return null;
 	}
 	
-	private Guide getGuideByUserId(Principal principal) {
-		Iterable<Guide> guides = guideRepository.findAll();
-		
-		for(Guide guide : guides) {
-			System.out.println(guide.getUser().getId());
-			System.out.println(getUserByEmail(principal.getName()).getId());
+	private Guide getGuideByUserId(Principal principal) {	
+		for(Guide guide : guideRepository.findAll()) {
 			if(guide.getUser().getId() == getUserByEmail(principal.getName()).getId()) {
 				return guide;
 			}
@@ -290,14 +321,9 @@ public class AddTripController {
 		return null;
 	}
 	
-	private Peak getPeakByName(String peakName, Integer altitude, String city, String mountain) {
-		Iterable<Peak> peaks = peakRepository.findAll();
-		
-		for(Peak peak : peaks) {					
-			if(peak.getPeakName().trim().toUpperCase().equals(peakName.trim().toUpperCase()) && 
-			   peak.getAltitude().toString().trim().toUpperCase().equals(altitude.toString().trim().toUpperCase()) && 
-			   peak.getCity().getName().trim().toUpperCase().equals(city.trim().toUpperCase()) &&
-			   peak.getMountain().getMountainName().trim().toUpperCase().equals(mountain.trim().toUpperCase())) {
+	private Peak getPeakByName(String peakName) {		
+		for(Peak peak : peakRepository.findAll()) {					
+			if(peak.getPeakName().trim().toUpperCase().equals(peakName.trim().toUpperCase())) {
 				return peak;
 			}
 		}

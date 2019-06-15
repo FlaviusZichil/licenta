@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,6 +28,10 @@ public class Point {
 	@Column(name = "name")
 	private String pointName;
 	
+	@ManyToOne
+	@JoinColumn
+	private Mountain mountain;
+	
 	public Point() {}
 
 	public Point(String pointName) {
@@ -35,6 +41,14 @@ public class Point {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public Mountain getMountain() {
+		return mountain;
+	}
+
+	public void setMountain(Mountain mountain) {
+		this.mountain = mountain;
 	}
 
 	public void setId(Integer id) {

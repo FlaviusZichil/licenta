@@ -24,17 +24,13 @@ import app.utils.TripUtils;
 import app.utils.UserUtils;
 
 @Controller
-public class MyTripsController {
-	
+public class MyTripsController {	
 	@Autowired
-	private UserTripRepository userTripRepository;
-	
+	private UserTripRepository userTripRepository;	
 	@Autowired
-	private UserUtils userUtils;
-	
+	private UserUtils userUtils;	
 	@Autowired
-	private TripRepository tripRepository;
-	
+	private TripRepository tripRepository;	
 	@Autowired
 	private Conversion conversion;
 	

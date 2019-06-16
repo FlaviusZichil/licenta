@@ -4,17 +4,23 @@ import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import app.documents.Article;
+import app.dto.ArticleDTO;
 import app.dto.TripDTO;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.models.TripViewModel;
+import app.repositories.ArticleRepository;
 import app.repositories.TripRepository;
 import app.utils.Conversion;
 import app.utils.TripUtils;
@@ -24,6 +30,8 @@ import app.utils.UserUtils;
 public class IndexController {	
 	@Autowired
 	private TripRepository tripRepository;	
+	@Autowired
+	private ArticleRepository articleRepository;
 	@Autowired
 	private Conversion conversion;	
 	@Autowired
@@ -36,8 +44,7 @@ public class IndexController {
 			tripViewModel.setTripsDTO(this.getTop4TripsDTO());
 		}		
 		model.addAttribute("tripViewModel", tripViewModel);	
-		
-		// loads most popular 4 trip locations (to do)
+		model.addAttribute("articleDTO", getMostPopularArticleDTO());
 		
 		// loads article (to do)
 			
@@ -84,5 +91,18 @@ public class IndexController {
 			}
 		}
 		return top4TripsDTO;
+	}
+	
+	private ArticleDTO getMostPopularArticleDTO() {
+		Integer max = 0;
+		Article mostPopularArticle = new Article();
+		for(Article article : articleRepository.findAll()) {
+			Integer currentMax = article.getLikes().size();
+			if(currentMax > max) {
+				max = currentMax;
+				mostPopularArticle = article;
+			}
+		}
+		return conversion.convertFromArticleToArticleDTO(mostPopularArticle);
 	}
 }

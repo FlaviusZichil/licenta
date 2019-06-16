@@ -107,11 +107,47 @@
 				    <h5 class="card-title text-center color" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
 				  </div>
 				  <div class="card-body">
-				    <h5 class="card-title" th:text="'Data plecare: ' + ${tripDTO.startDate}"></h5>
-				    <h5 class="card-title" th:text="'Data intoarcere: ' + ${tripDTO.endDate}"></h5>
-				    <h5 class="card-title" th:text="'Locuri disponibile: ' + ${tripDTO.capacity}"></h5>
-				    <h5 class="card-title" th:text="'Dificultate: ' + ${tripDTO.routeDTO.difficulty}"></h5>
-				    <a th:href="@{/trip-details?trip=} + ${tripDTO.id}" class="btn btn-primary">Detalii</a>
+				  	<table class="table table-dark table-sm w-100">
+				  		<tr>
+				  			<td class="text-center">
+				  				<h6> Data plecarii </h6>
+				  			</td>
+				  			<td class="text-center">
+				  				<h6 th:text="${tripDTO.startDate}"></h6>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="text-center">
+				  				<h6> Data intoarcerii </h6>
+				  			</td>
+				  			<td class="text-center">
+				  				<h6 th:text="${tripDTO.endDate}"></h6>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="text-center">
+				  				<h6> Locuri disponibile </h6>
+				  			</td>
+				  			<td class="text-center">
+				  				<h6 th:text="${tripDTO.capacity}"></h6>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="text-center">
+				  				<h6> Dificultate </h6>
+				  			</td>
+				  			<td class="text-center">
+				  				<h6 th:text="${tripDTO.routeDTO.difficulty}"></h6>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td>
+				  			</td>
+				  			<td class="text-center">
+				    			<a th:href="@{/trip-details?trip=} + ${tripDTO.id}" class="btn btn-primary">Detalii</a>
+				  			</td>
+				  		</tr>
+				  	</table>
 				  </div>
 				</div>
 				<!-- Cards -->			
@@ -130,13 +166,36 @@
 		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
 		 		<!-- Article -->
 		 		<div class="card trip-card">
-				  <div class="card-header">
-				    Articol
+				  <div class="card-header bg-info color text-center ">
+				    <h5 th:text="${articleDTO.title}"></h5>
 				  </div>
 				  <div class="card-body">
-				    <h5 class="card-title">Special title treatment</h5>
-				    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-				    <a href="#!" class="btn btn-primary">Citeste articolul</a>
+				    <div class="card-body">
+				    	<h6 th:text="${articleDTO.description}" class="text-justify"></h6>
+				  	</div>
+				  </div>
+				  <div class="card-footer">
+				  	<div class="row">
+				  		<div class="col-md-3 col-sm-3 col-xs-2 fla text-center">
+				  			<h6 th:text="${articleDTO.user.lastName} + ', ' + ${articleDTO.user.firstName}"></h6>			
+				  		</div>
+				  		<div class="col-md-2 col-sm-2 col-xs-2 fla text-center">
+				  			<h6 th:text="${articleDTO.date}"></h6>
+				  		</div>
+				  		<div class="col-md-3 col-sm-3 col-xs-2 fla text-center">
+				  			<div th:if="${#lists.size(articleDTO.likesDTO)} == 1">
+						    	<h6 th:text="${#lists.size(articleDTO.likesDTO)} + ' apreciere'"></h6>
+						    </div>
+							<div th:if="${#lists.size(articleDTO.likesDTO)} != 1">
+						    	<h6 th:text="${#lists.size(articleDTO.likesDTO)} + ' aprecieri'"></h6>
+						    </div>
+						</div>
+				  		<div class="col-md-4 col-sm-4 col-xs-2 fla text-center">
+				  			<a th:href="@{/article?a=} + ${articleDTO.articleId}" class="btn btn-info">Citeste mai mult</a>
+				  		</div>
+				  	</div>
+				  	
+				  	</div>
 				  </div>
 				</div>
 				<!-- Article -->

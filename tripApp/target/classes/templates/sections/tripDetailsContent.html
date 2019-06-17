@@ -7,100 +7,178 @@
 		 	<div class="col-md-8 col-sm-8 col-xs-2 fla">
 		 	<hr>
 		 		<div>
-				    <h3 class="text-center">Detalii despre ascensiune</h3>
+				    <h4 class="text-center list-group-item list-group-item-action list-group-item-info mt-2 mb-2"> Detalii despre ascensiune </h4>
 				</div>
 			 <hr>
-		 		<div class="text-center invalid-date-message" th:if="${isUserAllowedToRegisterForTrip} == false">
-		 			<h3 class="error-message"> Aveti deja o ascensiune aleasa in aceasta perioada! </h3>
-		 			<a th:href="@{/my-trips}" class="btn btn-primary"> Ascensiunile mele </a>
+		 		<div class="text-center " th:if="${isUserAllowedToRegisterForTrip} == false">
+		 			<h5 class="text-center list-group-item list-group-item-action list-group-item-danger mt-2 mb-2"> 
+		 				Ave&#355;i deja o ascensiune aleas&#259; &#238;n aceast&#259; perioad&#259;! 
+		 			</h5>
+		 			<a th:href="@{/my-trips}" class="btn btn-info"> Ascensiunile mele </a>
 		 		</div>
-			 	<div class="text-center error-message" th:if="${isUserAllowedToRegisterForTrip} != false and 
-			 												  *{tripDTO.capacity} == 0 and 
-			 												  ${isAlreadyRegisteredForTrip} == false">
-					<h4> Nu mai sunt locuri! Reveniti in cazul in care cineva se retrage. </h4>
-				</div>
-		 		<!-- Extended card -->
-		 		<div th:if="${isUserAllowedToRegisterForTrip} != false" class="card trip-details-card text-center">
-		 		  <div th:if="*{tripDTO.status} == 'Active'">
-					<div class="card-header bg-info trip-card-title">
-					    <h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
+		 		<div class="text-center " th:if="${noTripSelected} == true">
+		 			<h5 class="text-center list-group-item list-group-item-action list-group-item-danger mt-2 mb-2"> 
+		 				Nu exista o ascensiune selectata despre care sa se arate detalii! 
+		 			</h5>
+		 			<a th:href="@{/my-trips}" class="btn btn-info"> Ascensiunile mele </a>
+		 		</div>
+		 		<div th:if="${noTripSelected} == false">
+				 	<div class="text-center error-message" th:if="${isUserAllowedToRegisterForTrip} != false and 
+				 												  *{tripDTO.capacity} == 0 and 
+				 												  ${isAlreadyRegisteredForTrip} == false">
+						<h5 class="text-center list-group-item list-group-item-action list-group-item-info mt-2 mb-2">Nu mai sunt locuri! Reveni&#355;i &#238;n cazul &#238;n care cineva se retrage. </h5>
 					</div>
-				  </div>
-				   <div th:if="*{tripDTO.status} == 'Finished'">
-					<div class="card-header bg-secondary trip-card-title">
-					    <h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
+			 		<!-- Extended card -->
+			 		<div th:if="${isUserAllowedToRegisterForTrip} != false" class="card trip-details-card text-center">
+			 		  <div th:if="*{tripDTO.status} == 'Active'">
+						<div class="card-header bg-info trip-card-title">
+						    <h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
+						</div>
+					  </div>
+					   <div th:if="*{tripDTO.status} == 'Finished'">
+						<div class="card-header bg-secondary trip-card-title">
+						    <h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
+						</div>
+					  </div>
+					  <div class="card-body">
+					  <div class="row" id="article">
+			 			<div class="col-md-12 col-sm-12 col-xs-2 fla">
+			 				<table class="table table-dark table-sm w-100">
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Data plec&#259;rii </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="*{tripDTO.startDate}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Data &#238;ntoarcerii </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="*{tripDTO.endDate}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Locuri disponibile </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="*{tripDTO.capacity}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Dificultate </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="*{tripDTO.routeDTO.difficulty}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Puncte </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="*{tripDTO.points}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr th:each="routePoint : *{tripDTO.routeDTO.routePointsDTO}">
+						  			<td class="text-center">
+						  				<h6> Traseu </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="${routePoint.pointDTO.pointName}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Jude&#355; </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="*{tripDTO.peakDTO.cityDTO.name}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Munte </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="*{tripDTO.peakDTO.mountainDTO.name}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Ghid </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<h6 th:text="*{tripDTO.guideDTO.user.firstName} + ' ' + *{tripDTO.guideDTO.user.lastName}"></h6>
+						  			</td>
+						  		</tr>
+						  		<tr>
+						  			<td class="text-center">
+						  				<h6> Ac&#355;iuni </h6>
+						  			</td>
+						  			<td class="text-center">
+						  				<div th:if="${isAlreadyRegisteredForTrip} == false">
+											<div th:if="*{tripDTO.capacity} > 0">
+												<div th:if="${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
+													<div th:if="*{tripDTO.status} == 'Active'">
+														<input type="submit" name="submit" class="btn btn-success" value="&#206;nscrie-te la ascensiune">
+														<input type="submit" name="submit" class="btn btn-info" value="Toate ascensiunile"/>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div th:if="${isAlreadyRegisteredForTrip} == true and ${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
+											<div th:if="*{tripDTO.status} == 'Active'">
+												<input type="submit" name="submit" class="btn btn-danger" value="Elimina ascensiunea">
+												<input type="submit" name="submit" class="btn btn-info" value="Toate ascensiunile"/>
+											</div>
+										</div>
+										<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.status} == 'Active'">
+											<input type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
+											<p class="btn btn-success" onclick="displayParticipants()">Finalizeaz&#259; ascensiunea</p>
+										</div>
+						  			</td>
+						  		</tr>
+					  		</table>
+			 			</div>
+					  </div>
 					</div>
-				  </div>
-				  <div class="card-body">
-				  <div class="row" id="article">
-		 			<div class="col-md-12 col-sm-12 col-xs-2 fla">
-		 				<h5 class="card-title" th:text="'Data plecare: ' + *{tripDTO.startDate}"></h5>
-						<h5 class="card-title" th:text="'Data intoarcere: ' + *{tripDTO.endDate}"></h5>
-			    	    <h5 class="card-title" th:text="'Locuri disponibile: ' + *{tripDTO.capacity}"></h5>
-			     	    <h5 class="card-title" th:text="'Dificultate: ' + *{tripDTO.routeDTO.difficulty}"></h5>
-						<h5 class="card-title" th:text="'Puncte: ' + *{tripDTO.points}"></h5>
-						<div th:each="routePoint : *{tripDTO.routeDTO.routePointsDTO}">
-							<h5 class="card-title" th:text="${routePoint.pointDTO.pointName}"></h5>
-						</div>
-						<h5 class="card-title" th:text="'Judet: ' + *{tripDTO.peakDTO.cityDTO.name}"></h5>
-						<h5 class="card-title" th:text="'Munte: ' + *{tripDTO.peakDTO.mountainDTO.name}"></h5>
-						<h5 class="card-title" th:text="'Ghide: ' + *{tripDTO.guideDTO.user.firstName} + ' ' + *{tripDTO.guideDTO.user.lastName}"></h5>
-						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == false">
-							<div th:if="*{tripDTO.capacity} > 0">
-								<div th:if="${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
-									<div th:if="*{tripDTO.status} == 'Active'">
-										<input type="submit" name="submit" class="btn btn-success" value="Inscrie-te la ascensiune">
-										<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="btn-group" role="group" th:if="${isAlreadyRegisteredForTrip} == true and ${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
-							<div th:if="*{tripDTO.status} == 'Active'">
-								<input type="submit" name="submit" class="btn btn-danger" value="Elimina ascensiunea">
-								<input type="submit" name="submit" class="btn btn-primary" value="Toate ascensiunile"/>
-							</div>
-						</div>
-						<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.status} == 'Active'">
-							<input type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
-							<input type="submit" name="submit" class="btn btn-info" value="Notifica utilizatorii"/>
-							<p class="btn btn-success" onclick="displayParticipants()">Finalizeaza ascensiunea</p>
-						</div>
-		 			</div>
-				  </div>
-				</div>
-				<!-- Extended card -->
+					<!-- Extended card -->
+			 		</div>
+			 	
+			 		<div id="participants" class="card w-100 mb-4" style="display: none">
+			 			<div class="card-header bg-info text-center color">
+			 				<h5> Participan&#355;i </h5>
+			 			</div>
+			 			<div class="card-body">
+			 				<table class="w-100 table table-dark">
+			 					<tr>
+			 						<th class="text-center"> Nume </th>
+			 						<th class="text-center"> Email </th>
+			 						<th class="text-center"> Participare </th>
+			 					</tr>
+			 					<tr th:each="userDTO : ${participants}">
+			 						<td align=center> 
+			 							<h6 th:text="${userDTO.lastName} + ' ' + ${userDTO.firstName}"></h6> 
+			 						</td>
+			 						<td align=center>
+			 							<h6 th:text="${userDTO.email}"></h6> 
+			 						</td>
+			 						<td align=center>
+			 							<input type="checkbox" name="participated" th:value="${userDTO.id}"/>
+			 						</td>
+			 					</tr>
+			 				</table>
+			 			</div>
+			 			<div class="card-footer">
+			 				<input type="submit" name="submit" class="btn btn-success" value="Finalizeaza"/>
+			 			</div>
+			 		</div>
 		 		</div>
-		 	
-		 		<div id="participants" class="card w-100 mb-4" style="display: none">
-		 			<div class="card-header bg-info text-center color">
-		 				<h5> Participanti </h5>
-		 			</div>
-		 			<div class="card-body">
-		 				<table class="w-100 table table-dark">
-		 					<tr>
-		 						<th class="text-center"> Nume </th>
-		 						<th class="text-center"> Email </th>
-		 						<th class="text-center"> Participare </th>
-		 					</tr>
-		 					<tr th:each="userDTO : ${participants}">
-		 						<td align=center> 
-		 							<h6 th:text="${userDTO.lastName} + ' ' + ${userDTO.firstName}"></h6> 
-		 						</td>
-		 						<td align=center>
-		 							<h6 th:text="${userDTO.email}"></h6> 
-		 						</td>
-		 						<td align=center>
-		 							<input type="checkbox" name="participated" th:value="${userDTO.id}"/>
-		 						</td>
-		 					</tr>
-		 				</table>
-		 			</div>
-		 			<div class="card-footer">
-		 				<input type="submit" name="submit" class="btn btn-success" value="Finalizeaza"/>
-		 			</div>
-		 		</div>
-		 	
 		 	<div class="col-md-2 col-sm-2 col-xs-4 fla"></div>
 		 	</div>
 	</div>

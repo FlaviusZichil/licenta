@@ -6,11 +6,11 @@
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-8 col-sm-8 col-xs-2 fla">
 				<div th:if="${guideHasUnfinishedTrips} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Aveti ascensiuni terminate care nu sunt setate ca finalizate!</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Ave&#355;i ascensiuni terminate care nu sunt setate ca finalizate!</p> 									
 				</div>
 				<hr>
 					<div>
-						<h3 class="text-center">Toate ascensiunile</h3>
+						<h3 class="text-center list-group-item list-group-item-action list-group-item-info mt-2 mb-2"> Toate ascensiunile </h3>
 					</div>			 			
 				<hr>
 			</div>
@@ -21,7 +21,7 @@
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-2 col-sm-2 col-xs-2 text-center fla">
 				<div th:if="${filterWasApplied} == true" style="margin-top: 8%">
-					<input id="resetAfterSubmit" class="btn btn-danger btn-block" type="reset" value="Elimina filtrele" onclick="whenButtonRemoved()">
+					<input id="resetAfterSubmit" class="btn btn-danger btn-block" type="reset" value="Elimin&#259; filtrele" onclick="whenButtonRemoved()">
 				</div>
 				<div id="resetFilters" style="margin-top: 10%">
 				</div>
@@ -83,13 +83,10 @@
 							<div class="custom-control custom-checkbox">
 							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="luna12" name="month" th:value="DECEMBER">
 							    <label class="custom-control-label" for="luna12">Decembrie</label>
-							</div>	
-<!-- 							<div> -->
-<!-- 								<input class="btn btn-info" type="submit" name="submit" value="Aplica filtrul"/> -->
-<!-- 							</div>						 -->
+							</div>					
 				      </div>
 				      <div class="card-footer">
-				      		<input class="btn btn-info" type="submit" name="submit" value="Aplica filtrul"/>				      		
+				      		<input class="btn btn-info" type="submit" name="submit" value="Aplic&#259; filtrul"/>				      		
 				      </div>
 				    </div>
 				  </div>
@@ -106,7 +103,7 @@
 				      <div class="card-body" style="text-align: left; margin-left: 15%">
 							<div class="custom-control custom-checkbox">
 							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="easy" name="difficulty" th:value="Usor">
-							    <label class="custom-control-label" for="easy">Usor</label>
+							    <label class="custom-control-label" for="easy">U&#351;or</label>
 							</div>
 							<div class="custom-control custom-checkbox">
 							    <input type="checkbox" onclick="filter()" class="custom-control-input filter" id="medium" name="difficulty" th:value="Mediu">
@@ -118,7 +115,7 @@
 							</div>
 				      </div>
 				      <div class="card-footer">
-						<input class="btn btn-info" type="submit" name="submit" value="Aplica filtrul"/>
+						<input class="btn btn-info" type="submit" name="submit" value="Aplic&#259; filtrul"/>
 					  </div>
 				    </div>
 				  </div>
@@ -127,7 +124,7 @@
 				    <div class="card-header bg-info color" id="headingFour">
 				      <h5 class="mb-0">
 				        <button class="btn btn-link collapsed color " type="button" data-toggle="collapse" data-target="#collapseThree1" aria-expanded="false" aria-controls="collapseThree">
-				          Distanta
+				          Distan&#355;&#259;
 				        </button>
 				      </h5>
 				    </div>
@@ -148,22 +145,58 @@
 				</div>			
 				<div class="col-md-6 col-sm-6 col-xs-2 text-center fla">
 
-			 	<div class="text-center empty-list-message" th:if="${areTripsAvailable} == false">
-					<h3> In acest moment nu exista ascensiuni disponibile! </h3>
+			 	<div class="text-center" th:if="${areTripsAvailable} == false">
+			 		<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> &#206;n acest moment nu exist&#259; ascensiuni disponibile! </p>
 				</div>
-				<div class="text-center empty-list-message" th:if="${areResultsFoundForSelectedFilters} == false">
-					<h3> Nu s-au gasit rezultate pentru filtrele aplicate! </h3>
+				<div class="text-center" th:if="${areResultsFoundForSelectedFilters} == false">
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Nu s-au g&#259;sit rezultate pentru filtrele aplicate! </p>
 				</div>
 				<div class="card trip-card" th:each="tripDTO : *{tripsDTO}">
 				  <div class="card-header bg-info">
 				    <h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
 				  </div>
 				  <div class="card-body">
-				    <h5 class="card-title" th:text="'Data plecare: ' + ${tripDTO.startDate}"></h5>
-				    <h5 class="card-title" th:text="'Data intoarcere: ' + ${tripDTO.endDate}"></h5>
-				    <h5 class="card-title" th:text="'Locuri disponibile: ' + ${tripDTO.capacity}"></h5>
-				    <h5 class="card-title" th:text="'Dificultate: ' + ${tripDTO.routeDTO.difficulty}"></h5>
-				    <a th:href="@{/trip-details?trip=} + ${tripDTO.id}" class="btn btn-info">Detalii</a>
+				  	<table class="table table-dark table-sm w-100">
+				  		<tr>
+				  			<td class="text-center">
+				  				<h6> Data plec&#259;rii </h6>
+				  			</td>
+				  			<td class="text-center">
+				  				<h6 th:text="${tripDTO.startDate}"></h6>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="text-center">
+				  				<h6> Data &#238;ntoarcerii </h6>
+				  			</td>
+				  			<td class="text-center">
+				  				<h6 th:text="${tripDTO.endDate}"></h6>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="text-center">
+				  				<h6> Locuri disponibile </h6>
+				  			</td>
+				  			<td class="text-center">
+				  				<h6 th:text="${tripDTO.capacity}"></h6>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="text-center">
+				  				<h6> Dificultate </h6>
+				  			</td>
+				  			<td class="text-center">
+				  				<h6 th:text="${tripDTO.routeDTO.difficulty}"></h6>
+				  			</td>
+				  		</tr>
+				  		<tr>
+				  			<td>
+				  			</td>
+				  			<td class="text-center">
+				    			<a th:href="@{/trip-details?trip=} + ${tripDTO.id}" class="btn btn-info">Detalii</a>
+				  			</td>
+				  		</tr>
+				  	</table>
 				  </div>
 				</div>
 			</div>

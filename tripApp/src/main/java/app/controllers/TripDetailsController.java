@@ -36,7 +36,6 @@ import app.utils.UserUtils;
 
 @Controller
 public class TripDetailsController {
-
 	@Autowired
 	private TripRepository tripRepository;
 	@Autowired
@@ -56,8 +55,13 @@ public class TripDetailsController {
 	@GetMapping("/trip-details")
 	public String getTripDetails(Model model, Principal principal, TripDetailsViewModel tripDetailsViewModel,
 			HttpSession session, @RequestParam(value = "trip", required = false) String tripId) {
-
-		tripDetailsViewModel.setTripDTO(this.getTripDTOById(Integer.parseInt(tripId)));
+		
+		model.addAttribute("noTripSelected", false);
+		if(tripId == null) {
+			model.addAttribute("noTripSelected", true);
+			return "views/all/tripDetails";
+		}
+		tripDetailsViewModel.setTripDTO(getTripDTOById(Integer.parseInt(tripId)));
 		model.addAttribute("tripDetailsViewModel", tripDetailsViewModel);
 
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
@@ -79,9 +83,12 @@ public class TripDetailsController {
 									@RequestParam(name = "participated", required = false) String userId) throws ParseException {
 		Integer tripId = Integer.parseInt((String) session.getAttribute("tripId"));
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
-		
+
 		switch(actionType) {
-			case "Inscrie-te la ascensiune": {
+			case "Înscrie-te la ascensiune": {
+				if(isUserRegisteredForTrip(user, tripId)) {
+					return "redirect:/my-trips"; 
+				}
 				if (isTripAvailableForUser(user, tripId)) {
 					addTripForUser(user, tripId);
 					decreaseTripCapacity(tripId);
@@ -96,6 +103,9 @@ public class TripDetailsController {
 				return "redirect:/all-trips";
 			}
 			case "Elimina ascensiunea": {
+				if(!isUserRegisteredForTrip(user, tripId)) {
+					return "redirect:/my-trips"; 
+				}
 				removeTripForUser(principal, tripId);
 				increaseTripCapacity(tripId);
 				return "redirect:/my-trips";
@@ -188,8 +198,12 @@ public class TripDetailsController {
 	}
 	
 	private void removeTripForUser(Principal principal, Integer tripId) {
+		System.out.println("a intrat aici");
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
+		System.out.println("u: " + user.toString());
 		Trip trip = getTripById(tripId);
+		System.out.println("t: " + trip.toString());
+		System.out.println(getUserTrip(user, trip));
 		userTripRepository.delete(getUserTrip(user, trip));
 	}
 		

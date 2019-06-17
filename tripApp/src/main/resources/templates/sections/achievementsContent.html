@@ -6,23 +6,23 @@
 		  <div class="col-sm-2"></div>
 		  <div class="col-sm-8">
 		  		<div th:if="${noAvailableTripsForThatMedal} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Momentan nu exista ascensiuni pentru aceasta locatie!</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Momentan nu exist&#259; ascensiuni pentru aceast&#259; loca&#355;ie!</p> 									
 				</div>
 		  		<div class="row">
 		  			<div class="col-md-6 col-sm-6 col-xs-2 fla">
 		  				<div class="card trip-card mt-3 mb-3">
 						  <div class="card-header bg-info">
-						    <h5 class="trip-card-title text-center color"> Informatii </h5>
+						    <h5 class="trip-card-title text-center color"> Informa&#355;ii </h5>
 						  </div>
 						  <div class="card-body">
 						    	<div class="list-group mt-2">													  
-									  <p class="text-center list-group-item list-group-item-action list-group-item-info" >Obtine toate medaliile pentru a otine titlul de membru Staff.</p> 
+									  <p class="text-center list-group-item list-group-item-action list-group-item-info" >Str&#226;nge toate medaliile pentru a ob&#355;ine titlul de membru Staff.</p> 
 								</div>
 								<div class="list-group-item list-group-item-action list-group-item-info mt-2">													  
 									  <p>Beneficii ale membrilor Staff: </p> 
 									  <ul>
 									  		<li> Poate adauga articole. </li>
-									  		<li> Pentru fiecare ascensiune primeste cu 50% mai multe puncte HaiSus. </li>
+									  		<li> Pentru fiecare ascensiune prime&#351;te cu 50% mai multe puncte HaiSus. </li>
 									  </ul>
 								</div>
 						  </div>
@@ -35,10 +35,10 @@
 						  </div>
 						  <div class="card-body">
 						    	<div class="list-group mt-1">													  
-									  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'Medalii obtinute ' + ${medalsNumber} + '/9'"></p> 
+									  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'Medalii ob&#355;inute ' + ${medalsNumber} + '/9'"></p> 
 								</div>
 								<div class="list-group mt-1">													  
-									  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'Inaltimea maxima atinsa: ' + ${highestAltitude} + 'm'"></p> 
+									  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'	&#206;n&#259;l&#355;imea maxim&#259; atins&#259;: ' + ${highestAltitude} + 'm'"></p> 
 								</div>
 								<div class="list-group mt-1">													  
 									  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'Ascensiuni finalizate: ' + ${numberOfFinishedTrips}"></p> 
@@ -68,7 +68,7 @@
 						        <hr>
 						        <p class="card-text" th:text="${medalDTO.peakDTO.mountainDTO.name} + ', ' + ${medalDTO.peakDTO.altitude} + 'm'"></p>
 						        <div th:if="${#lists.contains(tripsWhereUserIsRegistered, medalDTO.peakDTO.peakName)}">
-						        	<input type="submit" th:name="${medalDTO.peakDTO.id}" data-toggle="tooltip" data-placement="top" title="Sunteti inscris la o ascensiune in aceasta locatie" value="Obtine medalia" class="btn btn-light btn-block btn-sm"/>
+						        	<input type="submit" th:name="${medalDTO.peakDTO.id}" data-toggle="tooltip" data-placement="top" title="Sunte&#355;i deja &#238;nscris la o ascensiune &#238;n aceast&#259; loca&#355;ie" value="Obtine medalia" class="btn btn-light btn-block btn-sm"/>
 						        </div>
 						        <div th:if="${!#lists.contains(tripsWhereUserIsRegistered, medalDTO.peakDTO.peakName)}">
 						        	<input type="submit" th:name="${medalDTO.peakDTO.id}" value="Obtine medalia" class="btn btn-light btn-block btn-sm"/>

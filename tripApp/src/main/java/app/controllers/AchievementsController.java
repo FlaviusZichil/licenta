@@ -30,36 +30,32 @@ import app.utils.Conversion;
 import app.utils.UserUtils;
 
 @Controller
-public class AchievementsController {
-	
+public class AchievementsController {	
 	@Autowired
 	private MedalRepository medalRepository;
-	
 	@Autowired
 	private TripRepository tripRepository;
-	
 	@Autowired
 	private UserUtils userUtils;
-	
 	@Autowired
 	private Conversion conversion;
 	
 	@GetMapping("/achievements")
 	public String getAchievements(Model model, AllMedalsViewModel allMedalViewModel, Principal principal, HttpSession session) {			
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
-		allMedalViewModel.setMedalsDTO(this.getAllMedalsForUser(user));
+		allMedalViewModel.setMedalsDTO(getAllMedalsForUser(user));
 		model.addAttribute("allMedalViewModel", allMedalViewModel);
 		
-		Integer numberOfMedals = this.getNumberOfMedalsForUser(user);
+		Integer numberOfMedals = getNumberOfMedalsForUser(user);
 		model.addAttribute("medalsNumber", numberOfMedals);
 		
-		Integer highestAltitude = this.getHighestAltitudeForUser(user);
+		Integer highestAltitude = getHighestAltitudeForUser(user);
 		model.addAttribute("highestAltitude", highestAltitude);
 		
-		Integer numberOfFinishedTrips = this.getNumberOFAllFinishedTripsForUser(user);
+		Integer numberOfFinishedTrips = getNumberOFAllFinishedTripsForUser(user);
 		model.addAttribute("numberOfFinishedTrips", numberOfFinishedTrips);
 		
-		List<String> tripsWhereUserIsRegistered = this.tripsWhereUserIsRegistered(user);
+		List<String> tripsWhereUserIsRegistered = tripsWhereUserIsRegistered(user);
 		model.addAttribute("tripsWhereUserIsRegistered", tripsWhereUserIsRegistered);
 		
 		if(session.getAttribute("noAvailableTripsForThatMedal") != null) {
@@ -97,7 +93,6 @@ public class AchievementsController {
 		}
 		return "views/all/achievementsView";
 	}
-	
 	
 	private List<String> tripsWhereUserIsRegistered(UserEntity user) {
 		List<String> tripsLocation = new ArrayList<>();

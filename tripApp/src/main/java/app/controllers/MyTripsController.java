@@ -39,8 +39,7 @@ public class MyTripsController {
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		
 		if(user.getRole().getName().equals("ROLE_USER") || user.getRole().getName().equals("ROLE_STAFF")) {
-			tripViewModel.setTripsDTO(userUtils.getAllTripsDTOForUser(user));
-			
+			tripViewModel.setTripsDTO(userUtils.getAllTripsDTOForUser(user));			
 			if(userUtils.getAllTripsDTOForUser(userUtils.getUserByEmail(principal.getName())).isEmpty()) {
 				model.addAttribute("hasUserTrips", false);
 			}
@@ -48,19 +47,16 @@ public class MyTripsController {
 		}
 		
 		if(user.getRole().getName().equals("ROLE_GUIDE")) {
-			tripViewModel.setTripsDTO(getAllTripsDTOForGuide(user.getGuide()));
-			
+			tripViewModel.setTripsDTO(getAllTripsDTOForGuide(user.getGuide()));			
 			if(getAllTripsDTOForGuide(user.getGuide()).isEmpty()) {
 				model.addAttribute("hasUserTrips", false);
-			}
-			
+			}		
 			if(user.getRole().getName().equals("ROLE_GUIDE") && TripUtils.getNumberOfFinishedTripsWithActiveStatusForGuide(user.getGuide()) > 0) {
 				model.addAttribute("guideHasUnfinishedTrips", true);
 			}
 			
 			model.addAttribute("tripViewModel", tripViewModel);
-		}
-		
+		}	
 		return "views/all/mytrips";
 	}
 
@@ -68,10 +64,15 @@ public class MyTripsController {
 	public String userTripsActions(Model model, TripViewModel tripViewModel, Principal principal,
 								 @RequestParam MultiValueMap<String, String> tripToRemove) {
 		
+		UserEntity user = userUtils.getUserByEmail(principal.getName());
+		
 		for (Entry<String, List<String>> entry : tripToRemove.entrySet()) {
-		    String tripId = entry.getKey();
-		    this.removeTripForUser(principal, Integer.parseInt(tripId));
-		    this.increaseTripCapacity(Integer.parseInt(tripId));
+			String tripId = entry.getKey();
+			if(!isUserRegisteredForTrip(user, Integer.parseInt(tripId))) {
+				return "redirect:/my-trips"; 
+			}	    
+		    removeTripForUser(user, Integer.parseInt(tripId));
+		    increaseTripCapacity(Integer.parseInt(tripId));
 		}
 		
 		tripViewModel.setTripsDTO(userUtils.getAllTripsDTOForUser(userUtils.getUserByEmail(principal.getName())));
@@ -94,8 +95,7 @@ public class MyTripsController {
 		tripRepository.save(trip);
 	}
 	
-	private void removeTripForUser(Principal principal, Integer tripId) {
-		UserEntity user = userUtils.getUserByEmail(principal.getName());
+	private void removeTripForUser(UserEntity user, Integer tripId) {
 		Trip trip = getTripById(tripId);
 		userTripRepository.delete(getUserTrip(user, trip));
 	}
@@ -107,6 +107,16 @@ public class MyTripsController {
 			}
 		}
 		return null;
+	}
+	
+	private boolean isUserRegisteredForTrip(UserEntity user, Integer tripId) {
+		Trip trip = getTripById(tripId);
+		for(UserTrip userTrip : userTripRepository.findAll()) {
+			if(userTrip.getUser().equals(user) && userTrip.getTrip().equals(trip)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	private UserTrip getUserTrip(UserEntity user, Trip trip) {

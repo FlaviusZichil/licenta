@@ -72,7 +72,6 @@ public class TripUtils {
 				number++;
 			}
 		}
-		System.out.println(number);
 		return number;
 	}
 }

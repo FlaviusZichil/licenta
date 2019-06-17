@@ -52,8 +52,7 @@ public class UserUtils {
 		for(UserTrip userTrip : currentUser.getUserTrips()) {
 			TripDTO tripDTO = conversion.convertFromTripToTripDTO(userTrip.getTrip());
 			currentUserTripsDTO.add(tripDTO);
-		}
-		
+		}	
 		return sortTripsByStatus(currentUserTripsDTO);
 	}
 	

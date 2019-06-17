@@ -129,10 +129,21 @@ public class TripDetailsController {
 			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
 			Trip trip = getTripById(tripId);
 			Medal medal = getMedatByTrip(trip);
-			userMedalRepository.save(new UserMedal(medal, user));
+			if(!doesUserHasThatMedalAlready(user, medal)) {
+				userMedalRepository.save(new UserMedal(medal, user));
+			}
 		}	
 	}
 	
+	private boolean doesUserHasThatMedalAlready(UserEntity user, Medal medal) {
+		for(UserMedal userMedal : userMedalRepository.findAll()) {
+			if(userMedal.getUser().equals(user) && userMedal.getMedal().equals(medal)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private Medal getMedatByTrip(Trip trip) {
 		for(Medal medal : medalRepository.findAll()) {
 			if(medal.getPeak().equals(trip.getPeak())) {
@@ -198,12 +209,8 @@ public class TripDetailsController {
 	}
 	
 	private void removeTripForUser(Principal principal, Integer tripId) {
-		System.out.println("a intrat aici");
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
-		System.out.println("u: " + user.toString());
 		Trip trip = getTripById(tripId);
-		System.out.println("t: " + trip.toString());
-		System.out.println(getUserTrip(user, trip));
 		userTripRepository.delete(getUserTrip(user, trip));
 	}
 		

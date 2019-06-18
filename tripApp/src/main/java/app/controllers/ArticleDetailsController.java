@@ -31,23 +31,23 @@ import app.utils.UserUtils;
 import app.validators.ArticleValidator;
 
 @Controller
-public class ArticleDetailsController {
-	
+public class ArticleDetailsController {	
 	@Autowired
 	private ArticleRepository articleRepository;
-	
 	@Autowired
 	private UserUtils userUtils;
-	
 	@Autowired
 	private ArticleUtils articleUtils;
-	
 	@Autowired
 	private Conversion conversion;
 
 	@GetMapping("/article")
 	public String getArticle(Model model, ArticleDetailsViewModel articleDetailsViewModel, HttpSession session, Principal principal,
 						    @RequestParam(value = "a", required = false) String articleId) {
+		
+		if(articleId == null) {
+			return "redirect:/all-articles";
+		}
 		
 		Article article = articleUtils.getArticleById(Integer.parseInt(articleId));
 		ArticleDTO articleDTO = conversion.convertFromArticleToArticleDTO(article);
@@ -100,7 +100,9 @@ public class ArticleDetailsController {
 		if(submitInputs != null) {
 			for(Map.Entry<String, List<String>> input : submitInputs.entrySet()){
 					if(input.getValue().contains("Sterge")){
-						this.removeComment(Integer.parseInt(input.getKey()));
+						if(getArticleThatContainsComment(Integer.parseInt(input.getKey())) != null) {
+							removeComment(Integer.parseInt(input.getKey()));
+						}
 						break;
 					}
 					if(input.getValue().contains("Elimina sectiunea")) {
@@ -108,7 +110,7 @@ public class ArticleDetailsController {
 						List<String> sectionComponents = new ArrayList<>(Arrays.asList(input.getKey().split(",")));
 						String sectionTitle = sectionComponents.get(0); 
 						String sectionContent = sectionComponents.get(1);
-						this.removeSection(sectionTitle, sectionContent);
+						removeSection(sectionTitle, sectionContent);
 						break;
 					}
 			   }
@@ -203,10 +205,12 @@ public class ArticleDetailsController {
 	}
 	
 	private void addLikeForArticle(UserEntity user, Article article) {
-		List<ArticleLike> likes = article.getLikes();
-		likes.add(new ArticleLike(user.getId(), article.getArticleId()));
-		article.setLikes(likes);
-		articleRepository.save(article);
+		if(!isArticleAlreadyLikedByUser(article, user)) {
+			List<ArticleLike> likes = article.getLikes();
+			likes.add(new ArticleLike(user.getId(), article.getArticleId()));
+			article.setLikes(likes);
+			articleRepository.save(article);
+		}		
 	}
 	
 	private Article getArticleThatContainsComment(Integer commentId) {
@@ -221,7 +225,7 @@ public class ArticleDetailsController {
 	}
 	
 	private void removeComment(Integer commentId) {
-		Article article = this.getArticleThatContainsComment(commentId);
+		Article article = getArticleThatContainsComment(commentId);
 		List<ArticleComment> comments = article.getComments();
 		
 		for(ArticleComment comment : comments) {

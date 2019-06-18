@@ -6,10 +6,10 @@
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-8 col-sm-8 col-xs-2 fla">
 				<div th:if="${wrongSectionTitle} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Subtitlurile trebuie sa aiba minim 1 caracter.</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Subtitlurile trebuie s&#259; aib&#259; minim 1 caracter.</p> 									
 				</div>
 				<div th:if="${wrongSectionContent} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Continutul sectiunilor trebuie sa aiba minim 50 de caractere.</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Con&#355;inutul sec&#355;iunilor trebuie s&#259; aib&#259; minim 50 de caractere.</p> 									
 				</div>
 				<div class="card">
 					<div class="card-body">
@@ -24,20 +24,19 @@
 												<h2 th:text="*{articleDTO.title}"></h2>
 											</div>
 											<div th:if="${wrongTitle} == true">
-												<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3 alert-dismissable"> Titlul trebuie sa aiba cel putin 2 caractere.</p> 									
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3 alert-dismissable"> Titlul trebuie s&#259; aib&#259; cel pu&#355;in 2 caractere.</p> 									
 											</div>
 										</div> 
 										<div id="descriptionCard" class="card mt-3 mb-3">				
 											<div id="description" class="card-body">
 												<div th:if="${isUserAllowedToEdit} == true">
 													<textarea class="text-justify" contenteditable="true"  th:text="*{articleDTO.description}" id="description" name="description" style="width: 100%; height: 150px;"></textarea>
-<!-- 					  								<div class="text-center list-group-item list-group-item-action list-group-item-danger" id="count"></div>  											 -->
 												</div>
 												<div th:if="${isUserAllowedToEdit} == false">
 													<h6 class="text-justify" th:text="*{articleDTO.description}"></h6>
 												</div>
 												<div th:if="${wrongDescription} == true">
-													<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie sa aiba cel putin 200 caractere.</p> 									
+													<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie s&#259; aib&#259; cel pu&#355;in 200 caractere.</p> 									
 												</div>
 											</div>					    
 										</div>
@@ -85,10 +84,10 @@
 													        </div>
 										    			</td>
 														<td align=center>
-															<p id="addNewComment" class="btn btn-info btn-sm">Adauga comentariu</p>
+															<p id="addNewComment" class="btn btn-info btn-sm">Adaug&#259; comentariu</p>
 														</td>
 														<td align=center th:if="${isUserAllowedToEdit} == true">							
-															<p id="addSection" class="btn btn-info btn-sm" onclick="createNewSection()">Adauga sectiune</p>
+															<p id="addSection" class="btn btn-info btn-sm" onclick="createNewSection()">Adaug&#259; sec&#355;iune</p>
 														</td>
 														<td align=center th:if="${isUserAllowedToEdit} == true">
 															<input id="saveAfterEdit" class="btn btn-info btn-sm" type="submit" name="submit" value="Salveaza modificarile"/>
@@ -114,24 +113,22 @@
 												        <div class="card">
 												            <div class="card-header" style="background-color: #BCBDBF">
 												            	<div th:if="${comment.daysSincePosted} == 0">
-												            		<h6 style="float: left">adaugat astazi</h6>
+												            		<h6 style="float: left">ad&#259;ugat ast&#259;zi</h6>
 												            	</div>
 												            	<div th:if="${comment.daysSincePosted} == 1">
-												            		<h6 style="float: left">adaugat ieri</h6>
+												            		<h6 style="float: left">ad&#259;ugat ieri</h6>
 												            	</div>
 												            	<div th:if="${comment.daysSincePosted} > 1">
-												            		<h6 th:text="'adaugat acum ' + ${comment.daysSincePosted} + ' zile'" style="float: left"></h6>
+												            		<h6 th:text="'ad&#259;ugat acum ' + ${comment.daysSincePosted} + ' zile'" style="float: left"></h6>
 												            	</div>
 												                <div class="dropdown" style="float: right">
 																	  <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="actions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 																	  <div class="dropdown-menu" aria-labelledby="actions">
 																	  	<div th:if="${comment.user.id} == ${loggedUserId}">
 																	  		 <input id="removeComment" class="dropdown-item" th:name="${comment.commentId}" type="submit" value="Sterge"/>
-																	  		 <p id="editComment" class="dropdown-item"> Editeaza </p>
 																	  	</div>
 																	  	<div th:if="${comment.user.id} != ${loggedUserId}">
 																	  		 <input class="dropdown-item disabled" type="submit" th:name="${comment.commentId}" value="Sterge"/>
-																	  		 <p class="dropdown-item disabled"> Editeaza </p>
 																	  	</div>
 																	    
 																	  </div>
@@ -153,7 +150,7 @@
 									        	        <h6 class="text-secondary text-center" th:text="${userName}"></h6>
 									        	    </div>
 													<div class="col-md-10 col-sm-10 col-xs-2 fla">
-						  								<textarea id="commentContent" class="text-justify" name="commentContent" style="width: 100%; height: 100px; resize: none;" placeholder="Adauga un comentariu..."></textarea>
+						  								<textarea id="commentContent" class="text-justify" name="commentContent" style="width: 100%; height: 100px; resize: none;" placeholder="Adaug&#259; un comentariu..."></textarea>
 						  								<input id="addComment" name="submit" class="btn btn-success disabled" style="float: right" type="submit" value="Adauga comentariu"/>	 
 													</div>
 												</div>

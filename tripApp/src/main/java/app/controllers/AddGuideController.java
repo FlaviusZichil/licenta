@@ -223,10 +223,7 @@ public class AddGuideController {
 	
 	private boolean isExperienceValid(String guideExperience, String birthDate) {
 		if(guideExperience != "" && birthDate != "" && birthDate != null) {
-			System.out.println("experience: " +guideExperience );
-			System.out.println(Integer.parseInt(guideExperience));
-			System.out.println(getAgeFromBirthDate(birthDate) - 25);
-			if(Integer.parseInt(guideExperience) <= getAgeFromBirthDate(birthDate) - 25) {
+			if(Integer.parseInt(guideExperience) <= getAgeFromBirthDate(birthDate) - 18) {
 				return true;
 			}
 		}

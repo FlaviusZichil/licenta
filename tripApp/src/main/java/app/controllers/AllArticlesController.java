@@ -37,7 +37,7 @@ public class AllArticlesController {
 	}
 	
 	@PostMapping("/all-articles")
-	public String allArticlesActions(Model model,
+	public String allArticlesActions(Model model, AllArticlesViewModel allArticlesViewModel,
 									 @RequestParam(name = "submit", required = false) String actionType,
 									 @RequestParam(name = "articleFilter", required = false) String articleFilter) {
 		switch(actionType) {
@@ -46,7 +46,6 @@ public class AllArticlesController {
 			}
 			case "Aplica filtrul": {
 				if(articleFilter != null) {
-					AllArticlesViewModel allArticlesViewModel = new AllArticlesViewModel();
 					switch(articleFilter) {
 						case "Cele mai recente":{
 							allArticlesViewModel.setArticlesDTO(this.sortArticlesByDate("ascending"));
@@ -62,6 +61,9 @@ public class AllArticlesController {
 						}
 					}
 					model.addAttribute("allArticlesViewModel", allArticlesViewModel);
+				}
+				else {
+					return "redirect:/all-articles";
 				}
 				break;
 			}

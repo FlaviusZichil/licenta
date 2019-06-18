@@ -20,13 +20,10 @@ import app.utils.UserUtils;
 
 @Controller
 public class TombolaController {
-
 	@Autowired
 	private TombolaRepository tombolaRepository;
-	
 	@Autowired
 	private UserUtils userUtils;
-
 	@Autowired
 	private UserRepository userRepository;
 

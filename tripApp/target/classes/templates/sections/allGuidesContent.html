@@ -11,11 +11,11 @@
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-8 col-sm-8 col-xs-2 fla">
 				<div th:if="${noActiveTripForguide} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> In acest moment nu exista ascesiuni propuse de acest ghid.</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> &#206;n acest moment nu exist&#259; ascesiuni propuse de c&#259;tre acest ghid.</p> 									
 				</div>
 				<div class="row">
 					<div class="col-md-6 col-sm-6 col-xs-2 fla"  th:each="guideDTO : *{guidesDTO}">
-						<div class="card mt-2 w-100">
+						<div class="card mt-2 w-100 mb-1">
 							<div class="card-header text-center bg-info color">
 								<h5 th:text="${guideDTO.user.lastName} + ' ' + ${guideDTO.user.firstName}"></h5>
 							</div>
@@ -23,7 +23,7 @@
 								<table class="w-100 table-striped">
 									<tr>
 										<td class="w-50">
-											<h6> Data nasterii: </h6>
+											<h6> Data na&#351;terii: </h6>
 										</td>
 										<td>
 											<h6 th:text="${guideDTO.user.birthDate}"></h6>
@@ -31,7 +31,7 @@
 									</tr>
 									<tr>
 										<td>
-											<h6> Experienta: </h6>
+											<h6> Experien&#355;&#259;: </h6>
 										</td>
 										<td>
 											<h6 th:text="${guideDTO.yearsOfExperience} + ' ani'"></h6>

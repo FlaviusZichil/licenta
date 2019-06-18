@@ -6,7 +6,7 @@
 		 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 <div class="col-md-3 col-sm-3 col-xs-2 fla">
 		 	<hr>
-		 	<h3 class="text-center"> Castigatori </h3>
+		 	<h3 class="text-center"> C&#226;&#351;tig&#259;tori </h3>
 		 	<hr>
 		 	<div th:each="winner : *{winners}" class="accordion" id="accordionExample" style="margin-top: 5%">				
 				  <div class="card">
@@ -32,7 +32,7 @@
 				      				<h6> Locul 2: </h6>
 				      			</td>
 				      			<td>
-				      				<h6 th:text="${winner.secondPlaceWinner.firstName} + ' ' + ${winner.secondPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.cityDTO.name}"></h6>
+				      				<h6 th:text="${winner.secondPlaceWinner.firstName} + ' ' + ${winner.secondPlaceWinner.lastName} + ', ' + ${winner.secondPlaceWinner.cityDTO.name}"></h6>
 				      			</td>
 				      		</tr>
 				      		<tr>
@@ -40,7 +40,7 @@
 				      				<h6> Locul 3: </h6>
 				      			</td>
 				      			<td>
-				      				<h6 th:text="${winner.thirdPlaceWinner.firstName} + ' ' + ${winner.thirdPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.cityDTO.name}"></h6>				
+				      				<h6 th:text="${winner.thirdPlaceWinner.firstName} + ' ' + ${winner.thirdPlaceWinner.lastName} + ', ' + ${winner.thirdPlaceWinner.cityDTO.name}"></h6>				
 				      			</td>
 				      		</tr>
 				      	</table>
@@ -51,19 +51,19 @@
 		 </div>
 		 <div class="col-md-5 col-sm-5 col-xs-2 fla">
 		 	<div th:if="${successfulRegistrationToTombola}" style="margin-top: 2%">
-		 		<p class="text-center list-group-item list-group-item-action list-group-item-success mt-3 mb-3"> Inregistrare la tombola cu success!</p> 									
+		 		<p class="text-center list-group-item list-group-item-action list-group-item-success mt-3 mb-3"> Inregistrare la tombol&#259; cu success!</p> 									
 		 	</div>
 		 	<div th:if="${failRegistrationToTombola}" style="margin-top: 2%">
-		 		<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Sunteti deja inregistrat pentru luna curenta sau insuficiente puncte!</p>
+		 		<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Sunte&#355;i deja &#238;nregistrat pentru luna curent&#259; sau nu ave&#355;i suficiente puncte!</p>
 		 	</div>
 		 	<div class="card trip-card" style="margin-top: 3%">
 				  <div class="card-header bg-info">
-				    <h5 class="trip-card-title text-center color"> CONDITII DE PARTICIPARE </h5>
+				    <h5 class="trip-card-title text-center color"> CONDI&#354;II DE PARTICIPARE </h5>
 				  </div>
 				  <div class="card-body">
 				    	<div class="list-group">													  
-							  <p class="list-group-item list-group-item-action list-group-item-light">Este nevoie de 25 de puncte HaiSus pentru inscriere.</p>
-							  <p class="list-group-item list-group-item-action list-group-item-light">Un utilizator se poate inscrie o singura data in decursul unei luni.</p>
+							  <p class="list-group-item list-group-item-action list-group-item-light">Este nevoie de 25 de puncte HaiSus pentru &#238;nscriere.</p>
+							  <p class="list-group-item list-group-item-action list-group-item-light">Un utilizator se poate &#238;nscrie o singur&#259; dat&#259; &#238;n decursul unei luni.</p>
 							  <input type="submit" class="btn btn-success" name="registerToTombola" value="Inscrie-te"/>  
 						</div>
 				  </div>
@@ -83,9 +83,9 @@
 						<p class="list-group-item list-group-item-action list-group-item-warning text-center">Locul 3</p>
 						<p class="list-group-item list-group-item-action list-group-item-light">100 puncte HaiSus</p>
 				  		<hr>
-				    	<p class="list-group-item list-group-item-action list-group-item-light">Extragerea castigatorilor va avea loc in primele 3 zile ale fiecarei luni.</p>
-				    	<p class="list-group-item list-group-item-action list-group-item-light">Se vor extrage 3 castigatori si 5 utilizatori de rezerva.</p>
-						<p class="list-group-item list-group-item-action list-group-item-light">Daca in termen de 4 zile un castigator nu raspunde, premiul va fi oferit unui utilizator rezerva.</p>						
+				    	<p class="list-group-item list-group-item-action list-group-item-light">Extragerea c&#226;&#351;tig&#259;torilor va avea loc &#238;n primele 3 zile ale fiec&#259;rei luni.</p>
+				    	<p class="list-group-item list-group-item-action list-group-item-light">Se vor extrage 3 c&#226;&#351;tig&#259;tori &#351;i 5 utilizatori de rezerv&#259;.</p>
+						<p class="list-group-item list-group-item-action list-group-item-light">Dac&#259; &#238;n termen de 4 zile un c&#226;&#351;tig&#259;tor nu r&#259;spunde, premiul va fi oferit unui utilizator rezerv&#259;.</p>						
 				  </div>
 			</div>
 		 </div>

@@ -21,12 +21,14 @@ import org.springframework.web.context.annotation.SessionScope;
 import app.dto.TripDTO;
 import app.dto.UserDTO;
 import app.entities.Medal;
+import app.entities.Role;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.entities.UserMedal;
 import app.entities.UserTrip;
 import app.models.TripDetailsViewModel;
 import app.repositories.MedalRepository;
+import app.repositories.RoleRepository;
 import app.repositories.TripRepository;
 import app.repositories.UserMedalRepository;
 import app.repositories.UserRepository;
@@ -50,6 +52,8 @@ public class TripDetailsController {
 	private MedalRepository medalRepository;
 	@Autowired
 	private UserMedalRepository userMedalRepository;
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@SessionScope
 	@GetMapping("/trip-details")
@@ -80,7 +84,7 @@ public class TripDetailsController {
 	@PostMapping("/trip-details")
 	public String postTripDetails(HttpSession session, Principal principal, Model model,
 									@RequestParam(name = "submit", required = false) String actionType,
-									@RequestParam(name = "participated", required = false) String userId) throws ParseException {
+									@RequestParam(name = "participated", required = false) String usersIds) throws ParseException {
 		Integer tripId = Integer.parseInt((String) session.getAttribute("tripId"));
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
 
@@ -115,14 +119,53 @@ public class TripDetailsController {
 			}
 			case "Finalizeaza":{
 				setStatusToFinishedForTrip(getTripById(tripId));
-				setUsersThatParticipated(userId, tripId);
-				addMedalsForUsers(userId, tripId);
+				setUsersThatParticipated(usersIds, tripId);
+				addMedalsForUsers(usersIds, tripId);
+				addPointsForUsers(usersIds);
+				promoteUsers(usersIds);
 				return "redirect:/my-trips";
 			}
 		}	
 		return "views/all/tripDetails";
 	}
 	
+	private void promoteUsers(String usersIds) {
+		List<String> ids = new ArrayList<>(Arrays.asList(usersIds.split(",")));
+		for(String id : ids) {
+			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
+			if(user.getRole().getName().equals("ROLE_USER") && user.getMedals().size() == 9) {
+				user.setRole(getRoleByName("ROLE_STAFF"));
+				userRepository.save(user);
+			}
+		}	
+	}
+	
+	private Role getRoleByName(String roleName) {
+		for (Role role : roleRepository.findAll()) {
+			if (role.getName().equals(roleName)) {
+				return role;
+			}
+		}
+		return null;
+	}
+
+	private void addPointsForUsers(String usersIds) {
+		List<String> ids = new ArrayList<>(Arrays.asList(usersIds.split(",")));
+		for(String id : ids) {
+			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
+			Integer currentPoints = Integer.parseInt(user.getPoints());
+			Integer newPoints = 0;
+			if(user.getRole().getName().equals("ROLE_USER")) {
+				newPoints = currentPoints + 50;
+			}
+			if(user.getRole().getName().equals("ROLE_STAFF") || user.getRole().getName().equals("ROLE_GUIDE")) {
+				newPoints = currentPoints + 75;
+			}
+			user.setPoints(newPoints.toString());
+			userRepository.save(user);
+		}	
+	}
+
 	private void addMedalsForUsers(String userId, Integer tripId) {
 		List<String> usersIds = new ArrayList<>(Arrays.asList(userId.split(",")));
 		for(String id : usersIds) {

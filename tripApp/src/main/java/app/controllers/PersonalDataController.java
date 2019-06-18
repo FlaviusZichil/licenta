@@ -24,13 +24,10 @@ import app.validators.RegisterValidator;
 
 @Controller
 public class PersonalDataController {
-
 	@Autowired
 	private UserUtils userUtils;
-	
 	@Autowired
 	private UserRepository userRepository;
-	
 	@Autowired
 	private CityRepository cityRepository;
 	

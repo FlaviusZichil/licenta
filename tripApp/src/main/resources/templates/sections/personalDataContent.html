@@ -18,10 +18,10 @@
 							</div>
 							<div class="card-body">
 								<div th:if="*{userDTO.experience} == 'Empty' or *{userDTO.experience} == null">
-									<p class="text-center list-group-item list-group-item-action list-group-item-warning mb-1"> Campul Experienta nu este completat! </p> 
+									<p class="text-center list-group-item list-group-item-action list-group-item-warning mb-1"> C&#226;mpul Experien&#355;&#259; nu este completat! </p> 
 								</div>
 								<div th:if="*{userDTO.description == null or #strings.length(userDTO.description) == 0} and ${#request.isUserInRole('ROLE_GUIDE')}">
-									<p class="text-center list-group-item list-group-item-action list-group-item-warning mb-1"> Campul Prezentare nu este completat! </p> 
+									<p class="text-center list-group-item list-group-item-action list-group-item-warning mb-1"> C&#226;mpul Prezentare nu este completat! </p> 
 								</div>
 								<table class="mt-2 mr-2 ml-2 mb-2 w-95">
 									<tr>
@@ -30,7 +30,7 @@
 										</td>
 										<td>
 											<div th:if="${wrongLastName} == true">
-												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Numele nu respecta conditiile! </p> 
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Numele nu respect&#259; condi&#355;iile! </p> 
 											</div>
 											<input type="text" id="name" name="personalDataInput" class="form-control ml-1" placeholder="Nume" th:value="*{userDTO.lastName}" disabled="disabled">
 										</td>
@@ -41,7 +41,7 @@
 										</td>
 										<td class="w-100">
 											<div th:if="${wrongFirstName} == true">
-												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Prenumele nu respecta conditiile! </p> 
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Prenumele nu respect&#259; condi&#355;iile! </p> 
 											</div>
 											<input type="text" id="prename"  name="personalDataInput" class="form-control ml-1" placeholder="Prenume" th:value="*{userDTO.firstName}" disabled="disabled">
 										</td>
@@ -52,7 +52,7 @@
 										</td>
 										<td class="w-100">
 											<div th:if="${wrongEmail} == true">
-												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Email-ul nu respecta conditiile! </p> 
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Email-ul nu respect&#259; condi&#355;iile! </p> 
 											</div>
 											<input type="text" id="email" name="personalDataInput" class="form-control ml-1" placeholder="Email" th:value="*{userDTO.email}" disabled="disabled">
 										</td>
@@ -63,14 +63,14 @@
 										</td>
 										<td class="w-100">
 											<div th:if="${wrongBirthDate} == true">
-												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Varsta minima este de 16 ani! </p> 
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> V&#226;rsta minim&#259; este de 16 ani! </p> 
 											</div>
 											<input type="date" id="birthDate" name="personalDataInput" class="form-control ml-1" placeholder="Data nasterii" th:value="*{userDTO.birthDate}" disabled="disabled">
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<label for="city"> Judetul </label>
+											<label for="city"> Jude&#355;ul </label>
 										</td>
 										<td class="w-100">
 											<div class="form-group">                   
@@ -83,34 +83,34 @@
 									</tr>
 									<tr>
 										<td>
-											<label for="experience"> Experienta </label>
+											<label for="experience"> Experien&#355;a </label>
 										</td>
 										<td class="w-100">
 											<div class="form-group" th:if="*{userDTO.experience} == 'Empty' or *{userDTO.experience} == null">                   
 											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
 													<option class="form-control" value="Empty">  </option>
-													<option class="form-control" value="Incepator"> Incepator </option>
+													<option class="form-control" value="Incepator"> &#206;ncepator </option>
 													<option class="form-control" value="Mediu"> Mediu </option>
 													<option class="form-control" value="Avansat"> Avansat </option>
 												</select>
 							                </div>
 							                <div class="form-group" th:if="*{userDTO.experience} == 'Incepator'">                   
 											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
-													<option class="form-control" value="Incepator" selected> Incepator </option>
+													<option class="form-control" value="Incepator" selected> &#206;ncepator </option>
 													<option class="form-control" value="Mediu"> Mediu </option>
 													<option class="form-control" value="Avansat"> Avansat </option>
 												</select>
 							                </div>
 							                <div class="form-group" th:if="*{userDTO.experience} == 'Mediu'">                   
 											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
-													<option class="form-control" value="Incepator"> Incepator </option>
+													<option class="form-control" value="Incepator"> &#206;ncepator </option>
 													<option class="form-control" value="Mediu" selected> Mediu </option>
 													<option class="form-control" value="Avansat"> Avansat </option>
 												</select>
 							                </div>
 							                <div class="form-group" th:if="*{userDTO.experience} == 'Avansat'">                   
 											    <select class="form-control ml-1" id="experience"  name="personalDataInput" disabled="disabled">
-													<option class="form-control" value="Incepator"> Incepator </option>
+													<option class="form-control" value="Incepator"> &#206;ncepator </option>
 													<option class="form-control" value="Mediu"> Mediu </option>
 													<option class="form-control" value="Avansat" selected> Avansat </option>
 												</select>
@@ -123,7 +123,7 @@
 										</td>
 										<td>
 											<div th:if="${wrongDescription} == true">
-												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Lungimea minima este de 10 caractere! </p> 
+												<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1 ml-1"> Lungimea minim&#259; este de 10 caractere! </p> 
 											</div>
 											<textarea id="description" class="text-justify w-100 h-50 ml-1" name="personalDataInput" th:text="*{userDTO.description}" disabled="disabled"></textarea>
 										</td>
@@ -133,7 +133,7 @@
 											
 										</td>
 										<td class="w-100" align="center" colspan="2">
-											<p class="btn btn-info btn-block" onclick="enableEdit(this)"> Editeaza datele</p>
+											<p class="btn btn-info btn-block" onclick="enableEdit(this)"> Editeaz&#259; datele</p>
 											<div id="actions"></div>
 										</td>
 									</tr>
@@ -148,24 +148,24 @@
 							</div>
 							<div class="card-body">
 								<div th:if="${wrongCurrentPassword} == true">
-									<p class="text-center list-group-item list-group-item-action list-group-item-danger"> Parola curenta este gresita! </p> 
+									<p class="text-center list-group-item list-group-item-action list-group-item-danger"> Parola curent&#259; este gresit&#259;! </p> 
 								</div>
 								<div th:if="${wrongNewPassword} == true">
-									<p class="text-center list-group-item list-group-item-action list-group-item-danger"> Parola noua nu indeplineste criteriile! </p> 
+									<p class="text-center list-group-item list-group-item-action list-group-item-danger"> Parola nou&#259; nu &#238;ndeplineste criteriile! </p> 
 								</div>
 								<div th:if="${passwordChangedSuccessfully} == true">
-									<p class="text-center list-group-item list-group-item-action list-group-item-success"> Parola schimbata cu succes! </p> 
+									<p class="text-center list-group-item list-group-item-action list-group-item-success"> Parola schimbat&#259; cu succes! </p> 
 								</div>
 								<table class="mt-2 mr-2 mb-2 w-100">
 									<tr>
 										<td class="w-100">
-											<input type="password" id="currentPassword" name="currentPassword" class="form-control mb-2" placeholder="Parola curenta">
+											<input type="password" id="currentPassword" name="currentPassword" class="form-control mb-2" placeholder="Parola curent&#259;">
 											<div id="currentPasswordStrength"></div>
 										</td>
 									</tr>
 									<tr>
 										<td class="w-100">
-											<input type="password" id="newPassword" name="newPassword" class="form-control mb-2" placeholder="Parola noua">
+											<input type="password" id="newPassword" name="newPassword" class="form-control mb-2" placeholder="Parola nou&#259;">
 											<div id="newPasswordStrength"></div>
 										</td>
 									</tr>
@@ -179,7 +179,7 @@
 						</div>
 						<div class="card mr-2 mb-2 w-100">
 							<div class="card-header bg-info">
-								<h6 class="text-center color"> Alte informatii </h6>
+								<h6 class="text-center color"> Alte informa&#355;ii </h6>
 							</div>
 							<div class="card-body">
 								<table class="mt-2 mr-2 ml-2 mb-2">
@@ -201,10 +201,10 @@
 									</tr>
 									<tr>
 										<td>
-											<label for="joinDate"> Data inscrierii </label>
+											<label for="joinDate"> Data &#238;nscrierii </label>
 										</td>
 										<td class="w-100">
-											<input type="text" id="joinDate" class="form-control text-center ml-3" placeholder="Data inscrierii" th:value="*{userDTO.register.registerDate}" readonly="readonly">
+											<input type="text" id="joinDate" class="form-control text-center ml-3" placeholder="Data &#238;nscrierii" th:value="*{userDTO.register.registerDate}" readonly="readonly">
 										</td>
 									</tr>
 									<tr th:if="*{userDTO.promoCodeDTO.status} == 'Active'">

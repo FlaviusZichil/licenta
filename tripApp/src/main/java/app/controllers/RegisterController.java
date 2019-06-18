@@ -200,9 +200,7 @@ public class RegisterController {
 	}
 
 	private Role getRoleByName(String roleName) {
-		Iterable<Role> allRoles = roleRepository.findAll();
-
-		for (Role role : allRoles) {
+		for (Role role : roleRepository.findAll()) {
 			if (role.getName().equals(roleName)) {
 				return role;
 			}

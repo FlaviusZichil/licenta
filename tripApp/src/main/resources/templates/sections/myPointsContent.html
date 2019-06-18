@@ -11,8 +11,8 @@
 				  </div>
 				  <div class="card-body">
 				    	<div class="list-group">													  
-							  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'In acest moment ai ' + ${userPoints} + ' puncte HaiSus'"></p> 
-							  <p id="getMorePointsButton" class="btn btn-success" style="margin-top: 2%"> Obtine mai multe puncte </p>
+							  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'In acest moment aveti ' + ${userPoints} + ' puncte HaiSus'"></p> 
+							  <p id="getMorePointsButton" class="btn btn-success" style="margin-top: 2%"> Ob&#355;ine mai multe puncte </p>
 						</div>
 				  </div>
 				</div>
@@ -24,7 +24,7 @@
 				  </div>
 				  <div class="card-body" style="overflow-y: scroll; height: 200px;">
 				    	<div th:each="registration : ${usedPoints}" class="list-group">													  
-							  <p class="list-group-item list-group-item-action list-group-item-light text-center" th:text="'Ai consumat 25 de puncte HaiSus in data ' + ${registration.date} + ' pentru inscriere la tombola.'"></p>
+							  <p class="list-group-item list-group-item-action list-group-item-light text-center" th:text="'A&#355;i consumat 25 de puncte HaiSus &#238;n data ' + ${registration.date} + ' pentru &#238;nscriere la tombol&#259;.'"></p>
 						</div>
 				  </div>
 			</div>
@@ -39,18 +39,21 @@
 				    <div class="card-header" id="headingFour" style="background: linear-gradient(to bottom, #ccd6dd 0%, #55acee 100%);  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);">
 				      <h5 class="mb-0">
 				        <button class="btn btn-link collapsed color" type="button" data-toggle="collapse" data-target="#howToObtain" aria-expanded="false" aria-controls="collapseTwo">
-				          	Cum pot obtine punctele?
+				          	Cum pot ob&#355;ine punctele?
 				        </button>
 				      </h5>
 				    </div>
 				    <div id="howToObtain" class="collapse" aria-labelledby="howToObtain" data-parent="#accordionExample">
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="list-group">													  
-							  <p id="howToObtainFirstParagraph" class="list-group-item list-group-item-action list-group-item-light">Punctele se pot obtine prin participarea la ascensiuni. <br>Pentru o ascensiune, un utilizator simplu va primi <b><font color="gold">50 puncte</font></b> HaiSus, iar un utilizator Staff sau un Ghid vor primii cate <b><font color="gold">75 puncte</font></b> HaiSus. <br><b>Punctele se vor obtine numai in cazul in care utilizatorul a participat la ascensiune, nu doar pe baza inscrierii</b>.</p>
+							  <p id="howToObtainFirstParagraph" class="list-group-item list-group-item-action list-group-item-light">Punctele se pot ob&#355;ine prin participarea la ascensiuni. 
+							  <br>Pentru o ascensiune, un utilizator simplu va primi <b><font color="gold">50 puncte</font></b> HaiSus, iar un utilizator Staff sau un Ghid vor primi c&#226;te 
+							  <b><font color="gold">75 puncte</font></b> HaiSus. <br><b>Punctele se vor ob&#355;ine numai &#238;n cazul &#238;n care utilizatorul a participat la ascensiune, nu doar pe baza 
+							  &#238;nscrierii</b>.</p>
 							  <hr>
-							  <p class="list-group-item list-group-item-action list-group-item-light">Inregistrarea unui alt utilizator pe baza codului dumneavoastra promotional va va aduce <b><font color="gold">15 puncte</font></b> HaiSus.</p>
+							  <p class="list-group-item list-group-item-action list-group-item-light">&#206;nregistrarea unui alt utilizator pe baza codului dumneavoastr&#259; promo&#355;ional v&#259; va aduce <b><font color="gold">15 puncte</font></b> HaiSus.</p>
 							  <hr>
-							  <p class="list-group-item list-group-item-action list-group-item-light">Organizarea de catre un ghid a unei ascensiuni sugerate de dumneavoastra va va aduce <b><font color="gold">25 puncte</font></b> HaiSus.</p>
+							  <p class="list-group-item list-group-item-action list-group-item-light">Organizarea de c&#259;tre un ghid a unei ascensiuni sugerate de dumneavoastr&#259; v&#259; va aduce <b><font color="gold">25 puncte</font></b> HaiSus.</p>
 							</div>
 				      </div>
 				    </div>
@@ -68,7 +71,7 @@
 				    <div id="howToUse" class="collapse" aria-labelledby="howToUse" data-parent="#accordionExample">
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="list-group">													  
-							  <p class="list-group-item list-group-item-action list-group-item-light">Punctele HaiSus se pot folosi pentru a participa la <a th:href="@{/tombola}"> Tombola </a> lunara.</p>						 
+							  <p class="list-group-item list-group-item-action list-group-item-light">Punctele HaiSus se pot folosi pentru a participa la <a th:href="@{/tombola}"> Tombola </a> lunar&#259;.</p>						 
 							</div>
 				      </div>
 				    </div>

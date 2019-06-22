@@ -57,7 +57,7 @@ public class MyArticlesController {
 		if(articleToRemove != null) {
 			for(Map.Entry<String, List<String>> articleId : articleToRemove.entrySet()){
 				if(articleId.getValue().contains("Sterge articolul")){
-					this.removeArticleForUser(Integer.parseInt(articleId.getKey()), user);
+					removeArticleForUser(Integer.parseInt(articleId.getKey()), user);
 					return "redirect:/my-articles";
 				}
 			}
@@ -100,7 +100,6 @@ public class MyArticlesController {
 		for(Article article : articleRepository.findAll()) {
 			if(article.getArticleId() == articleId && article.getUserId() == user.getId()) {
 				articleRepository.delete(article);
-				System.out.println("article removed");
 			}
 		}
 	}

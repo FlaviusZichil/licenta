@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import app.documents.Article;
 import app.documents.ArticleComment;
 import app.documents.ArticleLike;
+import app.dto.ArticleDTO;
 import app.entities.UserEntity;
 import app.repositories.ArticleRepository;
 import app.utils.ArticleUtils;
@@ -26,34 +27,18 @@ import app.validators.ArticleValidator;
 
 @Controller
 public class AddArticleController {
-	
 	@Autowired 
 	private ArticleRepository articleRepository;
-	
 	@Autowired
 	private UserUtils userUtils;
-	
 	@Autowired
 	private ArticleUtils articleUtils;
-	
 	@Autowired
 	private Conversion conversion;
 
 	@GetMapping("/add-article")
-	public String getAddArticlePage(Model model, HttpSession session) {
-		
-		if(session.getAttribute("articleToAdd") != null) {
-			Article article = (Article) session.getAttribute("articleToAdd");
-			model.addAttribute("isArticleValid", false);
-			model.addAttribute("articleToAddDTO", conversion.convertFromArticleToArticleDTO(article));
-			session.setAttribute("articleToAdd", null);
-		}
-		
-		this.verifyArticleComponent("wrongTitle", session, model);
-		this.verifyArticleComponent("wrongDescription", session, model);
-		this.verifyArticleComponent("wrongSectionTitle", session, model);
-		this.verifyArticleComponent("wrongSectionContent", session, model);
-
+	public String getAddArticlePage(Model model, HttpSession session) {	
+		loadDataOnPage(session, model);
 		return "views/staff/addArticleView";
 	}
 	
@@ -67,7 +52,7 @@ public class AddArticleController {
 		UserEntity user = userUtils.getUserByEmail(principal.getName());	
 		Article article = this.createArticleForUser(user, title, description, subtitles, sectionsContent);
 		
-		if(!this.hasUserAlreadyPostedForCurrentDate(LocalDate.now().toString(), user) && ArticleValidator.isArticleValid(title, description, subtitles, sectionsContent, session)) {
+		if(!hasUserAlreadyPostedForCurrentDate(LocalDate.now().toString(), user) && ArticleValidator.isArticleValid(title, description, subtitles, sectionsContent, session)) {
 			articleRepository.save(article);
 			model.addAttribute("articleSuccessfullyAdded", true);
 			session.setAttribute("articleToAdd", null);
@@ -78,7 +63,25 @@ public class AddArticleController {
 			session.setAttribute("userHasAlreadyPosted", true);
 		}
 		
-		return "redirect:/add-article";
+		loadDataOnPage(session, model);
+		return "views/staff/addArticleView";
+	}
+	
+	private void loadDataOnPage(HttpSession session, Model model) {
+		if(session.getAttribute("articleToAdd") != null) {
+			Article article = (Article) session.getAttribute("articleToAdd");
+			model.addAttribute("isArticleValid", false);
+			model.addAttribute("articleToAddDTO", conversion.convertFromArticleToArticleDTO(article));
+			session.setAttribute("articleToAdd", null);
+		}
+		else {
+			model.addAttribute("articleToAddDTO", new ArticleDTO());
+		}
+		
+		verifyArticleComponent("wrongTitle", session, model);
+		verifyArticleComponent("wrongDescription", session, model);
+		verifyArticleComponent("wrongSectionTitle", session, model);
+		verifyArticleComponent("wrongSectionContent", session, model);
 	}
 	
 	private void verifyArticleComponent(String component, HttpSession session, Model model) {

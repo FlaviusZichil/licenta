@@ -10,22 +10,22 @@
 				    <h5 class="trip-card-title" > Regulament </h5>
 				  </div>
 				  <div class="card-body">
-				    <h5 class="text-left list-group-item list-group-item-action list-group-item-danger">Articolul nu trebuie sa contina:</h5>
+				    <h5 class="text-left list-group-item list-group-item-action list-group-item-danger">Articolul nu trebuie s&#259; con&#355;in&#259;:</h5>
 				    <hr>
 				    <ol>
 				    	<li class="text-left">Cuvinte obscene</li>
-				    	<li class="text-left">Indrumari politice</li>
-				    	<li class="text-left">Indrumari religioase</li>	
-				    	<li class="text-left">Reclama negativa insistenta</li>
-				    	<li class="text-left">Anunturi de vanzare-cumparare</li>			    	
+				    	<li class="text-left">&#206;ndrum&#259;ri politice</li>
+				    	<li class="text-left">&#206;ndrum&#259;ri religioase</li>	
+				    	<li class="text-left">Reclam&#259; negativ&#259; insistent&#259;</li>
+				    	<li class="text-left">Anun&#355;uri de v&#226;nzare-cump&#259;rare</li>			    	
 				    </ol>
 				    <hr>
-				     <h5 class="text-left list-group-item list-group-item-action list-group-item-success">Articolul poate contine:</h5>
+				     <h5 class="text-left list-group-item list-group-item-action list-group-item-success">Articolul poate con&#355;ine:</h5>
 				     <hr>
 				    <ol>
-				    	<li class="text-left">Informatii despre trasee montane</li>
-				    	<li class="text-left">Indicatii cu privire la echipamentul montan</li>
-				    	<li class="text-left">Experiente proprii</li>			    	
+				    	<li class="text-left">Informa&#355;ii despre trasee montane</li>
+				    	<li class="text-left">Indica&#355;ii cu privire la echipamentul montan</li>
+				    	<li class="text-left">Experien&#355;e proprii</li>			    	
 				    </ol>
 				    <hr>
 				    <h5 class="text-left list-group-item list-group-item-action list-group-item-warning">Nerespectarea acestui regulament poate duce la blocarea contului!</h5>
@@ -35,22 +35,22 @@
 			</div>
 			<div class="col-md-5 col-sm-5 col-xs-2 fla">
 				<div th:if="${wrongSectionTitle} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Subtitlurile trebuie sa aiba minim 1 caracter.</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Subtitlurile trebuie s&#259; aib&#259; minim 1 caracter.</p> 									
 				</div>
 				<div th:if="${wrongSectionContent} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Continutul sectiunilor trebuie sa aiba minim 50 de caractere.</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Con&#355;inutul sec&#355;iunilor trebuie s&#259; aib&#259; minim 50 de caractere.</p> 									
 				</div>
 				<div th:if="${wrongTitle} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3 alert-dismissable"> Titlul trebuie sa aiba cel putin 2 caractere.</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3 alert-dismissable"> Titlul trebuie s&#259; aib&#259; cel pu&#355;in 2 caractere.</p> 									
 				</div>
 				<div th:if="${wrongDescription} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie sa aiba cel putin 200 caractere.</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Descrierea trebuie s&#259; aib&#259; cel pu&#355;in 200 caractere.</p> 									
 				</div>
 				<div th:if="${aleadyPostedForToday}" style="margin-top: 3%">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger">Deja ai postat un articol azi. Incearca din nou maine.</p>
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger">Deja ai postat un articol azi. Incearc&#259; din nou maine.</p>
 				</div>
 				<div th:if="${articleSuccessfullyAdded}" style="margin-top: 3%">
-					<p class="text-center list-group-item list-group-item-action list-group-item-success">Articol adaugat cu succes!</p>
+					<p class="text-center list-group-item list-group-item-action list-group-item-success">Articol ad&#259;ugat cu succes!</p>
 				</div>
 				<div class="card trip-card text-center">
 				  <div class="card-body">
@@ -90,7 +90,7 @@
 						</div> 			
 						<div id="addedSections">
 						</div>
-						<p class="btn btn-info" onclick="createNewSection()">Adauga sectiune</p>
+						<p class="btn btn-info" onclick="createNewSection()">Adaug&#259; sec&#355;iune</p>
 						<input type="submit" onclick="return testEmpty()" class="btn btn-success" value="Posteaza"/>										
 				  </div>
 				</div>
@@ -142,7 +142,7 @@
 		
 		var deleteSection = document.createElement("p");
 		deleteSection.setAttribute("class", "btn btn-danger btn-block");
-		deleteSection.innerHTML = "Elimina sectiunea";
+		deleteSection.innerHTML = "Elimin&#259; sec&#355;iunea";
 		deleteSection.setAttribute("onclick", "deleteNewSection(this)");
 		
 		cardDiv.appendChild(cardBodyDiv);

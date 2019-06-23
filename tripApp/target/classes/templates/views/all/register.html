@@ -3,47 +3,70 @@
 <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
 	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      <link th:href="@{/styles/registerPage.css}" href="../../static/styles/registerPage.css" type="text/css" rel="stylesheet">
       <title>Inregistrare</title>
 </head>
-<body th:style="'background-image:url(' + @{images/auth-bg.jpg} + ');'">
-	<div class="container-fluid">
+<style>
+	img.bg {
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+@media screen and (max-width: 1024px){
+    img.bg {
+    left: 50%;
+    margin-left: -512px; }
+}
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+</style>
+<body>
+	<img th:src="@{images/auth-bg.jpg}" alt="bckgound" class="bg" />
+	<div>
 	    <div class="row">
-	        <div class="col-md-6 col-sm-6 col-xs-12">
-	            <form class="form-container" th:action="@{/register}"  method="post">
+	        <div class="col-md-7 col-sm-7 col-xs-12">
+	            <form class="form-container" th:action="@{/register}"  method="POST">
 	                <div class="form-group">
-	                	<h3 class="header"> Inregistrare </h3>                 
+	                	<h3 class="header"> &#206;nregistrare </h3>                 
 						<input class="form-control" type="text"  name="firstName" placeholder="Nume" required/>
 						<div th:if="${isFirstNameValid == false}">
-							<p style="color: red"> Nume invalid! </p>
+							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> Numele nu este valid!</p> 									
 						</div>
 	                </div>
 	                <div class="form-group">                
 						<input class="form-control" type="text" name="lastName" placeholder="Prenume" required/>
 						<div th:if="${isLastNameValid == false}">
-							<p style="color: red"> Prenume invalid! </p>
+							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> Prenumele nu este valid!</p>
 						</div>
 	                </div>
 	                <div class="form-group">                  
-						<input class="form-control" type="date"  name="birthDate" placeholder="Data nasterii" required/>
+						<input class="form-control" type="date"  name="birthDate" placeholder="Data na&#351;terii" alt="Data na&#351;terii" required/>
 						 <div th:if="${isDateValid == false}">
-							<p style="color: red"> Varsta minima este 16 ani! </p>
+							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> V&#226;rsta minim&#259; este de 16 ani!</p>
 						</div>
 	                </div>
 	                 <div class="form-group">				   
 					    <input class="form-control" type="email"  name="email" placeholder="Email" required/>
 					     <div th:if="${isEmailValid == false}">
-							<p style="color: red"> Email invalid sau deja exista! </p>
+							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> Email invalid sau deja existent!</p>
 						</div>
 					 </div>
 	                <div class="form-group">               
 					    <input class="form-control" type="password"  name="password" placeholder="Parola" required/>
 					    <div th:if="${isPasswordValid == false}">
-							<p style="color: red"> Minim 6 caractere si litera mare! </p>
+							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> Minim 6 caractere &#351;i liter&#259; mare!</p>
 						</div>
 	                </div>
 	                <div class="form-group">               
-					    <input class="form-control" type="text" name="promocode" placeholder="Cod (optional)" data-toggle="tooltip" title="Codul se poate optine de la un alt utilizator"/>
+					    <input class="form-control" type="text" name="promocode" placeholder="Cod (op&#355;ional)" data-toggle="tooltip" data-placement="top" title="Codul se poate ob&#355;ine de la un alt utilizator"/>
 	                </div>
 	                <div class="form-group">                   
 					    <select class="btn btn-secondary btn-block"  name="city">
@@ -52,11 +75,17 @@
 	                </div>	                
 	                <input class="btn btn-success btn-block" type="submit" name="registerSubmit" value="Inregistrare">
 	                <a class="btn btn-primary btn-block" th:href="@{/login}" role="button">Autentificare</a>
-	                <a class="btn btn-default btn-block" style="color: white;" th:href="@{pdf/conditii-inregistrare.pdf}" target="_blank">Probleme la inregistrare?</a>
+	                <a class="btn btn-default btn-block" style="color: white;" th:href="@{pdf/conditii-inregistrare.pdf}" target="_blank">Probleme la &#238;nregistrare?</a>
+	                <a class="btn btn-default btn-block" style="color: white;" th:href="@{/}">  Pagina principal&#259; </a>	           
 	            </form>
 	        </div>
 	    </div>
-	 	<div class="col-md-6 col-sm-6 col-xs-12"></div>
+	 	<div class="col-md-5 col-sm-5 col-xs-12"></div>
 	</div>
 </body>
+<script>
+$(function () {
+	  $('[data-toggle="tooltip"]').tooltip()
+	})
+</script>
 </html>

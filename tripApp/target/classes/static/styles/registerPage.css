@@ -1,9 +1,20 @@
 .form-container {
     border: 1px solid #fff;
-    padding: 40px 50px;
-    margin-top: 11vh;
+    padding: 30px 35px;
+    margin-top: 5vh;
     margin-left: 35%;
-    margin-right: 25%;
+    margin-right: 20%;
+    -webkit-box-shadow: 1px 4px 28px 5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 4px 28px 5px rgba(0,0,0,0.75);
+    box-shadow: 1px 4px 28px 5px rgba(0,0,0,0.75);
+}
+
+.form-container-login {
+    border: 1px solid #fff;
+    padding: 30px 35px;
+    margin-top: 15vh;
+    margin-left: 35%;
+    margin-right: 20%;
     -webkit-box-shadow: 1px 4px 28px 5px rgba(0,0,0,0.75);
     -moz-box-shadow: 1px 4px 28px 5px rgba(0,0,0,0.75);
     box-shadow: 1px 4px 28px 5px rgba(0,0,0,0.75);
@@ -11,7 +22,6 @@
 
 .header {
     text-align: center;
-    font-family: Algerian, sans-serif;
 }
 
 .background {

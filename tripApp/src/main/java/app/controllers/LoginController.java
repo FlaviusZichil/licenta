@@ -1,29 +1,25 @@
 package app.controllers;
 
-import java.security.Principal;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import app.entities.UserEntity;
-import app.utils.UserUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
-	@Autowired
-	private UserUtils userUtils;
-	
+
 	@GetMapping("/login")
-	public String login() {
+	public String login(Model model,
+						@RequestParam(name = "success", required = false) String status) {
+		if(status != null) {
+			model.addAttribute("successfullLogin", false);
+		}
 		return "views/all/login";
 	}
 	
 	@PostMapping("/login")
-	public String loginActions(Principal principal, Model model) {
-		UserEntity user = userUtils.getUserByEmail(principal.getName());
+	public String loginActions(Model model) {
 		return "views/all/login";
 	}
 }

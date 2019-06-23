@@ -6,26 +6,46 @@
 	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">      <link th:href="@{/styles/registerPage.css}" href="../../static/styles/registerPage.css" type="text/css" rel="stylesheet">
       <title>Autentificare</title>
 </head>
-<body th:style="'background-image:url(' + @{images/auth-bg.jpg} + ');background-repeat: no-repeat;'">
+<style>
+	img.bg {
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+@media screen and (max-width: 1024px){
+    img.bg {
+    left: 50%;
+    margin-left: -512px; }
+}
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+</style>
+<body>
+	<img th:src="@{images/auth-bg.jpg}" alt="bckgound" class="bg" />
 	<div class="container-fluid">
 	    <div class="row">
 	        <div class="col-md-6 col-sm-6 col-xs-12">
-	            <form class="form-container" th:action="@{/j_spring_security_check}" method="post">                
-	                <div class="form-group">  
-	                	<h3 class="header"> Autentificare </h3>               
+	            <form class="form-container-login" th:action="@{/j_spring_security_check}" method="post">                
+	                <div class="form-group">                  	
+	                	<h3 class="header"> Autentificare </h3>  
+	                	<div th:if="${successfullLogin == false}">
+							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> Eroare de autentificare! Datale au fost introduse gre&#351;it sau contul este blocat!</p>
+						</div>             
 						<input class="form-control" type="email"  name="email" placeholder="Email" required/>
-						<div th:if="${isEmailInDatabase == false}">
-							<p style="color: red"> Nu exista cont cu emailul introdus! </p>
-						</div>
 	                </div>
 	                <div class="form-group">                
 						<input class="form-control" type="password" name="password" placeholder="Parola" required/>
-						<div th:if="${isPasswordValid == false}">
-							<p style="color: red"> Parola incorecta! </p>
-						</div>
 	                </div>               
 	                <input class="btn btn-success btn-block" type="submit" name="loginSubmit" value="Autentificare">
-	                <a class="btn btn-primary btn-block" th:href="@{/register}" role="button">Creaza cont</a>
+	                <a class="btn btn-primary btn-block" th:href="@{/register}" role="button">Creaz&#259; cont</a>
+	                <a class="btn btn-default btn-block" th:href="@{/}">  Pagina principal&#259; </a>	
 	            </form>
 	        </div>
 	        <div class="col-md-6 col-sm-6 col-xs-12"></div>

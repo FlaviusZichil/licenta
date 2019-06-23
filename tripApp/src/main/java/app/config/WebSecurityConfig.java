@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import app.security.UserDetailsServiceImpl;
 
 @Configuration
@@ -68,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginProcessingUrl("/j_spring_security_check")
 				.loginPage("/login")
 				.defaultSuccessUrl("/")
-				.failureUrl("/login")
+				.failureUrl("/login?success=false")
 				.usernameParameter("email")
 				.passwordParameter("password")
 				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/");

@@ -37,14 +37,13 @@ public class RegisterController {
 	@Autowired
 	private RegisterRepository registerRepository;
 	@Autowired
-	private PromoCodeRepository promoCodeRepository;
-	
+	private PromoCodeRepository promoCodeRepository;	
 	@Autowired
 	private UserUtils userUtils;
 
 	@GetMapping("/register")
 	public String register(Model model) {
-		model.addAttribute("allCities", this.getAllCities());
+		model.addAttribute("allCities", getAllCities());
 		return "views/all/register";
 	}
 
@@ -57,13 +56,13 @@ public class RegisterController {
 			@RequestParam(value = "birthDate", required = false) String birthDate,
 			@RequestParam(value = "promocode", required = false) String promoCode) {
 
-		model.addAttribute("allCities", this.getAllCities());
+		model.addAttribute("allCities", getAllCities());
 
-		if (this.isFormValid(firstName, lastName, email, password, birthDate, model, promoCode)) {
+		if (isFormValid(firstName, lastName, email, password, birthDate, model, promoCode)) {
 			UserEntity user = new UserEntity(RegisterValidator.formatNameProperly(firstName), RegisterValidator.formatNameProperly(lastName), birthDate, email, password);		
-			Role role = this.getRoleByName("ROLE_USER");
-			PromoCode promoCodeForUser = new PromoCode(this.generatePromoCode(), "Active");		
-			City cityForUser = this.getCityByName(city);
+			Role role = getRoleByName("ROLE_USER");
+			PromoCode promoCodeForUser = new PromoCode(generatePromoCode(), "Active");		
+			City cityForUser = getCityByName(city);
 			
 			user.setPromoCode(promoCodeForUser);
 			user.setRole(role);
@@ -110,10 +109,8 @@ public class RegisterController {
 		registerRepository.save(registerData);
 	}
 
-	private City getCityByName(String cityName) {
-		Iterable<City> allCities = cityRepository.findAll();
-		
-		for(City city : allCities) {
+	private City getCityByName(String cityName) {	
+		for(City city : cityRepository.findAll()) {
 			if(city.getName().trim().toUpperCase().equals(cityName.trim().toUpperCase())) {
 				return city;
 			}
@@ -122,13 +119,10 @@ public class RegisterController {
 	}
 	
 	private List<String> getAllCities() {
-		List<String> cities = new ArrayList<String>();
-		Iterable<City> citiesFromDatabase = cityRepository.findAll();
-		
-		for(City city : citiesFromDatabase) {
+		List<String> cities = new ArrayList<String>();		
+		for(City city : cityRepository.findAll()) {
 			cities.add(city.getName().trim().toUpperCase());
-		}
-		
+		}		
 		Collections.sort(cities);		
 		return cities;
 	}
@@ -175,7 +169,6 @@ public class RegisterController {
 			model.addAttribute("isDateValid", isDateValid);
 		}
 		
-		System.out.println(promoCode);
 		if (promoCode != "") {
 			if(getPromoCodeByValue(promoCode).getStatus().equals("Used")) {
 				isPromoCodeValid = false;
@@ -190,8 +183,7 @@ public class RegisterController {
 	}
 
 	private boolean isEmailTaken(String email) {
-		Iterable<UserEntity> allUsers = userRepository.findAll();
-		for (UserEntity user : allUsers) {
+		for (UserEntity user : userRepository.findAll()) {
 			if (user.getEmail().equals(email)) {
 				return true;
 			}

@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,12 +12,14 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import app.dto.TripDTO;
 import app.entities.Guide;
 import app.entities.Trip;
 import app.entities.UserEntity;
 import app.entities.UserTrip;
 import app.models.TripViewModel;
+import app.repositories.GuideRepository;
 import app.repositories.TripRepository;
 import app.repositories.UserTripRepository;
 import app.utils.Conversion;
@@ -70,9 +73,11 @@ public class MyTripsController {
 			String tripId = entry.getKey();
 			if(!isUserRegisteredForTrip(user, Integer.parseInt(tripId))) {
 				return "redirect:/my-trips"; 
-			}	    
-		    removeTripForUser(user, Integer.parseInt(tripId));
-		    increaseTripCapacity(Integer.parseInt(tripId));
+			}	   
+			if(user.getRole().getName().equals("ROLE_USER")) {
+				removeTripForUser(user, Integer.parseInt(tripId));
+			    increaseTripCapacity(Integer.parseInt(tripId));
+			}
 		}
 		
 		tripViewModel.setTripsDTO(userUtils.getAllTripsDTOForUser(userUtils.getUserByEmail(principal.getName())));
@@ -80,7 +85,7 @@ public class MyTripsController {
 		
 		return "redirect:/my-trips";
 	}
-	
+
 	private List<TripDTO> getAllTripsDTOForGuide(Guide guide) {
 		List<TripDTO> tripsDTOForGuide = new ArrayList<>();
 		for(Trip trip : guide.getTrips()) {

@@ -137,9 +137,12 @@
 												<input type="submit" name="submit" class="btn btn-info" value="Toate ascensiunile"/>
 											</div>
 										</div>
-										<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.status} == 'Active'">
+										<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.status} == 'Active' and *{tripDTO.guideDTO.user} == ${loggedUser}">
 											<input type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
 											<p class="btn btn-success" onclick="displayParticipants()">Finalizeaz&#259; ascensiunea</p>
+										</div>
+										<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.guideDTO.user} != ${loggedUser}">
+											<input type="submit" name="submit" class="btn btn-info" value="Toate ascensiunile"/>
 										</div>
 						  			</td>
 						  		</tr>

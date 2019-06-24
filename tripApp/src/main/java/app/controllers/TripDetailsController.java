@@ -20,6 +20,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import app.dto.TripDTO;
 import app.dto.UserDTO;
+import app.entities.Guide;
 import app.entities.Medal;
 import app.entities.Role;
 import app.entities.Trip;
@@ -34,6 +35,7 @@ import app.repositories.UserMedalRepository;
 import app.repositories.UserRepository;
 import app.repositories.UserTripRepository;
 import app.utils.Conversion;
+import app.utils.TripUtils;
 import app.utils.UserUtils;
 
 @Controller
@@ -69,6 +71,7 @@ public class TripDetailsController {
 		model.addAttribute("tripDetailsViewModel", tripDetailsViewModel);
 
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
+		model.addAttribute("loggedUser", user);
 		if (isUserRegisteredForTrip(user, Integer.parseInt(tripId))) {
 			model.addAttribute("isAlreadyRegisteredForTrip", true);
 		} else {
@@ -115,29 +118,45 @@ public class TripDetailsController {
 				return "redirect:/my-trips";
 			}
 			case "Sterge ascensiunea": {
+				if(getTripById(tripId) != null) {
+					removeTripForGuide(user.getGuide(), tripId);
+				}
 				return "redirect:/my-trips";
 			}
 			case "Finalizeaza":{
-				setStatusToFinishedForTrip(getTripById(tripId));
-				setUsersThatParticipated(usersIds, tripId);
-				addMedalsForUsers(usersIds, tripId);
-				addPointsForUsers(usersIds);
-				promoteUsers(usersIds);
+				if(getTripById(tripId) != null) {
+					if(!getTripById(tripId).getStatus().equals("Finished")) {
+						setStatusToFinishedForTrip(getTripById(tripId));
+						setUsersThatParticipated(usersIds, tripId);
+						addMedalsForUsers(usersIds, tripId);
+						addPointsForUsers(usersIds);
+						promoteUsers(usersIds);
+					}
+				}
 				return "redirect:/my-trips";
 			}
 		}	
 		return "views/all/tripDetails";
 	}
 	
+	private void removeTripForGuide(Guide guide, Integer tripId) {
+		Trip trip = getTripById(tripId);
+		if(trip.getGuide().equals(guide)) {
+			tripRepository.deleteById(tripId);
+		}
+	}
+	
 	private void promoteUsers(String usersIds) {
-		List<String> ids = new ArrayList<>(Arrays.asList(usersIds.split(",")));
-		for(String id : ids) {
-			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
-			if(user.getRole().getName().equals("ROLE_USER") && user.getMedals().size() == 9) {
-				user.setRole(getRoleByName("ROLE_STAFF"));
-				userRepository.save(user);
+		if(usersIds != null) {
+			List<String> ids = new ArrayList<>(Arrays.asList(usersIds.split(",")));
+			for(String id : ids) {
+				UserEntity user = userUtils.getUserById(Integer.parseInt(id));
+				if(user.getRole().getName().equals("ROLE_USER") && user.getMedals().size() == 9) {
+					user.setRole(getRoleByName("ROLE_STAFF"));
+					userRepository.save(user);
+				}
 			}
-		}	
+		}
 	}
 	
 	private Role getRoleByName(String roleName) {
@@ -150,30 +169,34 @@ public class TripDetailsController {
 	}
 
 	private void addPointsForUsers(String usersIds) {
-		List<String> ids = new ArrayList<>(Arrays.asList(usersIds.split(",")));
-		for(String id : ids) {
-			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
-			Integer currentPoints = Integer.parseInt(user.getPoints());
-			Integer newPoints = 0;
-			if(user.getRole().getName().equals("ROLE_USER")) {
-				newPoints = currentPoints + 50;
-			}
-			if(user.getRole().getName().equals("ROLE_STAFF") || user.getRole().getName().equals("ROLE_GUIDE")) {
-				newPoints = currentPoints + 75;
-			}
-			user.setPoints(newPoints.toString());
-			userRepository.save(user);
-		}	
+		if(usersIds != null) {
+			List<String> ids = new ArrayList<>(Arrays.asList(usersIds.split(",")));
+			for(String id : ids) {
+				UserEntity user = userUtils.getUserById(Integer.parseInt(id));
+				Integer currentPoints = Integer.parseInt(user.getPoints());
+				Integer newPoints = 0;
+				if(user.getRole().getName().equals("ROLE_USER")) {
+					newPoints = currentPoints + 50;
+				}
+				if(user.getRole().getName().equals("ROLE_STAFF") || user.getRole().getName().equals("ROLE_GUIDE")) {
+					newPoints = currentPoints + 75;
+				}
+				user.setPoints(newPoints.toString());
+				userRepository.save(user);
+			}	
+		}
 	}
 
 	private void addMedalsForUsers(String userId, Integer tripId) {
-		List<String> usersIds = new ArrayList<>(Arrays.asList(userId.split(",")));
-		for(String id : usersIds) {
-			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
-			Trip trip = getTripById(tripId);
-			Medal medal = getMedatByTrip(trip);
-			if(!doesUserHasThatMedalAlready(user, medal)) {
-				userMedalRepository.save(new UserMedal(medal, user));
+		if(userId != null) {
+			List<String> usersIds = new ArrayList<>(Arrays.asList(userId.split(",")));
+			for(String id : usersIds) {
+				UserEntity user = userUtils.getUserById(Integer.parseInt(id));
+				Trip trip = getTripById(tripId);
+				Medal medal = getMedatByTrip(trip);
+				if(!doesUserHasThatMedalAlready(user, medal)) {
+					userMedalRepository.save(new UserMedal(medal, user));
+				}
 			}
 		}	
 	}
@@ -197,14 +220,16 @@ public class TripDetailsController {
 	}
 
 	private void setUsersThatParticipated(String userId, Integer tripId) {
-		List<String> usersIds = new ArrayList<>(Arrays.asList(userId.split(",")));
-		for(String id : usersIds) {
-			UserEntity user = userUtils.getUserById(Integer.parseInt(id));
-			Trip trip = getTripById(tripId);
-			UserTrip userTrip = getUserTrip(user, trip);
-			userTrip.setParticipated(true);
-			userTripRepository.save(userTrip);
-		}
+		if(userId != null) {
+			List<String> usersIds = new ArrayList<>(Arrays.asList(userId.split(",")));
+			for(String id : usersIds) {
+				UserEntity user = userUtils.getUserById(Integer.parseInt(id));
+				Trip trip = getTripById(tripId);
+				UserTrip userTrip = getUserTrip(user, trip);
+				userTrip.setParticipated(true);
+				userTripRepository.save(userTrip);
+			}
+		}	
 	}
 
 	private void setStatusToFinishedForTrip(Trip trip) {

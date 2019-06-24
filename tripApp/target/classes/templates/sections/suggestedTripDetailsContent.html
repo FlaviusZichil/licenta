@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body class="body">
+	<form th:action="@{/suggested-trip-details}" th:object="${tripDetailsViewModel}" method="post">	
+		<div class="row">
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+			<div class="col-md-8 col-sm-8 col-xs-2 fla">
+					<input type="hidden" th:value="*{tripDTO.id}" name="tripId">
+					<div class="card mt-2 mb-2">
+						<div class="card-header bg-info color text-center">
+							<h5 th:text="*{tripDTO.peakDTO.peakName} + ' - ' + *{tripDTO.peakDTO.altitude} + 'm'"></h5>
+						</div>
+						<div class="card-body">
+							<table class="table table-dark table-bordered w-100">
+								<tr>
+									<td class="text-center">
+										<h6> Data plecarii </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="*{tripDTO.startDate}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Data intoarcerii </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="*{tripDTO.endDate}"></h6>
+									</td>
+								</tr>
+								<tr id="capacity">
+									<td class="text-center">
+										<h6> Capacitate </h6>
+									</td>
+									<td class="text-center">
+										<div th:if="${invalidCapacity}">
+											<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Introduceti o valoare intre 5 si 50! </p> 
+										</div>
+										<input id="tripCapacity" type="text" class="form-control w-100 text-center" th:value="*{tripDTO.capacity}" name="tripCapacity" disabled="disabled">
+										<input id="hiddenTripCapacity" type="hidden" th:value="*{tripDTO.capacity}" name="tripCapacity">
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Munte </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="*{tripDTO.peakDTO.mountainDTO.name}"></h6>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Judet </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="*{tripDTO.peakDTO.cityDTO.name}"></h6>
+									</td>
+								</tr>
+								<tr id="difficulty">
+									<td class="text-center">
+										<h6> Dificultate</h6>
+									</td>
+									<td class="text-center">
+										<div th:if="${invalidDifficulty}">
+											<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Valorile permise sunt: Usor, Mediu, Dificil! </p> 
+										</div>
+										<input id="tripDifficulty" type="text" class="form-control text-center" th:value="*{tripDTO.routeDTO.difficulty}" name="tripDifficulty" disabled="disabled">
+										<input id="hiddenTripDifficulty" type="hidden" th:value="*{tripDTO.routeDTO.difficulty}" name="tripDifficulty">
+									</td>
+								</tr>
+								<tr th:each="point : *{tripDTO.routeDTO.routePointsDTO}">
+									<td class="text-center">
+										<h6> Traseu </h6>
+									</td>
+									<td class="text-center">
+										<h6 th:text="${point.pointDTO.pointName}"></h6>
+									</td>
+								</tr>
+								<tr id="points">
+									<td class="text-center">
+										<h6> Puncte </h6>
+									</td>
+									<td class="text-center">
+										<div th:if="${invalidPoints}">
+											<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Introduceti o valoare intre 50 si 75! </p> 
+										</div>
+										<input id="tripPoints" type="text" class="form-control w-100 text-center" th:value="*{tripDTO.points}" name="tripPoints" disabled="disabled">
+										<input id="hiddenTripPoints" type="hidden" th:value="*{tripDTO.points}" name="tripPoints">
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<h6> Actiuni </h6>
+									</td>
+									<td id="actions" class="text-center">
+										<input id="organiseTrip" type="submit" name = "submit" class="btn btn-success" value="Organizeaza ascensiunea"/>
+										<p id="editTrip" class="btn btn-info" onclick="makeEditableFields(this)"> Editeaza ascensiunea </p>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
+		</div>
+	</form>
+</body>
+
+<script>
+
+	function makeEditableFields(e){	
+		e.parentNode.removeChild(e);
+		createSaveButton();
+		createRemoveButton();
+		
+		var tripCapacity = document.getElementById("tripCapacity");
+		tripCapacity.removeAttribute("disabled");
+		var tripDifficulty = document.getElementById("tripDifficulty");
+		tripDifficulty.removeAttribute("disabled");
+		var tripPoints = document.getElementById("tripPoints");
+		tripPoints.removeAttribute("disabled");
+		
+		var hiddenTripCapacity = document.getElementById("hiddenTripCapacity");
+		hiddenTripCapacity.setAttribute("disabled", "disabled");
+		var hiddenTripDifficulty = document.getElementById("hiddenTripDifficulty");
+		hiddenTripDifficulty.setAttribute("disabled", "disabled");
+		var hiddenTripPoints = document.getElementById("hiddenTripPoints");
+		hiddenTripPoints.setAttribute("disabled", "disabled");
+		
+		var organise = document.getElementById("organiseTrip");
+		organise.parentNode.removeChild(organise);
+	}
+	
+	function createSaveButton(){
+		var saveInput = document.createElement("input");
+		saveInput.setAttribute("class", "btn btn-success");
+		saveInput.setAttribute("type", "submit");
+		saveInput.setAttribute("name", "submit");
+		saveInput.setAttribute("value", "Salveaza modificarile si organizeaza ascensiunea");
+		
+		var div = document.getElementById("actions");
+		div.appendChild(saveInput);
+	}
+	
+	function createRemoveButton(){
+		var removeInput = document.createElement("input");
+		removeInput.setAttribute("class", "btn btn-danger");
+		removeInput.setAttribute("type", "submit");
+		removeInput.setAttribute("name", "submit");
+		removeInput.setAttribute("value", "Renunta");
+		
+		var div = document.getElementById("actions");
+		div.appendChild(removeInput);
+	} 
+	
+</script>
+</html>

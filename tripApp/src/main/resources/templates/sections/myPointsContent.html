@@ -10,9 +10,12 @@
 				    <h5 class="trip-card-title text-center color"> PUNCTELE MELE </h5>
 				  </div>
 				  <div class="card-body">
-				    	<div class="list-group">													  
+				    	<div class="list-group" th:unless="${#request.isUserInRole('ROLE_ADMIN')}">													  
 							  <p class="text-center list-group-item list-group-item-action list-group-item-warning" th:text="'In acest moment aveti ' + ${userPoints} + ' puncte HaiSus'"></p> 
 							  <p id="getMorePointsButton" class="btn btn-success" style="margin-top: 2%"> Ob&#355;ine mai multe puncte </p>
+						</div>
+						<div class="list-group" th:if="${#request.isUserInRole('ROLE_ADMIN')}">													  
+							  <p class="text-center list-group-item list-group-item-action list-group-item-warning"> Nu pute&#355;i acumula puncte!</p> 
 						</div>
 				  </div>
 				</div>
@@ -22,11 +25,16 @@
 				  <div class="card-header bg-info">
 				    <h5 class="trip-card-title text-center color"> PUNCTE CONSUMATE </h5>
 				  </div>
-				  <div class="card-body" style="overflow-y: scroll; height: 200px;">
-				    	<div th:each="registration : ${usedPoints}" class="list-group">													  
+				  <div class="card-body" style="overflow-y: scroll; height: 200px;" th:unless="${#request.isUserInRole('ROLE_ADMIN')}">
+				    	<div  th:each="registration : ${usedPoints}" class="list-group">													  
 							  <p class="list-group-item list-group-item-action list-group-item-light text-center" th:text="'A&#355;i consumat 25 de puncte HaiSus &#238;n data ' + ${registration.date} + ' pentru &#238;nscriere la tombol&#259;.'"></p>
 						</div>
-				  </div>
+				  </div> 
+				  <div class="card-body" th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+						 <div class="list-group">													  
+							<p class="text-center list-group-item list-group-item-action list-group-item-warning"> Nu pute&#355;i consuma puncte!</p> 
+						</div>
+				  </div> 
 			</div>
 			 </div>
 			 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>

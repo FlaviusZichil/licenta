@@ -118,10 +118,7 @@ public class TripDetailsController {
 				return "redirect:/my-trips";
 			}
 			case "Sterge ascensiunea": {
-				if(getTripById(tripId) != null) {
-					removeTripForGuide(user.getGuide(), tripId);
-				}
-				return "redirect:/my-trips";
+				return removeTrip(user, tripId);
 			}
 			case "Finalizeaza":{
 				if(getTripById(tripId) != null) {
@@ -139,8 +136,33 @@ public class TripDetailsController {
 		return "views/all/tripDetails";
 	}
 	
+	private String removeTrip(UserEntity user, Integer tripId) {
+		if(getTripById(tripId) != null) {
+			if(user.getRole().getName().equals("ROLE_GUIDE")) {
+				removeTripForGuide(user.getGuide(), tripId);
+				return "redirect:/my-trips";
+			}
+			if(user.getRole().getName().equals("ROLE_ADMIN")) {
+				removeTripForGuide(null, tripId);
+				return "redirect:/all-trips";
+			}
+		}
+		else {
+			if(user.getRole().getName().equals("ROLE_GUIDE")) {
+				return "redirect:/my-trips";
+			}
+			if(user.getRole().getName().equals("ROLE_ADMIN")) {
+				return "redirect:/all-trips";
+			}
+		}
+		return null;
+	}
+	
 	private void removeTripForGuide(Guide guide, Integer tripId) {
 		Trip trip = getTripById(tripId);
+		if(guide == null) {
+			tripRepository.deleteById(tripId);
+		}
 		if(trip.getGuide().equals(guide)) {
 			tripRepository.deleteById(tripId);
 		}

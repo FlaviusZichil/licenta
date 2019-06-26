@@ -20,7 +20,7 @@
 										<input type="text" id="name" name="guideLastName" class="form-control ml-1" placeholder="Nume">
 									</div>
 									<div th:if="${wrongLastName} == true">
-										<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Numele nu respecta conditiile! </p> 
+										<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Numele nu respect&#259; condi&#355;iile! </p> 
 									</div>
 								</td>
 							</tr>
@@ -36,7 +36,7 @@
 										<input type="text" id="prename" name="guideFirstName" class="form-control ml-1" placeholder="Prenume">
 									</div>
 									<div th:if="${wrongFirstName} == true">
-										<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Prenumele nu respecta conditiile! </p> 
+										<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Prenumele nu respect&#259; condi&#355;iile! </p> 
 									</div>								
 								</td>
 							</tr>				
@@ -58,14 +58,14 @@
 							</tr>
 							<tr class="mt-1">
 								<td>
-									<label for="date"> Data nasterii </label>
+									<label for="date"> Data na&#351;terii </label>
 								</td>
 								<td>
 									<div >
-										<input type="date" id="date" name="guideBirthDate" class="form-control ml-1" placeholder="Data nasterii">
+										<input type="date" id="date" name="guideBirthDate" class="form-control ml-1" placeholder="Data na&#351;terii">
 									</div>
 									<div th:if="${wrongBirthDate} == true">
-										<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Varsta minima este de 25 de ani! </p> 
+										<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> V&#226;rsta minim&#259; este de 25 de ani! </p> 
 									</div>
 								</td>
 							</tr>
@@ -81,13 +81,13 @@
 										<input type="password" id="password" name="guidePassword" class="form-control ml-1" placeholder="Parola">
 									</div>
 									<div th:if="${wrongPassword} == true">
-										<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Parola nu respecta conditiile! </p> 
+										<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Parola nu respect&#259; condi&#355;iile! </p> 
 									</div>									
 								</td>
 							</tr>
 							<tr class="mt-1">
 								<td>
-									<label for="city"> Judet </label>
+									<label for="city"> Jude&#355; </label>
 								</td>
 								<td>
 									<div>
@@ -109,29 +109,29 @@
 									</td>
 									<td>
 										<div th:if="${guideDTO} != null">
-										<input type="text" id="phone" name="guidePhoneNumber" class="form-control ml-1" placeholder="Numar de telefon" th:value="${guideDTO.phoneNumber}">
+										<input type="text" id="phone" name="guidePhoneNumber" class="form-control ml-1" placeholder="Num&#259;r de telefon" th:value="${guideDTO.phoneNumber}">
 									</div>
 									<div th:if="${guideDTO} == null">
-										<input type="text" id="phone" name="guidePhoneNumber" class="form-control ml-1" placeholder="Numar de telefon">
+										<input type="text" id="phone" name="guidePhoneNumber" class="form-control ml-1" placeholder="Num&#259;r de telefon">
 									</div>
 										<div th:if="${wrongPhoneNumber} == true">
-											<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Numarul nu respecta conditiile! </p> 
+											<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Num&#259;rul nu respect&#259; condi&#355;iile! </p> 
 										</div>										
 									</td>
 								</tr>
 								<tr class="mt-1">
 									<td>
-										<label for="experience"> Ani de experienta </label>
+										<label for="experience"> Ani de experien&#355;&#259; </label>
 									</td>
 									<td>
 										<div th:if="${guideDTO} != null">
-											<input type="text" id="experience" name="guideExperience" class="form-control ml-1" placeholder="Ani de experienta" th:value="${guideDTO.yearsOfExperience}">
+											<input type="text" id="experience" name="guideExperience" class="form-control ml-1" placeholder="Ani de experien&#355;&#259;" th:value="${guideDTO.yearsOfExperience}">
 										</div>
 										<div th:if="${guideDTO} == null">
-											<input type="text" id="experience" name="guideExperience" class="form-control ml-1" placeholder="Ani de experienta">
+											<input type="text" id="experience" name="guideExperience" class="form-control ml-1" placeholder="Ani de experien&#355;&#259;">
 										</div>
 										<div th:if="${wrongYears} == true">
-											<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Anii de experienta depasesc varsta! </p> 
+											<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 ml-1"> Anii de experien&#355;a dep&#259;&#351;esc v&#226;rsta! </p> 
 										</div>										
 									</td>
 								</tr>
@@ -143,7 +143,7 @@
 								<tr class="mt-1 w-100">
 									<td colspan="2">
 										<div class="list-group" th:if="${addedWithSuccess} == true">													  
-										  <p class="text-center list-group-item list-group-item-action list-group-item-success"> Ghid adaugat cu succes</p>
+										  <p class="text-center list-group-item list-group-item-action list-group-item-success"> Ghid ad&#259;ugat cu succes</p>
 										 </div>
 									</td>
 								</tr>

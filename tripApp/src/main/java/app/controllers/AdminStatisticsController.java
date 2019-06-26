@@ -192,10 +192,12 @@ public class AdminStatisticsController {
 		Map<String, Integer> trips = createNameTripsMap();
 		for (Map.Entry<String, Integer> entry : trips.entrySet()) {
 		    for(Trip trip : tripRepository.findAll()) {
-		    	if(entry.getKey().equals(trip.getGuide().getUser().getLastName() + " " + trip.getGuide().getUser().getFirstName())) {
-		    		Integer newValue = entry.getValue() + 1;
-		    		trips.put(entry.getKey(), newValue);
-		    	}
+		    	if(!trip.getStatus().equals("Suggested")) {
+		    		if(entry.getKey().equals(trip.getGuide().getUser().getLastName() + " " + trip.getGuide().getUser().getFirstName())) {
+			    		Integer newValue = entry.getValue() + 1;
+			    		trips.put(entry.getKey(), newValue);
+			    	}
+		    	}	    	
 		    }
 		}
 		return trips;

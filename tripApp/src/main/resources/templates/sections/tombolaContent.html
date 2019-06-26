@@ -64,7 +64,9 @@
 				    	<div class="list-group">													  
 							  <p class="list-group-item list-group-item-action list-group-item-light">Este nevoie de 25 de puncte HaiSus pentru &#238;nscriere.</p>
 							  <p class="list-group-item list-group-item-action list-group-item-light">Un utilizator se poate &#238;nscrie o singur&#259; dat&#259; &#238;n decursul unei luni.</p>
-							  <input type="submit" class="btn btn-success" name="registerToTombola" value="Inscrie-te"/>  
+							  <div th:unless="${#request.isUserInRole('ROLE_ADMIN')}">
+								<input type="submit" class="btn btn-success btn-block" name="registerToTombola" value="Inscrie-te"/> 
+							</div>
 						</div>
 				  </div>
 			</div>

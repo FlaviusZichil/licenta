@@ -116,20 +116,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				    </div>
 				    <div id="collapseOne" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
-<!-- 							<div class="row"> -->
-<!-- 								<div class="col"> -->
-<!-- 							    	<select id="mountain" name="mountain" onblur="addSelectToVerify(this, verifyMountain)" class="browser-default custom-select custom-select-md mb-3"> -->
-<!-- 							    		<option value="" disabled selected>Numele muntelui</option> -->
-<!-- 									  	<option th:each="mountainDTO : *{mountainsDTO}" th:text="${mountainDTO.name}">  	 -->
-<!-- 									</select> -->
-<!-- 							    </div> -->
-<!-- 							    <div class="col"> -->
-<!-- 							    	<select id="city" name="city" onblur="addSelectToVerify(this, verifyCity)" class="browser-default custom-select custom-select-md mb-3"> -->
-<!-- 							    		<option value="" disabled selected>Judetul</option> -->
-<!-- 									  	<option th:each="city : *{citiesDTO}" th:text="${city.name}">  	 -->
-<!-- 									</select> -->
-<!-- 							    </div> 							     -->
-<!-- 							 </div> -->
 							 <div class="row">
 							    <div class="col">
 								    <div th:if="${tripDTO} == null">
@@ -145,12 +131,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 										</select>
 									</div>
 							    </div>
-<!-- 							    <div class="col"> -->
-<!-- 							    	<select id="altitude" name="altitude" onblur="addSelectToVerify(this, verifyAltitude)" class="browser-default custom-select custom-select-md mb-3"> -->
-<!-- 							    		<option value="" disabled selected>Altitudinea</option> -->
-<!-- 									  	<option th:each="peak : *{peaksDTO}" th:text="${peak.altitude}">  	 -->
-<!-- 									</select> -->
-<!-- 							    </div> -->
 							 </div>
 						</div>
 				      </div>
@@ -375,7 +355,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 </form>
 <script src="scripts/tripPreview.js"></script>
 <script src="scripts/addDataToVerify.js"></script>
-
 <script th:inline="javascript">
 function createNewPoint(){		
 		var allRoutePoints = document.getElementById("puncteIntermediare");

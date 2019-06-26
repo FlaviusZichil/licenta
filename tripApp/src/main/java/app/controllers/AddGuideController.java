@@ -62,14 +62,14 @@ public class AddGuideController {
 			GuideDTO guideDTO = new GuideDTO();
 			
 			if(isLastNameValid(guideLastName)) {
-				user.setLastName(guideLastName);
+				user.setLastName(RegisterValidator.formatNameProperly(guideLastName));
 			}
 			else {
 				model.addAttribute("wrongLastName", true);
 			}
 			
 			if(isFirstNameValid(guideFirstName)) {
-				user.setFirstName(guideFirstName);
+				user.setFirstName(RegisterValidator.formatNameProperly(guideFirstName));
 			}
 			else {
 				model.addAttribute("wrongFirstName", true);

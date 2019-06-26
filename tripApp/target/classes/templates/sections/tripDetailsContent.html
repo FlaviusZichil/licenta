@@ -18,9 +18,14 @@
 		 		</div>
 		 		<div class="text-center " th:if="${noTripSelected} == true">
 		 			<h5 class="text-center list-group-item list-group-item-action list-group-item-danger mt-2 mb-2"> 
-		 				Nu exista o ascensiune selectata despre care sa se arate detalii! 
+		 				Nu exist&#259; o ascensiune selectat&#259; despre care s&#259; se arate detalii! 
 		 			</h5>
-		 			<a th:href="@{/my-trips}" class="btn btn-info"> Ascensiunile mele </a>
+		 			<div th:if="${#request.isUserInRole('ROLE_GUIDE')}">
+						<a th:href="@{/my-trips}" class="btn btn-info"> Ascensiunile mele </a>
+					</div>
+					<div th:if="${#request.isUserInRole('ROLE_ADMIN')}">
+						<a th:href="@{/all-trips}" class="btn btn-info"> Toate ascensiunile </a>
+					</div>
 		 		</div>
 		 		<div th:if="${noTripSelected} == false">
 				 	<div class="text-center error-message" th:if="${isUserAllowedToRegisterForTrip} != false and 
@@ -143,6 +148,9 @@
 										</div>
 										<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.guideDTO.user} != ${loggedUser}">
 											<input type="submit" name="submit" class="btn btn-info" value="Toate ascensiunile"/>
+										</div>
+										<div th:if="${#request.isUserInRole('ROLE_ADMIN')} and *{tripDTO.status} == 'Active'">
+											<input type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
 										</div>
 						  			</td>
 						  		</tr>

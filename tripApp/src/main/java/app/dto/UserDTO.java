@@ -5,7 +5,6 @@ import java.util.List;
 import app.entities.Register;
 
 public class UserDTO {
-	
 	private Integer id;
 	private String firstName;
 	private String lastName;

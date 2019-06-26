@@ -86,8 +86,8 @@ public class ArticleDetailsController {
 	
 	@PostMapping("/article")
 	public String articleActions(Model model, HttpSession session, Principal principal,
-								@RequestParam(name="commentContent", required = false) String commentContent,
-								@RequestParam(name="submit", required = false) String actionType,
+								@RequestParam(name = "commentContent", required = false) String commentContent,
+								@RequestParam(name = "submit", required = false) String actionType,
 								@RequestParam(name = "title", required = false) String title,
 								@RequestParam(name = "sectionTitles", required = false) String sectionsTitle,
 								@RequestParam(name = "sectionContent", required = false) String sectionsContent,
@@ -142,12 +142,34 @@ public class ArticleDetailsController {
 					removeLikeForArticle(user, selectedArticle);
 					break;
 				}
+				case "Elimina articolul":{
+					removeArticle(selectedArticle);
+					return "redirect:/all-articles";
+				}
 			}
 		}				
 		String redirectUrl = "article?a=" + session.getAttribute("articleId");
 		return "redirect:/" + redirectUrl;
 	}
 	
+	private void removeArticle(Article article) {
+		System.out.println(isArticleInDatabase(article));
+		if(isArticleInDatabase(article)) {
+			articleRepository.delete(article);
+		}
+	}
+	
+	private boolean isArticleInDatabase(Article givenArticle) {
+		for(Article article : articleRepository.findAll()) {
+			System.out.println(article.getArticleId() + " == " + givenArticle.getArticleId());
+
+			if(article.getArticleId() == givenArticle.getArticleId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private void removeSection(String sectionTitle, String sectionContent) {
 		for(Article article : articleRepository.findAll()) {
 			List<ArticleSection> sections = article.getSections();
@@ -193,7 +215,7 @@ public class ArticleDetailsController {
 	private void removeLikeForArticle(UserEntity user, Article article) {
 		List<ArticleLike> likes = article.getLikes();
 
-		for(ArticleLike like : likes) {
+		for(ArticleLike like : article.getLikes()) {
 			if(like.getUserId() == user.getId() && like.getArticleId() == article.getArticleId()) {
 				likes.remove(like);
 				break;

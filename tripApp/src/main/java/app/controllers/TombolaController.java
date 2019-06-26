@@ -29,18 +29,18 @@ public class TombolaController {
 
 	@GetMapping("/tombola")
 	public String getTombola(Model model, Principal principal, TombolaViewModel tombolaViewModel) {	
-		tombolaViewModel.setWinners(this.getAllWinners());
-		model.addAttribute("tombolaViewModel", tombolaViewModel);
+		loadWinnersOnModel(tombolaViewModel, model);
+		loadCurrentUserOnModel(principal, model);
 		return "views/all/tombola";
 	}
-	
+
 	@PostMapping("/tombola")
 	public String postTombola(Model model, Principal principal, TombolaViewModel tombolaViewModel,
 							  @RequestParam(name = "registerToTombola", required = false) String registerToTombolaAction) {
 		
-		tombolaViewModel.setWinners(this.getAllWinners());
-		model.addAttribute("tombolaViewModel", tombolaViewModel);
+		loadWinnersOnModel(tombolaViewModel, model);
 		UserEntity currentUser = userUtils.getUserByEmail(principal.getName());
+		model.addAttribute("currentUser", currentUser);
 		LocalDate date = LocalDate.now();
 		
 		if(registerToTombolaAction != null) {
@@ -53,6 +53,16 @@ public class TombolaController {
 		}
 		
 		return "views/all/tombola";
+	}
+	
+	private void loadWinnersOnModel(TombolaViewModel tombolaViewModel, Model model) {
+		tombolaViewModel.setWinners(getAllWinners());
+		model.addAttribute("tombolaViewModel", tombolaViewModel);
+	}
+	
+	private void loadCurrentUserOnModel(Principal principal, Model model) {
+		UserEntity currentUser = userUtils.getUserByEmail(principal.getName());
+		model.addAttribute("currentUser", currentUser);	
 	}
 
 	private List<TombolaDTO> getAllWinners() {
@@ -67,11 +77,9 @@ public class TombolaController {
 				if (registrationForGivenDate.getStatus().equals("Locul 1")) {
 					tombolaDTO.setFirstPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}
-
 				if (registrationForGivenDate.getStatus().equals("Locul 2")) {
 					tombolaDTO.setSecondPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}
-
 				if (registrationForGivenDate.getStatus().equals("Locul 3")) {
 					tombolaDTO.setThirdPlaceWinner(userUtils.convertFromUserToUserDTO(user));
 				}

@@ -11,14 +11,14 @@
 		 				<h5> Utilizatori </h5>
 		 			</div>
 		 			<div class="card-body pre-scrollable">
-		 				<table class="table table-dark table-bordered" >
+		 				<table class="table table-dark table-bordered table-sm">
 		 					<tr>
 		 						<th class="text-center"> NUME </th>
 		 						<th class="text-center"> EMAIL </th>
-		 						<th class="text-center"> ORAS </th>
+		 						<th class="text-center"> JUDE&#354; </th>
 		 						<th class="text-center"> ASCENSIUNI FINALIZATE </th>
-		 						<th class="text-center"> ABSENTE </th>
-		 						<th class="text-center"> ACTIUNI </th>	 						
+		 						<th class="text-center"> ABSEN&#354;E </th>
+		 						<th class="text-center"> AC&#354;IUNI </th>	 						
 		 					</tr>
 		 					<tr th:each="user : *{users}">
 		 						<td class="text-center"> <h6 th:text="${user.userDTO.lastName} + ' ' + ${user.userDTO.firstName}"></h6> </td>
@@ -40,15 +40,15 @@
 		 				<h5> Membrii Staff </h5>
 		 			</div>
 		 			<div class="card-body pre-scrollable">
-		 				<table class="table table-dark table-bordered">
+		 				<table class="table table-dark table-bordered table-sm">
 		 					<tr>
 		 						<th class="text-center"> NUME </th>
 		 						<th class="text-center"> EMAIL </th>
-		 						<th class="text-center"> ORAS </th>
+		 						<th class="text-center"> JUDE&#354; </th>
 		 						<th class="text-center"> ASCENSIUNI FINALIZATE </th>
-		 						<th class="text-center"> ABSENTE </th>
+		 						<th class="text-center"> ABSEN&#354;E </th>
 		 						<th class="text-center"> ARTICOLE POSTATE </th>
-		 						<th class="text-center"> ACTIUNI </th>	 						
+		 						<th class="text-center"> AC&#354;IUNI </th>	 						
 		 					</tr>
 		 					<tr th:each="staff : *{staffMembers}">
 		 						<td class="text-center"> <h6 th:text="${staff.userDTO.lastName} + ' ' + ${staff.userDTO.firstName}"></h6> </td>

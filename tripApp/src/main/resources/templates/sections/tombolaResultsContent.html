@@ -6,19 +6,19 @@
 			<div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 			<div class="col-md-8 col-sm-8 col-xs-2 fla">
 				<div th:if="${wereWinnersPicked} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Extragerea a fost efectuata pentru luna curenta!</p> 	
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Extragerea a fost efectuat&#259; pentru luna curent&#259;!</p> 	
 				</div>
 				<div id="participants" class="card mt-3">
 					<div class="card-header bg-info color">
-						<h5 class="text-center"> Participanti </h5>
+						<h5 class="text-center"> Participan&#355;i </h5>
 					</div>
 					<div class="card-body">
 						<table class="table w-100 table-dark">
 							<tr>
 								<th class="text-center"> NUME </th>
 								<th class="text-center"> EMAIL </th>
-								<th class="text-center"> JUDET </th>
-								<th class="text-center"> DATA INSCRIERII </th>
+								<th class="text-center"> JUDE&#354; </th>
+								<th class="text-center"> DATA &#206;NSCRIERII </th>
 
 							</tr>
 							<tr th:each="registration : *{tombolaResultsDTO}">
@@ -43,8 +43,8 @@
 		 					<tr>
 		 						<th class="text-center"> NUME </th>
 								<th class="text-center"> EMAIL </th>
-								<th class="text-center"> JUDET </th>
-								<th class="text-center"> DATA INSCRIERII </th>
+								<th class="text-center"> JUDE&#354; </th>
+								<th class="text-center"> DATA &#206;NSCRIERII </th>
 								<th class="text-center"> STATUS </th>
 		 					</tr>
 		 					<tr th:each="result : ${results}">

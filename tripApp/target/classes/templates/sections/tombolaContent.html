@@ -18,16 +18,25 @@
 				    </div>				
 				    <div th:id="${winner.date}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
 				      <div class="card-body" style="text-align: left;">
+				      
 				      	<table class="table">
-				      		<tr>
+				      		<tr th:if="${winner.firstPlaceWinner.id == currentUser.id}" class="bg-warning">
 				      			<td>
 				      				<h6> Locul 1: </h6>
 				      			</td>
 				      			<td>
-				      				<h6 th:text="${winner.firstPlaceWinner.firstName} + ' ' + ${winner.firstPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.cityDTO.name}"></h6>				      				
+				      				<h6 th:text="${winner.firstPlaceWinner.firstName} + ' ' + ${winner.firstPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.cityDTO.name}"></h6>	
 				      			</td>
 				      		</tr>
-				      		<tr>
+				      		<tr th:if="${winner.firstPlaceWinner.id != currentUser.id}">
+				      			<td>
+				      				<h6> Locul 1: </h6>
+				      			</td>
+				      			<td>
+				      				<h6 th:text="${winner.firstPlaceWinner.firstName} + ' ' + ${winner.firstPlaceWinner.lastName} + ', ' + ${winner.firstPlaceWinner.cityDTO.name}"></h6>	
+				      			</td>
+				      		</tr>
+				      		<tr th:if="${winner.secondPlaceWinner.id == currentUser.id}" class="bg-warning">
 				      			<td>
 				      				<h6> Locul 2: </h6>
 				      			</td>
@@ -35,7 +44,15 @@
 				      				<h6 th:text="${winner.secondPlaceWinner.firstName} + ' ' + ${winner.secondPlaceWinner.lastName} + ', ' + ${winner.secondPlaceWinner.cityDTO.name}"></h6>
 				      			</td>
 				      		</tr>
-				      		<tr>
+				      		<tr th:if="${winner.secondPlaceWinner.id != currentUser.id}">
+				      			<td>
+				      				<h6> Locul 2: </h6>
+				      			</td>
+				      			<td>
+				      				<h6 th:text="${winner.secondPlaceWinner.firstName} + ' ' + ${winner.secondPlaceWinner.lastName} + ', ' + ${winner.secondPlaceWinner.cityDTO.name}"></h6>
+				      			</td>
+				      		</tr>
+				      		<tr th:if="${winner.thirdPlaceWinner.id == currentUser.id}" class="bg-warning">
 				      			<td>
 				      				<h6> Locul 3: </h6>
 				      			</td>
@@ -43,7 +60,15 @@
 				      				<h6 th:text="${winner.thirdPlaceWinner.firstName} + ' ' + ${winner.thirdPlaceWinner.lastName} + ', ' + ${winner.thirdPlaceWinner.cityDTO.name}"></h6>				
 				      			</td>
 				      		</tr>
-				      	</table>
+				      		<tr th:if="${winner.thirdPlaceWinner.id != currentUser.id}">
+				      			<td>
+				      				<h6> Locul 3: </h6>
+				      			</td>
+				      			<td>
+				      				<h6 th:text="${winner.thirdPlaceWinner.firstName} + ' ' + ${winner.thirdPlaceWinner.lastName} + ', ' + ${winner.thirdPlaceWinner.cityDTO.name}"></h6>				
+				      			</td>
+				      		</tr>
+				      	</table>			      	
 				      </div>
 				    </div>
 				  </div>			  

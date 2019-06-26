@@ -30,12 +30,6 @@ public class UsersReportController {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
-	private RoleRepository roleRepository;
-	@Autowired
-	private UserTripRepository userTripRepository;
-	@Autowired
-	private ArticleRepository articleRepository;
-	@Autowired
 	private UserUtils userUtils;
 
 	@GetMapping("/users-reports")
@@ -69,10 +63,11 @@ public class UsersReportController {
 	
 	private void blockUserAccount(Integer userId) {
 		UserEntity user = userUtils.getUserById(userId);
-		user.setBlocked(true);
-		user.setPassword("accountBlocked_" + generateRandomId());
-
-		userRepository.save(user);
+		if(user != null) {
+			user.setBlocked(true);
+			user.setPassword("accountBlocked_" + generateRandomId());
+			userRepository.save(user);
+		}	
 	}
 	
 	public String generateRandomId() {

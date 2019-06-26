@@ -30,8 +30,8 @@ public class TombolaResultsController {
 	private TombolaRepository tombolaRepository;
 
 	@GetMapping("/tombola-results")
-	public String getTombolaResultsPage(Model model, HttpSession session) {
-		setParticipantsOnModel(model, session);
+	public String getTombolaResultsPage(Model model) {
+		setParticipantsOnModel(model);
 		if(getAllTombolaParticipants().size() == 0) {
 			model.addAttribute("wereWinnersPicked", true);
 		}
@@ -41,9 +41,13 @@ public class TombolaResultsController {
 	@PostMapping("/tombola-results")
 	public String tombolaResultsActions(Model model, HttpSession session,
 										@RequestParam(name = "submit", required = false) String getResults) {
-		if(getResults.equals("Extrage castigatorii")) {
+		if(getResults.equals("Extrage castigatorii") && !wereWinnersPicked()) {
 			setWinnersOnModel(model);
-			setParticipantsOnModel(model, session);
+			setParticipantsOnModel(model);
+		}
+		else {
+			setParticipantsOnModel(model);
+			return "redirect:/tombola-results";
 		}
 		return "views/admin/tombolaResultsView";
 	}
@@ -53,7 +57,22 @@ public class TombolaResultsController {
 		model.addAttribute("results", results);
 	}
 	
-	private void setParticipantsOnModel(Model model, HttpSession session) {
+	private boolean wereWinnersPicked() {
+		Integer winners = 0;
+		for(Tombola tombola : tombolaRepository.findAll()) {
+			if(LocalDate.parse(tombola.getDate()).getMonthValue() == LocalDate.now().getMonthValue() - 1) {
+				if(tombola.getStatus().equals("Locul 1") || tombola.getStatus().equals("Locul 2") || tombola.getStatus().equals("Locul 3")) {
+					winners++;
+				}
+			}
+		}
+		if(winners == 3) {
+			return true;
+		}
+		return false;
+	}
+	
+	private void setParticipantsOnModel(Model model) {
 		TombolaResultsViewModel tombolaResultsViewModel = new TombolaResultsViewModel();
 		tombolaResultsViewModel.setTombolaResultsDTO(getAllTombolaParticipants());
 		model.addAttribute("tombolaResultsViewModel", tombolaResultsViewModel);
@@ -105,11 +124,9 @@ public class TombolaResultsController {
 	private Tombola getRegistrationByUserAndDate(UserDTO userDTO, String date) {
 		for(Tombola tombola : tombolaRepository.findAll()) {
 			if(tombola.getDate().equals(date) && tombola.getUser().getId() == userDTO.getId()) {
-				System.out.println("a returnat tombola");
 				return tombola;
 			}
 		}
-		System.out.println("a returnat null");
 		return null;
 	}
 	

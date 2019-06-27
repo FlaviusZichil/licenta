@@ -1,5 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput, #myInputStaff {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable, #myTableStaff {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td, #myInputStaff th, #myInputStaff td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr, #myInputStaff tr {
+  border-bottom: 1px solid #ddd;
+}
+</style>
 <body class="body">
 	<form action="#" th:action="@{/users-reports}" th:object="${usersReportsViewModel}" method="POST">
 		 <div class="row">
@@ -11,7 +43,8 @@
 		 				<h5> Utilizatori </h5>
 		 			</div>
 		 			<div class="card-body pre-scrollable">
-		 				<table class="table table-dark table-bordered table-sm">
+		 				<input type="text" id="myInput" onkeyup="myFunction('myInput', 'myTable')" placeholder="Caut&#259; dup&#259; nume" title="Type in a name">
+		 				<table id="myTable" class="table table-dark table-bordered table-sm">
 		 					<tr>
 		 						<th class="text-center"> NUME </th>
 		 						<th class="text-center"> EMAIL </th>
@@ -31,7 +64,7 @@
 		 							 <input type="submit" th:name="${user.userDTO.id}" class="btn btn-info" value="Detalii"/>
 		 						 </td>
 		 					</tr>
-		 				</table>
+		 				</table>	
 		 			</div>
 		 		</div>
 		 		
@@ -40,7 +73,8 @@
 		 				<h5> Membrii Staff </h5>
 		 			</div>
 		 			<div class="card-body pre-scrollable">
-		 				<table class="table table-dark table-bordered table-sm">
+		 				<input type="text" id="myInputStaff" onkeyup="myFunction('myInputStaff', 'myTableStaff')" placeholder="Caut&#259; dup&#259; nume" title="Type in a name">
+		 				<table id="myTableStaff" class="table table-dark table-bordered table-sm">
 		 					<tr>
 		 						<th class="text-center"> NUME </th>
 		 						<th class="text-center"> EMAIL </th>
@@ -71,4 +105,24 @@
 		</div>
 	</form>
 </body>
+<script>
+function myFunction(input, table) {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById(input);
+  filter = input.value.toUpperCase();
+  table = document.getElementById(table);
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+</script>
 </html>

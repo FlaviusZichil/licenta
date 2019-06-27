@@ -166,7 +166,7 @@ public class AdminStatisticsController {
 		List<Integer> months = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 		for(Trip trip : tripRepository.findAll()) {
 			LocalDate startDate = LocalDate.parse(trip.getStartDate());
-			if(String.valueOf(startDate.getYear()).equals(year)) {
+			if(String.valueOf(startDate.getYear()).equals(year) && trip.getStatus().equals("Finished")) {
 				Integer newValue = months.get(startDate.getMonthValue() - 1) + 1;
 				months.set(startDate.getMonthValue() - 1, newValue);
 			}			

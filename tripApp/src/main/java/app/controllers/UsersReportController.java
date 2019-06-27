@@ -1,6 +1,8 @@
 package app.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.documents.Article;
+import app.dto.RoutePointDTO;
 import app.dto.UsersReportsDTO;
 import app.entities.Role;
 import app.entities.UserEntity;
@@ -92,7 +95,24 @@ public class UsersReportController {
 				stafMembersReports.add(new UsersReportsDTO(userUtils.convertFromUserToUserDTO(user), userUtils.getFinishedTripsForUser(user), userUtils.getAbsencesForUser(user), userUtils.getArticleForUser(user)));
 			}
 		}
-		usersReportsViewModel.setStaffMembers(stafMembersReports);
-		usersReportsViewModel.setUsers(usersReports);
+		usersReportsViewModel.setStaffMembers(sortUsersByAbsences(stafMembersReports));
+		usersReportsViewModel.setUsers(sortUsersByAbsences(usersReports));
+	}
+	
+	private static List<UsersReportsDTO> sortUsersByAbsences(List<UsersReportsDTO> users) {
+		Collections.sort(users, new Comparator<UsersReportsDTO>() {
+			@Override
+			public int compare(UsersReportsDTO firstUserDTO, UsersReportsDTO secondUserDTO) {
+				if(firstUserDTO.getAbsences() < secondUserDTO.getAbsences()) {
+					return 1;
+				}
+				if(firstUserDTO.getAbsences() > secondUserDTO.getAbsences()) {
+					return -1;
+				}
+				return 0;
+			}
+		});
+
+		return users;
 	}
 }

@@ -50,7 +50,7 @@ html, body {
 	                <div class="form-group">                  
 						<input class="form-control" type="date"  name="birthDate" placeholder="Data na&#351;terii" alt="Data na&#351;terii" required/>
 						 <div th:if="${isDateValid == false}">
-							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> V&#226;rsta minim&#259; este de 16 ani!</p>
+							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> V&#226;rsta minim&#259; este de 16 ani, iar cea maxim&#259; 100!</p>
 						</div>
 	                </div>
 	                 <div class="form-group">				   
@@ -65,8 +65,11 @@ html, body {
 							<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> Minim 6 caractere &#351;i liter&#259; mare!</p>
 						</div>
 	                </div>
-	                <div class="form-group">               
+	                <div class="form-group"> 	               	             
 					    <input class="form-control" type="text" name="promocode" placeholder="Cod (op&#355;ional)" data-toggle="tooltip" data-placement="top" title="Codul se poate ob&#355;ine de la un alt utilizator"/>
+					    <div th:if="${isPromoCodeValid == false}"> 
+					    	<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-1 mb-3"> Acest cod a fost deja folosit!</p>
+					    </div>
 	                </div>
 	                <div class="form-group">                   
 					    <select class="btn btn-secondary btn-block"  name="city">

@@ -98,12 +98,25 @@ public class RegisterValidator {
 		return false;
 	}
 	
+	public static String getYearFromDate(String date) {
+		date = date.substring(0, date.indexOf("-"));
+		return date;
+	}
+	
 	public static boolean isDateValid(String date) {
+		if(getYearFromDate(date).length() != 4) {
+			return false;
+		}
+		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate now = LocalDate.now();
 		LocalDate givenDate = LocalDate.parse(date, formatter);
 		LocalDate yearsAgoDate = now.minusYears(16);
+		LocalDate hundredYearsAgoDate = now.minusYears(100);
 		
+		if(givenDate.isBefore(hundredYearsAgoDate)) {
+			return false;
+		}
 		if(givenDate.isAfter(yearsAgoDate)) {
 			return false;
 		}

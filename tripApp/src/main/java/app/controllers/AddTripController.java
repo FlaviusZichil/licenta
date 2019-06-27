@@ -38,6 +38,7 @@ import app.repositories.UserRepository;
 import app.utils.Conversion;
 import app.utils.TripUtils;
 import app.utils.UserUtils;
+import app.validators.RegisterValidator;
 
 @Controller
 public class AddTripController {
@@ -94,10 +95,6 @@ public class AddTripController {
 		boolean arePointsValid = true;
 		boolean isLocationValid = true;
 		boolean areRoutePointsValid = true;
-		
-		System.out.println(initialPoint);
-		System.out.println(intermediatePoint);
-		System.out.println(finalPoint);
 		
 		if(!areDatesValid(startDate, endDate)) {
 			model.addAttribute("invalidDates", true);
@@ -262,16 +259,19 @@ public class AddTripController {
 		routePointRepository.save(new RoutePoint(route, finalPointForTrip, order.toString()));
 	}
 	
-	private boolean areDatesValid(String startDate, String endDate) throws ParseException {
+	private boolean areDatesValid(String startDate, String endDate) throws ParseException{
+		if(RegisterValidator.getYearFromDate(startDate).length() != 4 || RegisterValidator.getYearFromDate(endDate).length() != 4) {
+			return false;
+		}
 		LocalDate firstDate = LocalDate.parse(startDate);
 		LocalDate secondDate = LocalDate.parse(endDate);		
 		Period period = Period.between(firstDate, secondDate);
-	    int days = period.getDays();
-	    
-	    if(firstDate.isBefore(LocalDate.now()) || secondDate.isBefore(LocalDate.now()) || days > 4 || days < 1) {
-	    	return false;
-	    }
-	    return true;
+		int days = period.getDays();
+		
+		if(firstDate.isBefore(LocalDate.now()) || secondDate.isBefore(LocalDate.now()) || days > 4 || days < 1) {
+			return false;
+		}
+		return true;
 	}
 	
 	private List<PeakDTO> getPeaksDTO(){

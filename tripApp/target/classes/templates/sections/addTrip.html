@@ -94,23 +94,23 @@ body {font-family: Arial, Helvetica, sans-serif;}
 		 <div class="col-md-2 col-sm-2 col-xs-2 fla"></div>
 		 <div class="col-md-8 col-sm-8 col-xs-2 fla">
 		 		<div th:if="${guideHasUnfinishedTrips} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Aveti ascensiuni terminate care nu sunt setate ca finalizate!</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Ave&#355;i ascensiuni terminate care nu sunt setate ca finalizate!</p> 									
 				</div>
 				<div th:if="${hasTripsInThatPeriod} == true">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Aveti deja o ascensiune activa in perioada aleasa!</p> 									
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mt-3 mb-3"> Ave&#355;i deja o ascensiune activ&#259; &#238;n perioada aleas&#259;!</p> 									
 				</div>
 				<div class="accordion" id="accordionExample" style="margin-top: 3%; margin-bottom: 2%">	
 				<div th:if="${invalidLocation}">
-					<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Datele despre locatiei nu se potrivesc! </p> 
+					<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Datele despre loca&#355;ie nu se potrivesc! </p> 
 				</div>	
 				<div th:if="${tripAddedWithSuccess}">
-					<p class="text-center list-group-item list-group-item-action list-group-item-success mb-1"> Ascensiune adaugata cu succes! </p> 
+					<p class="text-center list-group-item list-group-item-action list-group-item-success mb-2"> Ascensiune adaugat&#259; cu succes! </p> 
 				</div>			
 				  <div class="card" style="margin-bottom: 2%">
 				    <div class="card-header" id="headingOne" style="background: linear-gradient(to bottom, #ccd6dd 0%, #55acee 100%);">
 				      <h5 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseTwo">
-				          1. Adauga locatia
+				          1. Adaug&#259; loca&#355;ia
 				        </button>
 				      </h5>
 				    </div>
@@ -120,13 +120,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							    <div class="col">
 								    <div th:if="${tripDTO} == null">
 								    	<select id="peak" name="peak" onblur="addSelectToVerify(this, verifyPeak)" class="browser-default custom-select custom-select-md mb-3">
-								    		<option value="" disabled selected>Numele varfului</option>
+								    		<option value="" disabled selected>Numele v&#226;rfului</option>
 										  	<option th:each="peak : *{peaksDTO}" th:text="${peak.peakName}">  	
 										</select>
 									</div>
 									<div th:if="${tripDTO} != null">
 								    	<select id="peak" name="peak" onblur="addSelectToVerify(this, verifyPeak)" class="browser-default custom-select custom-select-md mb-3">
-								    		<option value="" disabled selected>Numele varfului</option>
+								    		<option value="" disabled selected>Numele v&#226;rfului</option>
 										  	<option selected="selected" th:text="${tripDTO.peakDTO.peakName}">  	
 										</select>
 									</div>
@@ -137,13 +137,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				    </div>
 				  
 				  <div th:if="${invalidDates}">
-						<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Date trecute sau diferenta prea mare intre date! </p> 
+						<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Date trecute, diferen&#355;&#259; prea mare &#238;ntre date sau mai pu&#355;in de 3 zile pan&#259; la data de &#238;nceput! </p> 
 				  </div>
 				  <div class="card" style="margin-bottom: 2%">
 				    <div class="card-header" id="headingTwo" style="background: linear-gradient(to bottom, #ccd6dd 0%, #55acee 100%);">
 				      <h5 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-				          2. Adauga perioada
+				          2. Adaug&#259; perioada
 				        </button>
 				      </h5>
 				    </div>
@@ -151,11 +151,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				      <div class="card-body" style="text-align: left; margin-left: 3%">
 							<div class="row">
 							    <div class="col">
-							      <label for="startDate"> Data inceput </label>
+							      <label for="startDate"> Data &#238;nceput </label>
 							      <input onblur="addInputToVerify(this, verifyStartDate)" type="date" id="startDate" name="startDate" class="form-control" required>
 							    </div>
 							    <div class="col">
-							      <label for="endDate"> Data incheiere </label>
+							      <label for="endDate"> Data &#238;ncheiere </label>
 							      <input onblur="addInputToVerify(this, verifyEndDate)" type="date" id="endDate" name="endDate" class="form-control" required>
 							    </div>
 							 </div>
@@ -164,21 +164,21 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				  </div>
 				  
 				  <div th:if="${invalidRoutePoints}">
-						<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Punctele nu apartin muntelui selectat sau puncte care se repeta! </p> 
+						<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Punctele nu apar&#355;in muntelui selectat sau puncte care se repet&#259;! </p> 
 				  </div>
 				  <div class="card" style="margin-bottom: 2%">
 				    <div class="card-header" id="headingTree" style="background: linear-gradient(to bottom, #ccd6dd 0%, #55acee 100%);">
 				      <h5 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseTwo">
-				          3. Adauga traseu
+				          3. Adaug&#259; traseu
 				        </button>
 				      </h5>
 				    </div>
 				    <div id="collapseThree" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
 				      <div id="allRoutePoints" class="card-body" style="text-align: left; margin-left: 3%">
-							<p class="btn btn-info" onclick="createNewPoint()">Adauga punct intermediar</p><br><br>
+							<p class="btn btn-info" onclick="createNewPoint()">Adaug&#259; punct intermediar</p><br><br>
 							<select id="initialPoint" name="initialPoint" onblur="addSelectToVerify(this, verifyInitialPoint)" class="browser-default custom-select custom-select-md mb-3">
-							    <option value="" disabled selected> Punctul initial </option>
+							    <option value="" disabled selected> Punctul ini&#355;ial </option>
 								<option th:each="pointDTO : *{pointsDTO}" th:text="${pointDTO.pointName} + ', ' + ${pointDTO.mountainDTO.name}"></option>
 							</select> <br>
 							
@@ -194,16 +194,16 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				  </div>
 				  
 				  <div th:if="${invalidCapacity}">
-						<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Capacitatea trebuie sa fie intre 5 si 50! </p> 
+						<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Capacitatea trebuie s&#259; fie &#238;ntre 5 &#351;i 50! </p> 
 				  </div>
 				  <div th:if="${invalidPoints}">
-						<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Punctele trebuie sa fie intre 50 si 70! </p> 
+						<p class="text-center list-group-item list-group-item-action list-group-item-danger mb-1"> Punctele trebuie s&#259; fie &#238;ntre 50 &#351;i 70! </p> 
 				  </div>
 				  <div class="card" style="margin-bottom: 2%">
 				    <div class="card-header" id="headingFour" style="background: linear-gradient(to bottom, #ccd6dd 0%, #55acee 100%);  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);">
 				      <h5 class="mb-0">
 				        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseTwo">
-				          4. Adauga detalii
+				          4. Adaug&#259; detalii
 				        </button>
 				      </h5>
 				    </div>
@@ -213,7 +213,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 							    <div class="col">
 								    <select id="difficulty" name="difficulty" onblur="addSelectToVerify(this, verifyDifficulty)" class="browser-default custom-select custom-select- mb-3">
 								    	<option value="" disabled selected>Dificultate</option>
-										  <option value="Usor">Usor</option>
+										  <option value="Usor">U&#351;or</option>
 										  <option value="Mediu">Mediu</option>
 										  <option value="Dificil">Dificil</option>
 									</select>	
@@ -241,7 +241,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 				  
 				</div>
 				<!-- Trigger/Open The Modal -->
-				<p class="btn btn-success" id="modalTrigger"> Vizualizeaza ascensiunea </p>
+				<p class="btn btn-success" id="modalTrigger"> Vizualizeaz&#259; ascensiunea </p>
 				
 				<!-- The Modal -->
 				<div id="previewModal" class="modal">
@@ -258,7 +258,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 								<table>
 									<tr>
 										<td>
-											<h4> VARFUL: </h4> 
+											<h4> V&#194;RFUL: </h4> 
 										</td>
 										<td>
 											<h4 id="verifyPeak"></h4>
@@ -266,7 +266,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 									</tr>
 									<tr>
 										<td>
-											<h4> DATA INCEPUT: </h4> 
+											<h4> DATA &#206;NCEPUT: </h4> 
 										</td>
 										<td>
 							      			<h4 id="verifyStartDate"></h4>
@@ -274,7 +274,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 									</tr>
 									<tr>
 										<td>
-											<h4> DATA SFARSIT: </h4> 
+											<h4> DATA SF&#194;R&#350;IT: </h4> 
 										</td>
 										<td>
 							      			<h4 id="verifyEndDate"></h4>
@@ -282,7 +282,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 									</tr>
 									<tr>
 										<td>
-											<h4> PUNCT INITIAL: </h4> 
+											<h4> PUNCT INI&#354;IAL: </h4> 
 										</td>
 										<td>
 							      			<h4 id="verifyInitialPoint"></h4>
@@ -383,7 +383,7 @@ function createNewPoint(){
 	
 	function createRemoveButton(){
 		var removeButton = document.createElement("p");
-		removeButton.innerHTML = "Elimina";
+		removeButton.innerHTML = "Elimin&#259;";
 		removeButton.setAttribute("class", "btn btn-danger");
 		removeButton.setAttribute("onclick", "removeAction(this)");
 		return removeButton;
@@ -394,7 +394,7 @@ function createNewPoint(){
         for (var i = 0; i < points.length; i++) { 
         	var option = document.createElement("option");
     		var optionText = document.createElement("p");
-    		optionText.innerHTML = points[i].pointName;
+    		optionText.innerHTML = points[i].pointName + ' - ' + points[i].mountainDTO.name;
     		option.appendChild(optionText);
     		select.appendChild(option);
         }      

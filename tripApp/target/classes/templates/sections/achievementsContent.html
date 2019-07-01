@@ -48,8 +48,11 @@
 		  			</div>
 		  		</div>
 		  		<hr>
-		  	
+		  		<div class="list-group mt-1" th:if="${medalsNumber == 9}">													  
+						 <p class="text-center list-group-item list-group-item-action list-group-item-warning"> Felicit&#259;ri! A&#355;i ob&#355;inut toate medaliile &#351;i odat&#259; cu ele rolul de membru Staff. </p> 
+					</div>
 		  		<div class="row">
+		  			
 		  			<div class="col-sm-4" th:each="medalDTO : *{medalsDTO}">
 		  				<div th:if="${medalDTO.owned} == true">
 				  			<div class="card mt-3 mb-3 bg-warning text-center">

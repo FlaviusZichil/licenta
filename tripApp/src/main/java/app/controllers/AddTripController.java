@@ -89,6 +89,8 @@ public class AddTripController {
 							  @RequestParam(name = "capacity", required = false) String capacity,
 							  @RequestParam(name = "points", required = false) String points) throws ParseException {
 		
+		System.out.println("inter points: " + intermediatePoint);
+		
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		boolean areDatesValid = true;
 		boolean isCapacityValid = true;
@@ -162,10 +164,12 @@ public class AddTripController {
 		List<PointDTO> pointsDTO = new ArrayList<>();
 		pointsDTO.add(conversion.convertFromPointToPointDTO(getPointByName(initialPoint.substring(0, initialPoint.indexOf(",")).trim())));
 		pointsDTO.add(conversion.convertFromPointToPointDTO(getPointByName(finalPoint.substring(0, finalPoint.indexOf(",")).trim())));
-		List<String> intermediatePoints = new ArrayList<>(Arrays.asList(intermediarePoints.split(",")));
-		for(String point : intermediatePoints) {
-			pointsDTO.add(conversion.convertFromPointToPointDTO(getPointByName(point)));
-		}
+		if(intermediarePoints != null) {
+			List<String> intermediatePoints = new ArrayList<>(Arrays.asList(intermediarePoints.split(",")));
+			for(String point : intermediatePoints) {
+				pointsDTO.add(conversion.convertFromPointToPointDTO(getPointByName(point.substring(0, point.indexOf("-")).trim())));
+			}
+		}	
 		return pointsDTO;
 	}
 	
@@ -189,10 +193,15 @@ public class AddTripController {
 		tripRepository.save(trip);		
 	}
 	
-	public <T> boolean hasDuplicates(Iterable<T> all) {
-	    Set<T> set = new HashSet<T>();
-	    for (T each: all) if (!set.add(each)) return true;
-	    return false;
+	public boolean hasDuplicates(List<PointDTO> pointsDTO) {
+		for(int i = 0; i < pointsDTO.size(); i++) {
+			for(int j = i + 1; j < pointsDTO.size(); j++) {
+				if(pointsDTO.get(i).getPointName().equals(pointsDTO.get(j).getPointName())) {		
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	private boolean hasTripsInPeriod(String startDate, String endDate, Guide guide) {
@@ -221,7 +230,6 @@ public class AddTripController {
 	
 	private boolean arePointsValid(List<PointDTO> pointsDTO, String peak) {
 		Peak peakForPoints = getPeakByName(peak);
-
 		if(hasDuplicates(pointsDTO)) {
 			return false;
 		}
@@ -246,13 +254,15 @@ public class AddTripController {
 		Point initialPointForTrip = getPointByName(initialPoint.substring(0, initialPoint.indexOf(",")).trim());
 		routePointRepository.save(new RoutePoint(route, initialPointForTrip, order.toString()));
 		
-		List<String> interemediatePointsForTrip = new ArrayList<>(Arrays.asList(routePoints.split(",")));
-		
-		for(String intermediatePoint : interemediatePointsForTrip) {
-			Point intermediatePointForTrip = this.getPointByName(intermediatePoint);
-			order++;
-			routePointRepository.save(new RoutePoint(route, intermediatePointForTrip, order.toString()));
-		}
+		if(routePoints != null) {
+			List<String> interemediatePointsForTrip = new ArrayList<>(Arrays.asList(routePoints.split(",")));
+			
+			for(String intermediatePoint : interemediatePointsForTrip) {
+				Point intermediatePointForTrip = getPointByName(intermediatePoint.substring(0, intermediatePoint.indexOf("-")).trim());
+				order++;
+				routePointRepository.save(new RoutePoint(route, intermediatePointForTrip, order.toString()));
+			}
+		}	
 				
 		Point finalPointForTrip = this.getPointByName(finalPoint.substring(0, finalPoint.indexOf(",")).trim());
 		order++;
@@ -267,8 +277,10 @@ public class AddTripController {
 		LocalDate secondDate = LocalDate.parse(endDate);		
 		Period period = Period.between(firstDate, secondDate);
 		int days = period.getDays();
+		Period periodThreeDays = Period.between(LocalDate.now(), firstDate);
+		int threeDaysPeriod = periodThreeDays.getDays();
 		
-		if(firstDate.isBefore(LocalDate.now()) || secondDate.isBefore(LocalDate.now()) || days > 4 || days < 1) {
+		if(firstDate.isBefore(LocalDate.now()) || secondDate.isBefore(LocalDate.now()) || days > 4 || days < 0 || threeDaysPeriod < 3) {
 			return false;
 		}
 		return true;
@@ -310,10 +322,8 @@ public class AddTripController {
 		return null;
 	}
 	
-	private Point getPointByName(String pointName) {
-		Iterable<Point> points = pointRepository.findAll();
-		
-		for(Point point : points) {
+	private Point getPointByName(String pointName) {		
+		for(Point point : pointRepository.findAll()) {
 			if(point.getPointName().equals(pointName)) {
 				return point;
 			}

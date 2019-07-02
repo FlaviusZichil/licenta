@@ -95,12 +95,19 @@ public class IndexController {
 	
 	private ArticleDTO getMostPopularArticleDTO() {
 		List<Article> articles = (List<Article>) articleRepository.findAll();
+		Article mostPopularArticle = new Article();
 		if(articles.size() == 0) { 
 			return null;
 		}
+		else{
+			for(Article article : articleRepository.findAll()) {
+				mostPopularArticle = article;
+				break;
+			}
+		}
 		
 		Integer max = 0;
-		Article mostPopularArticle = new Article();
+
 		for(Article article : articleRepository.findAll()) {
 			Integer currentMax = article.getLikes().size();
 			if(currentMax > max) {

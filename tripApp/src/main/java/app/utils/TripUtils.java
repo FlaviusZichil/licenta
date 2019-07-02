@@ -67,8 +67,7 @@ public class TripUtils {
 		Integer number = 0;
 		for (Trip trip : guide.getTrips()) {
 			LocalDate endDate = LocalDate.parse(trip.getEndDate());
-			if (endDate.isEqual(LocalDate.now())
-					|| endDate.isBefore(LocalDate.now()) && trip.getStatus().equals("Active")) {
+			if (endDate.isBefore(LocalDate.now()) && trip.getStatus().equals("Active")) {
 				number++;
 			}
 		}

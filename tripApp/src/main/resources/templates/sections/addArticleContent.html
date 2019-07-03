@@ -64,10 +64,10 @@
 					  		<div class="card-body">
 					  			<label> Descriere </label>
 					  			<div th:if="${isArticleValid} == false">
-					  				<textarea class="text-justify" id="description" name="description" th:text="${articleToAddDTO.description}" maxlength="10000" style="width: 100%; height: 150px; resize: none" required></textarea>	 
+					  				<textarea class="text-justify" id="description" name="description" th:text="${articleToAddDTO.description}" maxlength="1000" style="width: 100%; height: 150px; resize: none" required></textarea>	 
 					  			</div>
 					  			<div th:if="${isArticleValid} != false">
-					  				<textarea class="text-justify" id="description" name="description" maxlength="10000" style="width: 100%; height: 150px; resize: none" required></textarea>	 
+					  				<textarea class="text-justify" id="description" name="description" maxlength="1000" style="width: 100%; height: 150px; resize: none" required></textarea>	 
 					  			</div>
 					  			<div class="text-center list-group-item list-group-item-action list-group-item-danger" id="count"></div> 		
 					  		</div>
@@ -76,7 +76,7 @@
 							<div class="card trip-card text-center">
 						  		<div class="card-body" th:each="section : ${articleToAddDTO.sections}">
 						  			<input class="form-control text-center" type="text" name="subtitle" th:value="${section.sectionTitle}" placeholder="Subtitlu"/>			
-						  			<textarea class="text-justify" name="sectionContent" maxlength="10000" th:text="${section.sectionContent}" style="width: 100%; height: 150px; resize: none" required></textarea>	  		
+						  			<textarea class="text-justify" name="sectionContent" maxlength="1000" th:text="${section.sectionContent}" style="width: 100%; height: 150px; resize: none" required></textarea>	  		
 						  		</div>
 							</div>
 						</div> 	
@@ -84,7 +84,7 @@
 							<div class="card trip-card text-center">
 						  		<div class="card-body">
 						  			<input class="form-control" type="text" name="subtitle" placeholder="Subtitlu"/>			
-						  			<textarea class="text-justify" name="sectionContent" maxlength="10000" style="width: 100%; height: 150px; resize: none" required></textarea>	  		
+						  			<textarea class="text-justify" name="sectionContent" maxlength="1000" style="width: 100%; height: 150px; resize: none" required></textarea>	  		
 						  		</div>
 							</div>
 						</div> 			
@@ -139,6 +139,7 @@
 		textarea.setAttribute("class", "text-justify");
 		textarea.setAttribute("name", "sectionContent");
 		textarea.setAttribute("required", "required");
+		textarea.setAttribute("maxlength", "1000");
 		
 		var deleteSection = document.createElement("p");
 		deleteSection.setAttribute("class", "btn btn-danger btn-block");

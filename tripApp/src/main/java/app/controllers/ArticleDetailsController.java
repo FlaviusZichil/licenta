@@ -153,7 +153,6 @@ public class ArticleDetailsController {
 	}
 	
 	private void removeArticle(Article article) {
-		System.out.println(isArticleInDatabase(article));
 		if(isArticleInDatabase(article)) {
 			articleRepository.delete(article);
 		}
@@ -161,8 +160,6 @@ public class ArticleDetailsController {
 	
 	private boolean isArticleInDatabase(Article givenArticle) {
 		for(Article article : articleRepository.findAll()) {
-			System.out.println(article.getArticleId() + " == " + givenArticle.getArticleId());
-
 			if(article.getArticleId() == givenArticle.getArticleId()) {
 				return true;
 			}
@@ -175,7 +172,7 @@ public class ArticleDetailsController {
 			List<ArticleSection> sections = article.getSections();
 			
 			for(ArticleSection section : sections) {
-				if(section.getSectionTitle().trim().equals(sectionTitle.trim()) && section.getSectionContent().trim().equals(sectionContent.trim())) {
+				if(section.getSectionTitle().trim().equals(sectionTitle.trim()) && section.getSectionContent().trim().contains(sectionContent.trim())) {
 					sections.remove(section);
 					break;
 				}

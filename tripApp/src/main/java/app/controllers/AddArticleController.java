@@ -52,17 +52,22 @@ public class AddArticleController {
 		UserEntity user = userUtils.getUserByEmail(principal.getName());	
 		Article article = this.createArticleForUser(user, title, description, subtitles, sectionsContent);
 		
-		if(!hasUserAlreadyPostedForCurrentDate(LocalDate.now().toString(), user) && ArticleValidator.isArticleValid(title, description, subtitles, sectionsContent, session)) {
-			articleRepository.save(article);
-			model.addAttribute("articleSuccessfullyAdded", true);
-			session.setAttribute("articleToAdd", null);
+		if(ArticleValidator.isArticleValid(title, description, subtitles, sectionsContent, session)) {
+			if(!hasUserAlreadyPostedForCurrentDate(LocalDate.now().toString(), user)) {
+				articleRepository.save(article);
+				model.addAttribute("articleSuccessfullyAdded", true);
+				session.setAttribute("articleToAdd", null);
+			}	
+			else {
+				model.addAttribute("aleadyPostedForToday", true);
+				session.setAttribute("articleToAdd", article);
+				session.setAttribute("userHasAlreadyPosted", true);
+			}
 		}
 		else {
-			model.addAttribute("aleadyPostedForToday", true);
 			session.setAttribute("articleToAdd", article);
-			session.setAttribute("userHasAlreadyPosted", true);
 		}
-		
+			
 		loadDataOnPage(session, model);
 		return "views/staff/addArticleView";
 	}

@@ -95,8 +95,8 @@ public class TombolaResultsController {
 			results.get(2).setStatus("Locul 3");
 		}
 		if(results.size() >= 8) {
-			for(int i = 3; i <= results.size(); i++) {
-				if(i <= 8) {
+			for(int i = 3; i <= results.size() - 1; i++) {
+				if(i < 8) {
 					results.get(i).setStatus("Rezerva");
 				}
 				else {

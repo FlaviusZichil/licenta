@@ -55,7 +55,7 @@ public class ArticleValidator {
 			areSubtitlesValid = false;
 		}
 		
-		if(validator.hasEmptyValues(sectionsContent, 50)) {
+		if(validator.hasEmptyValues(sectionsContent, 1)) {
 			session.setAttribute("wrongSectionContent", true);
 			areSectionsValid = false;
 		}

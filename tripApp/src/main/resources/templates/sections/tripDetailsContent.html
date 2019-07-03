@@ -129,7 +129,7 @@
 						  				<div th:if="${isAlreadyRegisteredForTrip} == false">
 											<div th:if="*{tripDTO.capacity} > 0">
 												<div th:if="${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
-													<div th:if="*{tripDTO.status} == 'Active'">
+													<div th:if="*{tripDTO.status} == 'Active' and ${tripStarted} == false">
 														<input type="submit" name="submit" class="btn btn-success" value="&#206;nscrie-te la ascensiune">
 														<input type="submit" name="submit" class="btn btn-info" value="Toate ascensiunile"/>
 													</div>
@@ -138,18 +138,18 @@
 										</div>
 										<div th:if="${isAlreadyRegisteredForTrip} == true and ${#request.isUserInRole('ROLE_USER') || #request.isUserInRole('ROLE_STAFF')}">
 											<div th:if="*{tripDTO.status} == 'Active'">
-												<input type="submit" name="submit" class="btn btn-danger" value="Elimina ascensiunea">
+												<input th:if="${tripStarted == false}" type="submit" name="submit" class="btn btn-danger" value="Elimina ascensiunea">
 												<input type="submit" name="submit" class="btn btn-info" value="Toate ascensiunile"/>
 											</div>
 										</div>
 										<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.status} == 'Active' and *{tripDTO.guideDTO.user} == ${loggedUser}">
-											<input type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
-											<p class="btn btn-success" onclick="displayParticipants()">Finalizeaz&#259; ascensiunea</p>
+											<input th:if="${tripStarted == false}" type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
+											<p th:if="${tripCanBeFinished}" class="btn btn-success" onclick="displayParticipants()">Finalizeaz&#259; ascensiunea</p>
 										</div>
 										<div th:if="${#request.isUserInRole('ROLE_GUIDE')} and *{tripDTO.guideDTO.user} != ${loggedUser}">
 											<input type="submit" name="submit" class="btn btn-info" value="Toate ascensiunile"/>
 										</div>
-										<div th:if="${#request.isUserInRole('ROLE_ADMIN')} and *{tripDTO.status} == 'Active'">
+										<div th:if="${#request.isUserInRole('ROLE_ADMIN')} and *{tripDTO.status} == 'Active' and ${tripStarted == false}">
 											<input type="submit" name="submit" class="btn btn-danger" value="Sterge ascensiunea">
 										</div>
 						  			</td>

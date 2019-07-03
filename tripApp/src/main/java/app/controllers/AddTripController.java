@@ -88,9 +88,7 @@ public class AddTripController {
 							  @RequestParam(name = "difficulty", required = false) String difficulty,
 							  @RequestParam(name = "capacity", required = false) String capacity,
 							  @RequestParam(name = "points", required = false) String points) throws ParseException {
-		
-		System.out.println("inter points: " + intermediatePoint);
-		
+				
 		UserEntity user = userUtils.getUserByEmail(principal.getName());
 		boolean areDatesValid = true;
 		boolean isCapacityValid = true;
@@ -278,9 +276,32 @@ public class AddTripController {
 		Period period = Period.between(firstDate, secondDate);
 		int days = period.getDays();
 		Period periodThreeDays = Period.between(LocalDate.now(), firstDate);
-		int threeDaysPeriod = periodThreeDays.getDays();
+		int threeDays = periodThreeDays.getDays();
+		int years = periodThreeDays.getYears();
 		
-		if(firstDate.isBefore(LocalDate.now()) || secondDate.isBefore(LocalDate.now()) || days > 4 || days < 0 || threeDaysPeriod < 3) {
+//		System.out.println(firstDate.isBefore(LocalDate.now()) );
+//		System.out.println(secondDate.isBefore(LocalDate.now()));
+//		System.out.println(days > 4);
+//		System.out.println(days < 0);
+//		System.out.println((threeDays < 3 && years == 0));
+//		System.out.println(threeDays < 3 );
+//		System.out.println(years == 0);
+//		System.out.println("years: " + years);
+//		System.out.println("days: " + threeDays);
+//		System.out.println(startDate);
+//		System.out.println(LocalDate.now());
+		
+//		if(firstDate.isBefore(LocalDate.now()) || secondDate.isBefore(LocalDate.now()) || days > 4 || days < 0 || (threeDays < 3 && years == 0)) {
+//			return false;
+//		}
+		
+		if(firstDate.isBefore(LocalDate.now()) || 
+				secondDate.isBefore(LocalDate.now()) || 
+				days > 4 || 
+				days < 0 || 
+				LocalDate.parse(startDate).isEqual(LocalDate.now()) ||
+				LocalDate.parse(startDate).isEqual(LocalDate.now().plusDays(1)) ||
+				LocalDate.parse(startDate).isEqual(LocalDate.now().plusDays(2))) {
 			return false;
 		}
 		return true;

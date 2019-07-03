@@ -3,6 +3,7 @@ package app.controllers;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -63,10 +64,14 @@ public class TripDetailsController {
 			HttpSession session, @RequestParam(value = "trip", required = false) String tripId) {
 		
 		model.addAttribute("noTripSelected", false);
+
 		if(tripId == null) {
 			model.addAttribute("noTripSelected", true);
 			return "views/all/tripDetails";
 		}
+		addDatesOnModel(tripId, model);
+		addTripStartedVerifyOnModel(model, tripId);
+		
 		tripDetailsViewModel.setTripDTO(getTripDTOById(Integer.parseInt(tripId)));
 		model.addAttribute("tripDetailsViewModel", tripDetailsViewModel);
 
@@ -134,6 +139,21 @@ public class TripDetailsController {
 			}
 		}	
 		return "views/all/tripDetails";
+	}
+	
+	private void addTripStartedVerifyOnModel(Model model, String tripId) {
+		model.addAttribute("tripStarted", false);
+		LocalDate startDate = LocalDate.parse(getTripById(Integer.parseInt(tripId)).getStartDate());
+		if(startDate.isEqual(LocalDate.now()) || LocalDate.now().isAfter(startDate)) {
+			model.addAttribute("tripStarted", true);
+		}
+	}
+	
+	private void addDatesOnModel(String tripId, Model model) {
+		LocalDate endDate = LocalDate.parse(getTripById(Integer.parseInt(tripId)).getEndDate());
+		if(endDate.isBefore(LocalDate.now())) {
+			model.addAttribute("tripCanBeFinished", true);
+		}
 	}
 	
 	private String removeTrip(UserEntity user, Integer tripId) {

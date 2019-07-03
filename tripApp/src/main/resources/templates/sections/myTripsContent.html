@@ -21,14 +21,9 @@
 					<h6 class="text-center list-group-item list-group-item-action list-group-item-danger mt-2 mb-2"> Nu ave&#355;i ascensiuni organizate! </h6>
 					<a th:href="@{/all-trips}" class="btn btn-primary">Vezi toate ascensiunile</a>
 				</div>
-				<div class="card trip-card text-center" th:each="tripDTO : *{tripsDTO}">
+				<div class="card text-center" th:each="tripDTO : *{tripsDTO}">
 				  <div>
 				  	  <th:block th:with="sdf = ${new java.text.SimpleDateFormat('yyyy-MM-dd')}">
-				  	  		<div th:if="${#dates.format(sdf.parse(tripDTO.endDate), 'yyyy-MM-dd') >= #dates.format(#dates.createNow(), 'yyyy-MM-dd') and tripDTO.status == 'Active'}">
-							  <div class="card-header bg-info">
-							    <h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
-							  </div>
-						  </div>
 						   <div th:if="${#dates.format(sdf.parse(tripDTO.endDate), 'yyyy-MM-dd') < #dates.format(#dates.createNow(), 'yyyy-MM-dd') and tripDTO.status != 'Finished'}">
 							   <div class="card-header bg-danger">
 							   		<h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
@@ -38,6 +33,11 @@
 				  </div>
 				   <div th:if="${tripDTO.status} == 'Finished'">
 					  <div class="card-header bg-secondary">
+					    <h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
+					  </div>
+				  </div>
+				  <div th:if="${tripDTO.status} == 'Active'">
+					  <div class="card-header bg-info">
 					    <h5 class="trip-card-title" th:text="${tripDTO.peakDTO.peakName} + ' - ' + ${tripDTO.peakDTO.altitude} + 'm'"></h5>
 					  </div>
 				  </div>

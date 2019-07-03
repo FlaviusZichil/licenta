@@ -1,6 +1,7 @@
 package app.controllers;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -71,9 +72,13 @@ public class MyTripsController {
 		
 		for (Entry<String, List<String>> entry : tripToRemove.entrySet()) {
 			String tripId = entry.getKey();
+			Trip trip = getTripById(Integer.parseInt(tripId));
 			if(!isUserRegisteredForTrip(user, Integer.parseInt(tripId))) {
 				return "redirect:/my-trips"; 
-			}	   
+			}	
+			if(LocalDate.now().isAfter(LocalDate.parse(trip.getStartDate()))) {
+				return "redirect:/my-trips";
+			}
 			if(user.getRole().getName().equals("ROLE_USER")) {
 				removeTripForUser(user, Integer.parseInt(tripId));
 			    increaseTripCapacity(Integer.parseInt(tripId));
@@ -86,6 +91,14 @@ public class MyTripsController {
 		return "redirect:/my-trips";
 	}
 
+	private void addTripStartedVerifyOnModel(Model model, String tripId) {
+		model.addAttribute("tripStarted", false);
+		LocalDate startDate = LocalDate.parse(getTripById(Integer.parseInt(tripId)).getStartDate());
+		if(startDate.isEqual(LocalDate.now()) || LocalDate.now().isAfter(startDate)) {
+			model.addAttribute("tripStarted", true);
+		}
+	}
+	
 	private List<TripDTO> getAllTripsDTOForGuide(Guide guide) {
 		List<TripDTO> tripsDTOForGuide = new ArrayList<>();
 		for(Trip trip : guide.getTrips()) {
